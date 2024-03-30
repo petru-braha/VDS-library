@@ -1,0 +1,7 @@
+﻿  BST.cpp
+C:\Users\PETRU\Desktop\Data Structures\Binary Search Tree\BST.cpp(9,1): error C3927: '->': trailing return type is not allowed after a non-function declarator
+C:\Users\PETRU\Desktop\Data Structures\Binary Search Tree\BST.cpp(9,7): error C3613: missing return type after '->' ('int' assumed)
+C:\Users\PETRU\Desktop\Data Structures\Binary Search Tree\BST.cpp(9,12): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\PETRU\Desktop\Data Structures\Binary Search Tree\BST.cpp(9,1): error C2040: 'root': 'int' differs in levels of indirection from 'node *'
+C:\Users\PETRU\Desktop\Data Structures\Binary Search Tree\BST.cpp(9,7): error C2146: syntax error: missing ';' before identifier 'left'
+C:\Users\PETRU\Desktop\Data Structures\Binary Search Tree\BST.cpp(96,32): error C3861: 'parent': identifier not found

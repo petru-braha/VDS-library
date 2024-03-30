@@ -1,0 +1,2 @@
+C:\Users\PETRU\Desktop\Data Structures\MaxHeap\x64\Debug\MaxHeap.exe
+D:\Projects\Data Structures\MaxHeap\x64\Debug\MaxHeap.exe

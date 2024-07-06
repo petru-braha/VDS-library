@@ -1,6 +1,6 @@
+#pragma once
 #include "pch.h"
 #include "../include/array.h"
-#include "../include/bureaucracy.h"
 
 template <class T>
 array<T>::~array()
@@ -11,7 +11,7 @@ array<T>::~array()
 template <class T>
 array<T>::array()
 {
-	n = 100;
+	n = default_array_size;
 	last = 0;
 	values = new T[n];
 	for (size_t i = 0; i < n; i++)
@@ -37,10 +37,7 @@ array<T>::array(const std::initializer_list<T>& val)
 
 	size_t index = 0;
 	for (auto i : val)
-	{
-		std::cout << i << ' ';
 		values[index++] = i;
-	}
 }
 
 template <class T>
@@ -84,10 +81,11 @@ array<T>::array(const array<T>&& arr)
 template <class T>
 void array<T>::shift_left(const size_t& left_position)
 {
-	if (left_position == 0)
-		fatal_error("can not shift values");
-	left_position--;
-	for (size_t i = left_position; i <= last; i++)
+	if (empty())
+		hard_error("nothing to shift");
+	if(left_position)
+		left_position--;
+	for (size_t i = left_position; i < last; i++)
 		values[i] = values[i + 1];
 	values[last--] = NULL;
 }
@@ -123,14 +121,16 @@ void array<T>::insert(const T& value)
 template <class T>
 void array<T>::remove(const size_t& index)
 {
+	if (empty())
+		return;
 	if (index > n)
-		fatal_error("bad index");
+		hard_error("bad index");
 	if (index <= last)
 		shift_left(index + 1);
 }
 
 template <class T>
-void array<T>::remove(const T& value, const bool& all = false)
+void array<T>::remove(const T& value, const bool& all)
 {
 	for(size_t i = 0; i<= last;i++)
 		if (values[i] == value)
@@ -138,20 +138,36 @@ void array<T>::remove(const T& value, const bool& all = false)
 			shift_left(i + 1);
 			if (all == false)
 				return;
+			i--;
 		}
 }
 
 template <class T>
-const int array<T>::getn() const
+size_t array<T>::getn() const
 {
 	return n;
 }
 
 template <class T>
-const int array<T>::getl() const
+size_t array<T>::getl() const
 {
 	return last;
 }
+
+template <class T>
+void  array<T>::prnt() const
+{
+	FOR(n)
+		std::cout << values[i] << ' ';
+
+}
+
+template <class T>
+bool array<T>::empty() const
+{
+	return last == -1;
+}
+
 
 //-----------------------------------------------------------------------------------
 // iterator:
@@ -211,7 +227,7 @@ template <class T>
 void ejectin(const array<T>& one, const array<T>& two)
 {
 	for (auto i : two)
-		one.remove(i, (bool)true);
+		one.remove(i, true);
 }
 
 template <class T>
@@ -222,10 +238,36 @@ array<T> crossng(const array<T>& one, const array<T>& two)
 		array<T> new_array = one;
 
 	}
-	
-		
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1		
 	for (auto i : one);
 
-
 	return new_array;
+}
+
+
+#include "array_sorting.cpp"
+template <class T>
+void array<T>::sort(const int& algorithm, bool (*f)(const T&, const T&))
+{
+	array_sorting<T>* sort_job = array_sorting<T>::get_instance();
+	switch (algorithm)
+	{
+	case bubble_sort:
+		sort_job->bubbs(values, last + 1, f);
+		break;
+	case selection_sort:
+		break;
+	case insertion_sort:
+		break;
+	case merge_sort:
+		break;
+	case heap_sort:
+		sort_job->heaps(values, n, f);
+		break;
+	case quick_sort:
+		sort_job->qucks(values, 0, last, f);
+		break;
+	default:
+		break;
+	}
 }

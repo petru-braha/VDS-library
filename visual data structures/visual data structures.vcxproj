@@ -112,6 +112,7 @@
   <ItemGroup>
     <ClCompile Include="src\array.cpp" />
     <ClCompile Include="src\array_sorting.cpp" />
+    <ClCompile Include="src\simple_commands.cpp" />
     <ClCompile Include="test\test.cpp" />
     <ClCompile Include="test\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

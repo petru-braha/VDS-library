@@ -14,4 +14,7 @@
 
 6. adaptors: stack, queue
 
-
+## Technologies used:
+- C/C++
+- GTEST
+- OPENGL (GLFW library)

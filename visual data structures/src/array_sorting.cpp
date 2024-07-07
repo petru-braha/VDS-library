@@ -54,7 +54,7 @@ void array_sorting<T>::heapify(T*& arr, szt n, szt index, bool (*f)(type, type))
 	if (index != index_largest)
 	{
 		swap(arr, index, index_largest);
-		heapify(arr, n, index_largest);
+		heapify(arr, n, index_largest, f);
 	}
 }
 

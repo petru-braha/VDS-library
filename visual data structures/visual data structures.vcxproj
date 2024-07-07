@@ -57,7 +57,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)\visual data structures\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\visual data structures\src;$(SolutionDir)\visual data structures\include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>26495</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -91,7 +91,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)\visual data structures\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\visual data structures\src;$(SolutionDir)\visual data structures\include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>26495</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -107,12 +107,16 @@
     <ClInclude Include="include\array.h" />
     <ClInclude Include="include\array_sorting.h" />
     <ClInclude Include="include\bureaucracy.h" />
+    <ClInclude Include="include\maxheap.h" />
     <ClInclude Include="include\pch.h" />
+    <ClInclude Include="test\array_tests.h" />
+    <ClInclude Include="test\glfw_tests.h" />
+    <ClInclude Include="test\heap_tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\array.cpp" />
     <ClCompile Include="src\array_sorting.cpp" />
-    <ClCompile Include="src\simple_commands.cpp" />
+    <ClCompile Include="src\maxheap.cpp" />
     <ClCompile Include="test\test.cpp" />
     <ClCompile Include="test\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

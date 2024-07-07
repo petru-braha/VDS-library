@@ -1,3 +1,6 @@
-﻿  test.cpp
-A:\projects\1 done\portfolio\data structures\visual data structures\test\test.cpp(47,30): warning C4267: 'argument': conversion from 'size_t' to 'const int', possible loss of data
+﻿  array.cpp
+  maxheap.cpp
+  test.cpp
+A:\projects\1 done\portfolio\data structures\visual data structures\src\maxheap.cpp(66,70): warning C5037: 'maxheap<T>::maxheap': an out-of-line definition of a member of a class template cannot have default arguments
+  Generating Code...
   visual data structures.vcxproj -> A:\projects\1 done\portfolio\data structures\x64\Debug\visual data structures.exe

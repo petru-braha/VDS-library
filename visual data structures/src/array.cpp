@@ -2,6 +2,9 @@
 #include "pch.h"
 #include "../include/array.h"
 
+//------------------------------------------------
+// constructors:
+
 template <class T>
 array<T>::~array()
 {
@@ -9,35 +12,13 @@ array<T>::~array()
 }
 
 template <class T>
-array<T>::array()
-{
-	n = default_array_size;
-	last = 0;
-	values = new T[n];
-	for (size_t i = 0; i < n; i++)
-		values[i] = NULL;
-}
-
-template <class T>
 array<T>::array(const int& n)
 {
 	this->n = n;
-	last = 0;
+	last = -1;
 	values = new T[n];
 	for (size_t i = 0; i < n; i++)
 		values[i] = NULL;
-}
-
-template <class T>
-array<T>::array(const std::initializer_list<T>& val)
-{
-	n = val.size();
-	last = val.size() - 1;
-	values = new T[n];
-
-	size_t index = 0;
-	for (auto i : val)
-		values[index++] = i;
 }
 
 template <class T>
@@ -51,6 +32,23 @@ array<T>::array(const std::initializer_list<T>& val, const size_t& n)
 	size_t index = 0;
 	for (auto i : val)
 		values[index++] = i;
+	for (; index < n; index++)
+		values[index] = NULL;
+}
+
+template <class T> 
+array<T>::array(T* val, const size_t& n)
+{
+	this->n = n;
+	this->last = -1;
+	while (val)
+	{
+		values[++last] = *val;
+		val++;
+	}
+
+	for (size_t i = last + 1; i < n; i++)
+		values[i] = NULL;
 }
 
 template <class T>
@@ -62,6 +60,8 @@ array<T>::array(const array<T>& arr)
 	for (auto i : arr)
 		this->values[this->last++] = i;
 	this->last--;
+	for (size_t i = last + 1; i < n; i++)
+		values[i] = NULL;
 }
 
 template <class T>
@@ -73,107 +73,16 @@ array<T>::array(const array<T>&& arr)
 	for (auto i : arr)
 		this->values[this->last++] = i;
 	this->last--;
+	for (size_t i = last + 1; i < n; i++)
+		values[i] = NULL;
+	delete arr;
 }
 
 //-----------------------------------------------------------------------------------
-// actual functions:
+// iterator methods:
 
 template <class T>
-void array<T>::shift_left(const size_t& left_position)
-{
-	if (empty())
-		hard_error("nothing to shift");
-	if(left_position)
-		left_position--;
-	for (size_t i = left_position; i < last; i++)
-		values[i] = values[i + 1];
-	values[last--] = NULL;
-}
-
-
-template <class T>
-T& array<T>::operator [] (const size_t& index) const
-{
-	if (index > last)
-		fatal_error("bad index");
-	return values[index];
-}
-
-template <class T>
-void array<T>::replce(const size_t& index, const T& value)
-{
-	if (index > n)
-		fatal_error("bad index");
-	if (index > last)
-		values[++last] = value;
-	else
-		values[index] = value;
-}
-
-template <class T>
-void array<T>::insert(const T& value)
-{
-	if (last + 1 == n)
-		fatal_error("no more memory");
-	values[++last] = value;
-}
-
-template <class T>
-void array<T>::remove(const size_t& index)
-{
-	if (empty())
-		return;
-	if (index > n)
-		hard_error("bad index");
-	if (index <= last)
-		shift_left(index + 1);
-}
-
-template <class T>
-void array<T>::remove(const T& value, const bool& all)
-{
-	for(size_t i = 0; i<= last;i++)
-		if (values[i] == value)
-		{
-			shift_left(i + 1);
-			if (all == false)
-				return;
-			i--;
-		}
-}
-
-template <class T>
-size_t array<T>::getn() const
-{
-	return n;
-}
-
-template <class T>
-size_t array<T>::getl() const
-{
-	return last;
-}
-
-template <class T>
-void  array<T>::prnt() const
-{
-	FOR(n)
-		std::cout << values[i] << ' ';
-
-}
-
-template <class T>
-bool array<T>::empty() const
-{
-	return last == -1;
-}
-
-
-//-----------------------------------------------------------------------------------
-// iterator:
-
-template <class T>
-iterator<T>::iterator(T* val)
+iterator<T>::iterator(T*& val)
 {
 	this->value = val;
 }
@@ -205,7 +114,118 @@ iterator<T> array<T>::begin() const
 template <class T>
 iterator<T> array<T>::end() const
 {
-	return iterator(&values[n]);
+	return iterator(&values[l+1]);
+}
+
+//------------------------------------------------
+// specific methods:
+
+template <class T>
+void array<T>::shift_left(const size_t& left_position)
+{
+	if (empty())
+		hard_error("nothing to shift");
+	if (left_position)
+		left_position--;
+	for (size_t i = left_position; i < last; i++)
+		values[i] = values[i + 1];
+	values[last--] = NULL;
+}
+
+
+template <class T>
+T& array<T>::operator [] (const size_t& index) const
+{
+	if (index >= n)
+		hard_error("bad index");
+	if (index > last)
+	{
+		eazy_error("unallocated space");
+		return values[last + 1];
+	}
+
+	return values[index];
+}
+
+template <class T>
+void array<T>::replce(const size_t& index, const T& value)
+{
+	if (index > n)
+		hard_error("bad index");
+	if (index > last)
+		values[++last] = value;
+	else
+		values[index] = value;
+}
+
+template <class T>
+void array<T>::insert(const T& value)
+{
+	if (last + 1 == n)
+		fatal_error("no more memory");
+	values[++last] = value;
+}
+
+template <class T>
+void array<T>::remove(const size_t& index)
+{
+	if (empty())
+		return;
+	if (index > n)
+		hard_error("bad index");
+	if (index <= last)
+		shift_left(index + 1);
+}
+
+template <class T>
+void array<T>::remove(const T& value, const bool& all)
+{
+	for (size_t i = 0; i <= last; i++)
+		if (values[i] == value)
+		{
+			shift_left(i + 1);
+			if (all == false)
+				return;
+			i--;
+		}
+}
+
+template <class T>
+bool array<T>::search(const T& value) const
+{
+	for (auto i : *this)
+		if (i == value)
+			return true;
+	return false;
+}
+
+//------------------------------------------------
+// constant methods:
+
+template <class T>
+size_t array<T>::getn() const
+{
+	return n;
+}
+
+template <class T>
+size_t array<T>::getl() const
+{
+	return last;
+}
+
+template <class T>
+void  array<T>::prnt() const
+{
+	FOR(n)
+		std::cout << values[i] << ' ';
+
+}
+
+template <class T>
+bool array<T>::empty() const
+{
+	return last == -1;
 }
 
 //-----------------------------------------------------------------------------------
@@ -231,15 +251,21 @@ void ejectin(const array<T>& one, const array<T>& two)
 }
 
 template <class T>
-array<T> crossng(const array<T>& one, const array<T>& two)
+array<T> crossng(const array<T>& one, const array<T>& two) // O(n*m), n = |one|, m = |two|. can be done in O(n + m) with a hash table
 {
-	if (one.getn() <= two.getn())
+	array<T> new_array = (one.getn() + two.getn());
+	if (one.getl() < two.getl())
 	{
-		array<T> new_array = one;
-
+		for (auto key : two)
+			if (one.search[key])
+				new_array.insert(key);
 	}
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1		
-	for (auto i : one);
+	else
+	{
+		for (auto key : one)
+			if (two.search[key])
+				new_array.insert(key);
+	}
 
 	return new_array;
 }

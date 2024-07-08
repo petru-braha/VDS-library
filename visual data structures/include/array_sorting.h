@@ -3,7 +3,7 @@
 // if(f == nullptr) f = [](const T& x, constT& y)->bool { return x > y; } 
 
 template <class T = int>
-class array_sorting // singleton
+class array_sorting // behavioral singleton
 {
 	typedef const T& type;
 	typedef const size_t& szt;

@@ -1,3 +1,2 @@
 ﻿  test.cpp
-A:\projects\1 done\portfolio\data structures\visual data structures\src\maxheap.cpp(64,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  visual data structures.vcxproj -> A:\projects\1 done\portfolio\data structures\x64\Debug\visual data structures.exe
+  visual data structures.vcxproj -> A:\projects\active\portfolio\data structures\x64\Debug\visual data structures.exe

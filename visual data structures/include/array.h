@@ -26,7 +26,7 @@ class array
 
 	void shift_left(const size_t& left_position);
 public:
-	// constructors
+	// constructors:
 	array(const int& n = default_array_size);
 	array(const std::initializer_list<T>& val, const size_t& n = default_array_size);
 	array(T* val, const size_t& n = default_array_size);
@@ -34,25 +34,27 @@ public:
 	array(const array<T>&& arr);
 	~array();
 
-	// iterator methods
+	// iterator methods:
 	iterator<T> begin() const;
 	iterator<T> end() const;
 
-	// specific methods
+	// specific methods:
+	array<T>& operator = (const array<T>& arr);
 	void sort(const int& algorithm = quick_sort, bool (*f)(const T&, const T&) = nullptr);
 	void insert(const size_t& index = last + 1, const T& value);
 	void remove(const size_t& index);
 	void remove(const T& value, const bool& all = false);
 	bool search(const T& value) const; // used for crossng
 
-	// constant methods
+	// constant methods:
+	bool operator == (const array<T>& arr) const;
 	T& operator [] (const size_t& index) const; // get / replace method, shift to the left until there is no more empty space
 	size_t getn() const;
 	size_t getl() const;
 	void   prnt() const;
 	bool  empty() const;
 
-	// friend functions
+	// friend functions:
 	friend array<T> linking(const array<T>& one, const array<T>& two);
 	friend void		ejectin(const array<T>& one, const array<T>& two);
 	friend array<T> crossng(const array<T>& one, const array<T>& two);

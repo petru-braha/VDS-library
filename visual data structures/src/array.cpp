@@ -121,6 +121,17 @@ iterator<T> array<T>::end() const
 // specific methods:
 
 template <class T>
+array<T>& array<T>::operator = (const array<T>& arr)
+{
+	this->n = arr.n;
+	this->last = -1;
+	delete[]this->values;
+	this->values = new T[n];
+	for (auto i : arr)
+		this->values[++last] = i;
+}
+
+template <class T>
 void array<T>::shift_left(const size_t& left_position)
 {
 	if (empty())
@@ -204,6 +215,19 @@ bool array<T>::search(const T& value) const
 
 //------------------------------------------------
 // constant methods:
+
+template <class T>
+bool array<T>::operator == (const array<T>& arr) const
+{
+	if (this->n != arr.n)
+		return false;
+	if (this->last != arr.last)
+		return false;
+	for (size_t i = 0; i < last + 1; i++)
+		if (values[i] != arr[i])
+			return false;
+	return true;
+}
 
 template <class T>
 size_t array<T>::getn() const

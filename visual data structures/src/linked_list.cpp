@@ -7,6 +7,9 @@
 //void insert_mddle();
 //void insert_end();
 
+//------------------------------------------------
+// constructors:
+
 template <class T>
 linked_list<T>::~linked_list()
 {
@@ -20,10 +23,9 @@ linked_list<T>::~linked_list()
 }
 
 template <class T>
-linked_list<T>list()
+linked_list<T>::linked_list()
 {
-	this->frst = new node_list<T>;
-	this->last = new node_list<T>;
+	this->frst = this->last = nullptr;
 	this->n = 0;
 }
 
@@ -33,9 +35,9 @@ linked_list<T>::linked_list(const std::initializer_list<T>& val)
 	this->frst = new node_list<T>(*(val.begin()));
 
 	node_list<T>* it = frst;
-	for (auto i = (*(val.begin() + 1)); i < (*(val.end())); i++)
+	for (auto i = (val.begin() + 1); i < (val.end()); i++)
 	{
-		it->next = new node_list<T>(i);
+		it->next = new node_list<T>(*i);
 		it = it->next;
 	}
 
@@ -48,14 +50,14 @@ linked_list<T>::linked_list(T* val)
 {
 	this->frst = new node_list<T>(*val);
 	val++;
-	node_list<T>* it = first;
+	node_list<T>* it = frst;
 	
 	size_t i = 1;
-	while (val)
+	while (*val)
 	{
 		it->next = new node_list<T>(*val);
-		val++;
 		it = it->next;
+		val++;
 		i++;
 	}
 
@@ -68,11 +70,17 @@ linked_list<T>::linked_list(const linked_list<T>& l)
 {
 	this->frst = new node_list<T>(*l.begin());
 
-	node_list<T>* it = first;
-	for (auto i = (*(l.begin() + 1)); i < (*(l.end())); i++)
+	node_list<T>* it = frst;
+	bool first_element = true;
+	for (auto i : l)
 	{
-		it->next = new node_list<T>(i);
-		it = it->next;
+		if (first_element == false)
+		{
+			it->next = new node_list<T>(i);
+			it = it->next;
+		}
+
+		first_element = false;
 	}
 
 	this->last = it;
@@ -82,14 +90,19 @@ linked_list<T>::linked_list(const linked_list<T>& l)
 template <class T>
 linked_list<T>::linked_list(const linked_list<T>&& l)
 {
-
 	this->frst = new node_list<T>(*l.begin());
 
-	node_list<T>* it = first;
-	for (auto i = (*(l.begin() + 1)); i < (*(l.end())); i++)
+	node_list<T>* it = frst;
+	bool first_element = true;
+	for (auto i : l)
 	{
-		it->next = new node_list<T>(i);
-		it = it->next;
+		if (first_element == false)
+		{
+			it->next = new node_list<T>(i);
+			it = it->next;
+		}
+
+		first_element = false;
 	}
 
 	this->last = it;
@@ -98,11 +111,30 @@ linked_list<T>::linked_list(const linked_list<T>&& l)
 }
 
 //------------------------------------------------
-// iterator methods:
-
-
-//------------------------------------------------
 // specific methods:
+
+template <class T>
+linked_list<T>& linked_list<T>::operator = (const linked_list<T>& l)
+{
+	delete this;
+	this->frst = new node_list<T>(*l.begin());
+
+	node_list<T>* it = frst;
+	bool first_element = true;
+	for (auto i : l)
+	{
+		if (first_element == false)
+		{
+			it->next = new node_list<T>(i);
+			it = it->next;
+		}
+
+		first_element = false;
+	}
+
+	this->last = it;
+	this->n = l.getn();
+}
 
 template <class T>
 void linked_list<T>::insert(const T& value, const size_t& index)
@@ -127,13 +159,35 @@ void linked_list<T>::insert(const T& value, const size_t& index)
 }
 
 template <class T>
-void linked_list<T>::remove(const T& value, const bool& all)
+void linked_list<T>::remove(const T& index)
 {
+	if (index >= n || index < 0)
+	{
+		eazy_error("bad index");
+		return;
+	}
 
+	// deleting the first element
+	if (index == 0)
+	{
+		node_list<T>* it = frst;
+		frst = frst->next;
+		delete it;
+		n--;
+		return;
+	}
+
+	node_list<T>* it = frst;
+	for (size_t i = 0; i + 1 < index; i++)
+		it = it->next;
+	node_list<T>* nxt = it->next;
+	it->next = nxt->next;
+	delete nxt;
+	n--;
 }
 
 template <class T>
-bool search(const T& value)
+bool linked_list<T>::search(const T& value)
 {
 	for (auto i : *this)
 		if (i == value)
@@ -145,8 +199,26 @@ bool search(const T& value)
 // constant methods:
 
 template <class T>
+bool linked_list<T>::operator == (const linked_list<T>& l) const
+{
+	if (this->n != l.n)
+		return false;
+	node_list<T>* it = frst;
+	for (auto i : l)
+	{
+		if (it->get() != i)
+			return false;
+		it = it->next;
+	}
+
+	return true;
+}
+
+template <class T>
 T& linked_list<T>::operator [] (const size_t& index) const
 {
+	if (index >= n)
+		hard_error("bad index");
 	node_list<T>* it = this->frst;
 	for (size_t i = 0; i < index; i++)
 		it = it->next;
@@ -166,3 +238,8 @@ void   linked_list<T>::prnt() const
 		std::cout << i << ' ';
 }
 
+template <class T>
+bool linked_list<T>::empty() const
+{
+	return n == 0;
+}

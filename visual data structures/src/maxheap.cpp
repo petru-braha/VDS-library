@@ -135,6 +135,18 @@ iterator_maxheap<T> maxheap<T>::end() const
 // specific methods:
 
 template <class T>
+maxheap<T>& maxheap<T>::operator = (const maxheap<T>& h)
+{
+	this->f = h.f;
+	this->n = h.n;
+	this->last = -1;
+	delete[]values;
+	values = new T[n];
+	for (auto i : h)
+		this->values[++last] = i;
+}
+
+template <class T>
 void maxheap<T>::replce(const size_t& index, const T& value)
 {
 	if (index >= n)
@@ -203,6 +215,20 @@ bool maxheap<T>::search(const T& value)
 
 //------------------------------------------------
 // constant methods:
+
+template <class T>
+bool maxheap<T>::operator == (const maxheap<T>& h) const
+{
+	if (this->n != h.n)
+		return false;
+	if (this->last != h.last)
+		return false;
+	size_t index = 0;
+	for (auto i : h)
+		if (values[index++] != i)
+			return false;
+	return true;
+}
 
 template <class T>
 size_t maxheap<T>::getn() const

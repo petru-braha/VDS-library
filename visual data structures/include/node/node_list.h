@@ -7,7 +7,7 @@ class node_list : public node<T>
 	T data;
 public:
 	node_list<T>* next;
-
+	
 	node_list() : data(NULL), next(nullptr) {};
 	node_list(const T& val) : data(val), next(nullptr) {};
 	

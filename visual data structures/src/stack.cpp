@@ -1,0 +1,53 @@
+#pragma once
+#include "pch.h"
+#include "stack.h"
+
+//------------------------------------------------
+// constructors:
+
+template <class T>
+stack<T>::stack() : adaptor() {};
+
+template <class T>
+stack<T>::stack(std::initializer_list<T>& val) : adaptor(val) {};
+
+template <class T>
+stack<T>::stack(T* val) : adaptor(val) {};
+
+//------------------------------------------------
+// specific methods:
+
+template <class T>
+stack<T>& stack<T>::operator = (const stack<T>& s)
+{
+	
+}
+
+template <class T>
+T stack<T>::top() const
+{
+	return this->values[0];
+}
+
+template <class T>
+void stack<T>::push(const T& val)
+{
+	values.insert(val, 0);
+}
+
+template <class T>
+void stack<T>::pop()
+{
+	values.remove(0);
+}
+
+//------------------------------------------------
+// constant methods:
+template <class T>
+void stack<T>::prnt() const
+{
+	std::cout << '\n' << "top->bottom: ";
+	for (auto i : values)
+		std::cout << i << ' ';
+	std::cout << '\n';
+}

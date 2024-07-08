@@ -26,7 +26,7 @@ protected:
 	void heapify(const size_t& nnn, const size_t& index); // we need f here
 public:
 	bool (*f)(type, type);
-	// constructors 
+	// constructors:
 	maxheap(const size_t& n = default_heap_size);
 	maxheap(const std::initializer_list<T>& val, const size_t& n = default_heap_size, bool (*f)(type, type) = nullptr);
 	maxheap(T* val, const size_t& n = default_heap_size, bool (*f)(type, type) = nullptr);
@@ -34,21 +34,25 @@ public:
 	maxheap(const maxheap<T>&& h);
 	~maxheap();
 
-	// iterator methods
+	// iterator methods:
 	it begin() const;
 	it end() const;
 
-	// specific methods
+	// specific methods:
+	maxheap<T>& operator = (const maxheap<T>& h);
 	void replce(const size_t& index, const T& value);
 	void insert(const T& value);
 	void extrct();
 	bool search(const T& value);
 
-	// constant methods
+	// constant methods:
+	bool operator == (const maxheap<T>& h) const;
 	size_t getn() const;
 	size_t getl() const;
 	void   prnt() const;
 	bool  empty() const;
 };
 
-// other methods that can be designed: parent(index), height(), property()
+// parent(index) == floor( (index - 1) / 2 )
+// height()      == floor( log2(n) )
+// property()    == it is never broken

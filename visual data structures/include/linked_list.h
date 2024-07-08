@@ -2,7 +2,7 @@
 #include "node/node_list.h"
 #include <initializer_list>
 
-template <class T>
+template <class T = int>
 class linked_list
 {
 	node_list<T>* frst, * last;
@@ -13,14 +13,14 @@ class linked_list
 		node_list<T>* value;
 
 	public:
-		iterator(node_list<T>*& value) : value(value) {};
+		iterator(node_list<T>* value) : value(value) {};
 		T    operator  * () const { return value->get(); }
 		void operator ++ () { value = value->next; }
 		bool operator != (const iterator& two) const { return value != two.value; };
 	};
 
 public:
-	// constructors
+	// constructors:
 	linked_list();
 	linked_list(const std::initializer_list<T>& val);
 	linked_list(T* val);
@@ -28,18 +28,20 @@ public:
 	linked_list(const linked_list<T>&& l);
 	~linked_list();
 	
-	// iterator methods
+	// iterator methods:
 	iterator begin() const { return iterator(frst); }
 	iterator end() const { return iterator(last->next); }
 
-	// specific methods
-	void insert(const T& value, const size_t& index = n);
-	void remove(const T& value, const bool& all = false);
+	// specific methods:
+	linked_list<T>& operator = (const linked_list<T>& l);
+	void insert(const T& value, const size_t& index = n); 
+	void remove(const T& index); // to enchance the use of the stack and queue
 	bool search(const T& value);
 
-	// constant methods
+	// constant methods:
+	bool operator == (const linked_list<T>& l) const;
 	T& operator[](const size_t& index) const;
 	size_t getn() const;
 	void   prnt() const;
-	//node_list<T>* getf() const;
+	bool  empty() const;
 };

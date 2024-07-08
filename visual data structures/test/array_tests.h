@@ -1,5 +1,5 @@
 #pragma once
-#include "../src/array.cpp"
+#include "array.cpp"
 
 TEST(array, primtive_initialisation) {
     size_t n = 10;

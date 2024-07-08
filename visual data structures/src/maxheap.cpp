@@ -4,15 +4,15 @@
 #include <initializer_list>
 #include "maxheap.h"
 
-#define maxh(){for(size_t i = (last + 1)/2 - 1; i >= 0; i--) heapify(n, i); }
+#define maxh(){ for(int i = (last + 1)/2 - 1; i >= 0; i--) heapify(last + 1, i); }
 
 template <class T>
-void maxheap<T>::heapify(const size_t& n, const size_t& index)
+void maxheap<T>::heapify(const size_t& nnn, const size_t& index)
 {
 	size_t index_largest = index, index_left = 2 * index + 1, index_rght = 2 * index + 2;
-	if (index_left < n && f(values[index_left], values[index_largest]))
+	if (index_left < nnn && f(values[index_left], values[index_largest]))
 		index_largest = index_left;
-	if (index_rght < n&& f(values[index_rght], values[index_largest]));
+	if (index_rght < nnn && f(values[index_rght], values[index_largest]))
 		index_largest = index_rght;
 
 	if (index != index_largest)
@@ -20,7 +20,7 @@ void maxheap<T>::heapify(const size_t& n, const size_t& index)
 		T temp = values[index];
 		values[index] = values[index_largest];
 		values[index_largest] = temp;
-		heapify(index_largest, f);
+		heapify(nnn, index_largest);
 	}
 }
 
@@ -48,6 +48,8 @@ template <class T>
 maxheap<T>::maxheap(const std::initializer_list<T>& val, const size_t& n, bool (*f)(type, type))
 {
 	this->f = f;
+	if (f == nullptr) this->f = [](type x, type y)->bool { return x > y; };
+	
 	this->n = n;
 	last = val.size() - 1;
 	if(last >= n)
@@ -57,7 +59,7 @@ maxheap<T>::maxheap(const std::initializer_list<T>& val, const size_t& n, bool (
 	size_t index = 0;
 	for (auto i : val)
 		values[index++] = i;
-	for (; index < n; i++)
+	for (; index < n; index++)
 		values[index] = NULL;
 	maxh();
 }
@@ -66,6 +68,8 @@ template <class T>
 maxheap<T>::maxheap(T* val, const size_t& n, bool (*f)(type, type))
 {
 	this->f = f;
+	if (f == nullptr) this->f = [](type x, type y)->bool {return x > y; };
+	
 	this->n = n;
 	this->last = -1;
 	while (val)
@@ -131,6 +135,20 @@ iterator_maxheap<T> maxheap<T>::end() const
 // specific methods:
 
 template <class T>
+void maxheap<T>::replce(const size_t& index, const T& value)
+{
+	if (index >= n)
+		hard_error("bad index");
+	if (index > last)
+	{
+		insert(value);
+		return;
+	}
+
+	values[index] = value;
+}
+
+template <class T>
 void maxheap<T>::insert(const T& value)
 {
 	if (last + 1 >= n)
@@ -155,6 +173,33 @@ void maxheap<T>::extrct()
 	last--;
 }
 
+template <class T>
+bool maxheap<T>::search(const T& value)
+{
+	int nr_nodes = 1;
+	size_t index = 0;
+	while (value <= values[index] && index <= last)
+	{
+		index = index * 2 + 1;
+		nr_node *= 2;
+	}
+
+	// 3 cases
+	if (index > last)
+		return false;
+	if (value == values[index])
+		return true;
+
+	// current level
+	for (size_t i = index; i < 2 * index + 1; i++)
+		if (values[index] == value)
+			return true;
+	// one level above
+	for (size_t i = (index - 1) / 2; i < index; i++)
+		if (values[index] == value)
+			return true;
+	return false;
+}
 
 //------------------------------------------------
 // constant methods:
@@ -174,7 +219,7 @@ size_t maxheap<T>::getl() const
 template <class T>
 void maxheap<T>::prnt() const
 {
-	FOR(n)
+	FOR(last + 1)
 		std::cout << values[i] << ' ';
 }
 
@@ -184,25 +229,3 @@ bool maxheap<T>::empty() const
 	return l == -1;
 }
 
-//------------------------------------------------
-// friend functions:
-
-template <class T>
-maxheap<T> linking(const maxheap<T>& one, const maxheap<T>& two)
-{
-	maxheap<T> new_h(one.getn() + two.getn());
-	for (auto i : one)
-		new_h.insert(i);
-	for (auto i : two)
-		new_h.insert(i);
-	return new_h
-}
-
-template <class T>
-maxheap<T> ejectin(const maxheap<T>& one, const maxheap<T>& two)
-{
-
-}
-
-template <class T>
-maxheap<T> crossng(const maxheap<T>& one, const maxheap<T>& two);

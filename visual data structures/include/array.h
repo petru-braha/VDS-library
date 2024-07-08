@@ -40,14 +40,13 @@ public:
 
 	// specific methods
 	void sort(const int& algorithm = quick_sort, bool (*f)(const T&, const T&) = nullptr);
-	void replce(const size_t& index, const T& value);
-	void insert(const T& value);
+	void insert(const size_t& index = last + 1, const T& value);
 	void remove(const size_t& index);
 	void remove(const T& value, const bool& all = false);
 	bool search(const T& value) const; // used for crossng
 
 	// constant methods
-	T& operator [] (const size_t& index) const; // shift to the left until there is no more empty space
+	T& operator [] (const size_t& index) const; // get / replace method, shift to the left until there is no more empty space
 	size_t getn() const;
 	size_t getl() const;
 	void   prnt() const;
@@ -55,7 +54,7 @@ public:
 
 	// friend functions
 	friend array<T> linking(const array<T>& one, const array<T>& two);
-	friend array<T> ejectin(const array<T>& one, const array<T>& two);
+	friend void		ejectin(const array<T>& one, const array<T>& two);
 	friend array<T> crossng(const array<T>& one, const array<T>& two);
 };
 

@@ -78,7 +78,7 @@ array<T>::array(const array<T>&& arr)
 	delete arr;
 }
 
-//-----------------------------------------------------------------------------------
+//------------------------------------------------
 // iterator methods:
 
 template <class T>
@@ -124,7 +124,7 @@ template <class T>
 void array<T>::shift_left(const size_t& left_position)
 {
 	if (empty())
-		hard_error("nothing to shift");
+		eazy_error("nothing to shift");
 	if (left_position)
 		left_position--;
 	for (size_t i = left_position; i < last; i++)
@@ -140,30 +140,33 @@ T& array<T>::operator [] (const size_t& index) const
 		hard_error("bad index");
 	if (index > last)
 	{
-		eazy_error("unallocated space");
+		hard_error("unallocated space"); // the user has to use insert, for adding a new value, not this operator
 		return values[last + 1];
 	}
 
 	return values[index];
-}
+};
 
 template <class T>
-void array<T>::replce(const size_t& index, const T& value)
+void array<T>::insert(const size_t& index, const T& value)
 {
-	if (index > n)
+	if (index > n || index < 0)
 		hard_error("bad index");
 	if (index > last)
+	{
 		values[++last] = value;
-	else
-		values[index] = value;
-}
+		return;
+	}
+	
+	if (last + 1 >= n)
+	{
+		eazy_error("no more memory")
+		return;
+	}
 
-template <class T>
-void array<T>::insert(const T& value)
-{
-	if (last + 1 == n)
-		fatal_error("no more memory");
-	values[++last] = value;
+	for (size_t i = last + 1; i > index; i--) // shift right
+		values[i] = values[i - 1];
+	values[index] = value;
 }
 
 template <class T>
@@ -228,7 +231,7 @@ bool array<T>::empty() const
 	return last == -1;
 }
 
-//-----------------------------------------------------------------------------------
+//------------------------------------------------
 // friend functions:
 
 template <class T>
@@ -288,7 +291,7 @@ void array<T>::sort(const int& algorithm, bool (*f)(const T&, const T&))
 	case merge_sort:
 		break;
 	case heap_sort:
-		sort_job->heaps(values, n, f);
+		sort_job->heaps(values, last + 1, f);
 		break;
 	case quick_sort:
 		sort_job->qucks(values, 0, last, f);

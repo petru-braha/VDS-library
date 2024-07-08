@@ -19,3 +19,8 @@
 - OPENGL (GLFW library)
 
 - my documentation regarding the design of this project is all based on: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest, Cormen
+
+### plan:
+- to develop a way of interationing between structures
+1. design logically all the structures needed
+2. use glfw to display simple outputs of the operations

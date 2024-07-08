@@ -13,17 +13,17 @@ public:
 	bool	operator !=(const iterator_maxheap& two) { return value != two.value; }
 };
 
-template <class T>
+template <class T = int>
 class maxheap
 {
-	typedef iterator_maxheap it;
+	typedef iterator_maxheap<T> it;
 	typedef const T& type;
 protected:
 	size_t n;
 	size_t last;
 	T* values;
 
-	void heapify(const size_t& n, const size_t& index); // we need f here
+	void heapify(const size_t& nnn, const size_t& index); // we need f here
 public:
 	bool (*f)(type, type);
 	// constructors 
@@ -39,19 +39,16 @@ public:
 	it end() const;
 
 	// specific methods
+	void replce(const size_t& index, const T& value);
 	void insert(const T& value);
 	void extrct();
+	bool search(const T& value);
 
 	// constant methods
 	size_t getn() const;
 	size_t getl() const;
 	void   prnt() const;
 	bool  empty() const;
-
-	// friend functions
-	friend maxheap<T> linking(const maxheap<T>& one, const maxheap<T>& two);
-	friend maxheap<T> ejectin(const maxheap<T>& one, const maxheap<T>& two);
-	friend maxheap<T> crossng(const maxheap<T>& one, const maxheap<T>& two);
 };
 
-// other methods that can be designed: parent(index), height(), search(), replace(), property(), 
+// other methods that can be designed: parent(index), height(), property()

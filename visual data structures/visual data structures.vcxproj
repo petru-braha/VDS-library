@@ -107,11 +107,16 @@
     <ClInclude Include="include\array.h" />
     <ClInclude Include="include\array_sorting.h" />
     <ClInclude Include="include\bureaucracy.h" />
+    <ClInclude Include="include\linked_list.h" />
     <ClInclude Include="include\maxheap.h" />
+    <ClInclude Include="include\node\node.h" />
+    <ClInclude Include="include\node\node_list.h" />
+    <ClInclude Include="include\node\node_tree.h" />
     <ClInclude Include="include\pch.h" />
+    <ClInclude Include="src\linked_list.cpp" />
     <ClInclude Include="test\array_tests.h" />
     <ClInclude Include="test\glfw_tests.h" />
-    <ClInclude Include="test\heap_tests.h" />
+    <ClInclude Include="test\maxheap_tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\array.cpp" />

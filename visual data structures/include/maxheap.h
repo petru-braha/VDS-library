@@ -41,7 +41,7 @@ public:
 	void replce(const size_t& index, const T& value);
 	void insert(const T& value);
 	void extrct();
-	bool search(const T& value);
+	bool search(const T& value) const;
 
 	// constant methods:
 	bool operator == (const maxheap<T>& h) const;

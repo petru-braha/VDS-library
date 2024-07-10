@@ -9,7 +9,7 @@ public:
 	stack();
 	stack(std::initializer_list<T>& val);
 	stack(T* val);
-	stack(const adaptor<T>& s) = default;
+	//stack(const adaptor<T>& s) = default;
 	//stack(const adaptor<T>&& s) = default;
 	~stack() = default;
 

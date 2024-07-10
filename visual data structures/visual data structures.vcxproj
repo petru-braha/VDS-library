@@ -118,11 +118,13 @@
     <ClInclude Include="include\stack.h" />
     <ClInclude Include="include\testing_type.h" />
     <ClInclude Include="include\tree.h" />
+    <ClInclude Include="include\trivial_tree.h" />
     <ClInclude Include="src\linked_list.cpp" />
     <ClInclude Include="test\array_tests.h" />
     <ClInclude Include="test\glfw_tests.h" />
     <ClInclude Include="test\linked_list_tests.h" />
     <ClInclude Include="test\maxheap_tests.h" />
+    <ClInclude Include="test\tree_tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\array.cpp" />
@@ -130,6 +132,8 @@
     <ClCompile Include="src\maxheap.cpp" />
     <ClCompile Include="src\queue.cpp" />
     <ClCompile Include="src\stack.cpp" />
+    <ClCompile Include="src\tree.cpp" />
+    <ClCompile Include="src\trivial_tree.cpp" />
     <ClCompile Include="test\test.cpp" />
     <ClCompile Include="test\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -1,7 +1,7 @@
 #pragma once
 #include "node.h"
 
-template <class T>
+template <class T = int>
 class node_list : public node<T>
 {
 public:

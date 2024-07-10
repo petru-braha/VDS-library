@@ -41,6 +41,8 @@ types of errors		eazy 	hard 	fatal
 3. nothing to shift 		x
 4. no more memory	x	
 5. wrong parameters		x	x
+6. bad node		x	x
+7. incompatible data    x
 ```
 ## what should we test?
 
@@ -121,3 +123,6 @@ types of errors		eazy 	hard 	fatal
 
 5. iterator class defined inside of the class that uses it
 - no definitions of methods are allowed in header files for final types 
+
+6. the default constructor initialise the memory
+7. binary tree only if no arity is written in the constructor

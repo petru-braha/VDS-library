@@ -37,7 +37,7 @@ public:
 	linked_list<T>& operator = (const linked_list<T>& l);
 	void insert(const T& value, const size_t& index = n); 
 	void remove(const T& index); // to enchance the use of the stack and queue
-	bool search(const T& value);
+	bool search(const T& value) const;
 
 	// constant methods:
 	bool operator == (const linked_list<T>& l) const;

@@ -207,7 +207,7 @@ void maxheap<T>::extrct()
 }
 
 template <class T>
-bool maxheap<T>::search(const T& value)
+bool maxheap<T>::search(const T& value) const
 {
 	int nr_nodes = 1;
 	size_t index = 0;

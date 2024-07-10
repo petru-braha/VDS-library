@@ -1,6 +1,15 @@
 #pragma once
 
-// if(f == nullptr) f = [](const T& x, constT& y)->bool { return x > y; } 
+enum
+{
+	bubble_sort,
+	selection_sort,
+	insertion_sort,
+
+	merge_sort,
+	heap_sort,
+	quick_sort
+};
 
 template <class T = int>
 class array_sorting // behavioral singleton

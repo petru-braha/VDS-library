@@ -8,17 +8,6 @@
 #define  hard_error(msg){perror(msg); throw(ERROR_CODE);}
 #define  eazy_error(msg){perror(msg);}
 
-enum
-{
-	bubble_sort,
-	selection_sort,
-	insertion_sort,
-
-	merge_sort,
-	heap_sort,
-	quick_sort
-};
-
 #define FOR(n) for(size_t i = 0; i < n; i++)
 
 // to be considered as global header

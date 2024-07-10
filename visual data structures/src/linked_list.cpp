@@ -25,7 +25,7 @@ linked_list<T>::~linked_list()
 template <class T>
 linked_list<T>::linked_list()
 {
-	this->frst = this->last = nullptr;
+	this->frst = this->last = new node_list<T>;
 	this->n = 0;
 }
 
@@ -223,7 +223,7 @@ void linked_list<T>::remove(const T& index)
 }
 
 template <class T>
-bool linked_list<T>::search(const T& value)
+bool linked_list<T>::search(const T& value) const
 {
 	for (auto i : *this)
 		if (i == value)

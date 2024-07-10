@@ -24,11 +24,12 @@
 - my documentation regarding the design of this project is all based on: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest, Cormen
 
 ### TO DO:
-- operator =, == for stack and queue implement node_tree
+- operator =, == for stack and queue implement node_tree, print method should be more general!!!
+- dfs
 - to develop a way of interationing between structures (of not the same type)
 - design logically all the structures needed
 - use glfw to display simple outputs of the operations
 
 ### Notes:
 - SOLID principles are respected
-- 
+- current set-up: Visual Studio 2022 version 17.10.4 and GLFW 3.4

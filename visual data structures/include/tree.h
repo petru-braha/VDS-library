@@ -1,204 +1,43 @@
 #pragma once
 #include "node/node_tree.h"
 
-template <class T = int>
-class tree
+enum
 {
-	node_tree<T>* root;
-public:
-
-
-	void   add_node(node* parent, T value); // add bfs
-	void   add_node(node* parent, int direction, T value);
-	void   replace(node* parent, size_t index, T value);
-
-	size_t cunt(node*& parent) const;
-	void  delete_node(node* parent);
-
-	node* get_node(node*& parent, size_t index_child) const
-
-	// check if binary
-	// check if binary complete
-	// height
-
-	// print bfs, fds, preorder, inoder, postorder
+    bfs,
+    preorder,
+    inorder, // default
+    postorder
 };
 
-/*
-
-void construct_BFS()
+template <class T = int>
+class tree // designed to be complete
 {
-constr:
-    int x = 0, how_many = 0;
-    cout << "cate noduri sa aiba tree-ul nostru: "; cin >> how_many;
-    struct pointer_node {
-        pointer_node* next;
-        node* HEAP;
-    };
-    pointer_node* Q_first = nullptr;
+    typedef node_tree<T>* ptr;
+protected:
+    short arity;
+    size_t n;
+    ptr root;
+public:
+    // constructors:
+    tree();
+    tree(const std::initializer_list<T>& val, const short& traversal_method = bfs);
+    tree(T* val, const short& traversal_method = bfs);
+    tree(const tree<T>& t);
+    tree(const tree<T>&& t);
+    ~tree();
 
-    pointer_node* p = new pointer_node;
-    p->next = nullptr;
+    // specific methods:
+    tree<T>& operator = (const tree<T>& t); // bfs
+    void  clear(ptr& node = root); // postorder
+    virtual void insert(const T& value);
+    virtual void remove(const T& value);
+    ptr  search(const T& value) const;
 
-    if (how_many)
-    {
-        cout << "valoare pt root: "; cin >> x;
-        initialise_root(x);
-        how_many--;
-        p->HEAP = T.root;
-        Q_first = p;
-    }
-
-    while (how_many)
-    {
-        p = Q_first;
-        int nr_children = 0;
-        bool first = 1;
-        pointer_node* traversal = new pointer_node;
-        traversal->next = nullptr;
-        while (p && how_many)//pentru fiecare nod din queue doar daca trebuie sa mai adaugam noduri
-        {   //clarificare eu iau un elem din queue si il transform in mai multe elemente
-            cout << "Nodul " << p->HEAP->val << " are n copii, unde n == "; cin >> nr_children;
-            how_many -= nr_children;
-            if (how_many < 0 || nr_children < 0)
-            {
-                cout << "wrong input\n";
-                goto constr;
-            }
-
-            if (nr_children)//imi ignora pe cel care nu are copii pe cand nu ar trebui asa
-            {
-                //valori
-                for (int c = 0; c < nr_children; c++)
-                {
-                    cout << "pentru copilul cu numarul " << c << " , al nodului " << p->HEAP->val << " , inserez valoarea: "; cin >> x;
-                    insert(p->HEAP, c, x);
-                }
-
-                //actualizare queue
-                if (first)
-                {
-                    traversal->HEAP = p->HEAP->children[0];
-                    Q_first = traversal;
-                    first = 0;
-                }
-                else
-                {
-                    pointer_node* element = new pointer_node;
-                    element->HEAP = p->HEAP->children[0];
-                    element->next = traversal->next;
-                    traversal->next = element;
-                    traversal = traversal->next;
-                }
-                for (int c = 1; c < nr_children; c++)
-                {
-                    pointer_node* element = new pointer_node;
-                    element->HEAP = p->HEAP->children[c];
-                    element->next = traversal->next;
-                    traversal->next = element;
-                    traversal = traversal->next;
-                }
-            }
-
-            p = p->next;
-        }
-
-        //sterg noduri in plus
-        if (how_many == 0 && p)
-        {
-            p->HEAP = nullptr;
-            delete(p->HEAP);
-            p = p->next;
-        }
-    }
-}*/
-
-/*
-void display(node* nod)//pe height, fiecare nod va avea prefixul parintelui
-{
-    cout << "\n\n";
-
-    int h = height(nod), maxlevel = height(T.root), level = maxlevel - h; //level e nivelul unde se situeaza nod
-
-    struct pointer_node {
-        pointer_node* next;
-        pointer_node* parent;
-        node* HEAP;
-    };
-    pointer_node* Q_first = nullptr;
-
-    pointer_node* p = new pointer_node;
-    p->next = nullptr;
-    p->HEAP = T.root;
-    Q_first = p;
-
-    int L = 0;
-    bool output = 0;//daca se schimba la 1 se afisarea tot
-    while (L < maxlevel)
-    {
-        if (L == level)
-            output = 1;
-        if (output)
-            cout << "pe nivelul " << L << " avem nodurile: ";
-
-        p = Q_first;
-        bool first = 1;
-        pointer_node* traversal = new pointer_node;
-        traversal->next = nullptr;
-        while (p)//pentru fiecare nod din queue
-        {
-            if (p->HEAP)//PATCH CA DACA PRIMUL NOD DIN COADA E NULL SE OPREA
-            {
-                //afisare
-                if (output)
-                {
-                    if (L)
-                        cout << p->parent->HEAP->val << ":" << p->HEAP->val << "   ";
-                    else
-                        cout << T.root->val;
-                }
-
-                //actualizare queue
-                if (first)
-                {
-                    traversal->HEAP = p->HEAP->children[0];
-                    Q_first = traversal;
-                    first = 0;
-
-                    traversal->parent = p;
-                }
-                else
-                {
-                    if (p->HEAP->children[0])
-                    {
-                        pointer_node* element = new pointer_node;
-                        element->HEAP = p->HEAP->children[0];
-                        element->next = traversal->next;
-                        traversal->next = element;
-                        traversal = traversal->next;
-
-                        traversal->parent = p;
-                    }
-                }
-                for (int c = 1; p->HEAP->children[c]; c++)
-                {
-                    pointer_node* element = new pointer_node;
-                    element->HEAP = p->HEAP->children[c];
-                    element->next = traversal->next;
-                    traversal->next = element;
-                    traversal = traversal->next;
-
-                    traversal->parent = p;
-                }
-            }
-
-            p = p->next;
-        }
-        if (output)
-            cout << '\n';
-        L++;
-    }
-
-    cout << '\n';
-}*/
-
+    // constant methods:
+    bool   operator == (const tree<T>& t); // bfs 
+    size_t getn() const;
+    short  get_arity() const;
+    void   prnt(ptr& parent = root, const short& traversal_method = inorder) const;
+    bool   empty() const;
+    size_t height(ptr& parent = root) const;
+};

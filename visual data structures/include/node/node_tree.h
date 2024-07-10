@@ -20,5 +20,5 @@ public:
 	}
 	~node_tree() {}
 
-	size_t nr_children() const { size_t i = 0; while (children[i]) i++; return i; }
+	size_t nr_children() const { size_t i = 0; for (; children[i] == nullptr; i++); for (; children[i]; i++); return i; }
 };

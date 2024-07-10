@@ -9,7 +9,7 @@ public:
 	queue();
 	queue(std::initializer_list<T>& val);
 	queue(T* val);
-	queue(const adaptor<T>& adp) = default;
+	//queue(const adaptor<T>& adp) = default;
 	//queue(const adaptor<T>&& adp) = default;
 	~queue() = default;
 

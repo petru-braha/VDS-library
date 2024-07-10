@@ -1,11 +1,16 @@
 #pragma once
-#include "node.h"
 
 template <class T = int>
-class node_list : public node<T>
+class node
 {
+	T data;
 public:
-	node_list<T>* next;
-	node_list(const T& val = NULL) : node<T>(val), next(nullptr) {}
-	~node_list() {}
+	node(const T& val = NULL) : data(val) {}
+	virtual ~node() = 0;
+
+	void set(const T& data) { this->data = data; }
+	T    get() const { return data; }
 };
+
+template <class T>
+node<T>::~node() {}

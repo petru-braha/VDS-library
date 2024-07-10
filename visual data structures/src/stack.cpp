@@ -18,9 +18,9 @@ stack<T>::stack(T* val) : adaptor(val) {};
 // specific methods:
 
 template <class T>
-stack<T>& stack<T>::operator = (const stack<T>& s)
+stack<T>& stack<T>::operator = (const adaptor<T>& adp)
 {
-	
+	this->values = adp.values;
 }
 
 template <class T>
@@ -43,6 +43,13 @@ void stack<T>::pop()
 
 //------------------------------------------------
 // constant methods:
+
+template <class T>
+bool stack<T>::operator == (const adaptor<T>& adp) const
+{
+	return this->values == adp.values;
+}
+
 template <class T>
 void stack<T>::prnt() const
 {

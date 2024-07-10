@@ -120,15 +120,36 @@ maxheap<T>::maxheap(const maxheap<T>&& h)
 // iterator methods:
 
 template <class T>
-iterator_maxheap<T> maxheap<T>::begin() const
+maxheap<T>::iterator::iterator(T* val) : value(val) {};
+
+template <class T>
+T maxheap<T>::iterator::operator * () const
+{
+	return *value; 
+}
+
+template <class T>
+void maxheap<T>::iterator::operator ++() 
+{ 
+	value++; 
+}
+
+template <class T>
+bool maxheap<T>::iterator::operator !=(const iterator& two) const
+{ 
+	return value != two.value; 
+}
+
+template <class T>
+typename maxheap<T>::iterator maxheap<T>::begin() const
 {
 	return iterator_maxheap(&values[0]);
 }
 
 template <class T>
-iterator_maxheap<T> maxheap<T>::end() const
+typename maxheap<T>::iterator maxheap<T>::end() const
 {
-	return iterator_heap(&values[l + 1]);
+	return iterator_heap(&values[last + 1]);
 }
 
 //------------------------------------------------

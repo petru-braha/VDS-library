@@ -24,7 +24,8 @@ array<T>::array(const int& n)
 template <class T>
 array<T>::array(const std::initializer_list<T>& val, const size_t& n)
 {
-	static_assert(n >= val.size(), "wrong parameters");
+	if (val.size() > n)
+		hard_error("wrong parameters");
 	this->n = n;
 	last = val.size() - 1;
 	values = new T[n]; 
@@ -82,39 +83,39 @@ array<T>::array(const array<T>&& arr)
 // iterator methods:
 
 template <class T>
-iterator<T>::iterator(T*& val)
+array<T>::iterator::iterator(T* val)
 {
 	this->value = val;
 }
 
 template <class T>
-T iterator<T>::operator*()
+T array<T>::iterator::operator*() const
 {
 	return *value;
 }
 
 template <class T>
-void iterator<T>::operator++()
+void array<T>::iterator::operator++()
 {
 	value++;
 }
 
 template <class T>
-bool iterator<T>::operator != (const iterator& two)
+bool array<T>::iterator::operator != (const iterator& two) const
 {
 	return (value != two.value);
 }
 
 template <class T>
-iterator<T> array<T>::begin() const
+typename array<T>::iterator array<T>::begin() const
 {
 	return iterator(&values[0]);
 }
 
 template <class T>
-iterator<T> array<T>::end() const
+typename array<T>::iterator array<T>::end() const
 {
-	return iterator(&values[l+1]);
+	return iterator(&values[last+1]);
 }
 
 //------------------------------------------------
@@ -159,7 +160,7 @@ T& array<T>::operator [] (const size_t& index) const
 };
 
 template <class T>
-void array<T>::insert(const size_t& index, const T& value)
+void array<T>::insert(const T& value, const size_t& index)
 {
 	if (index > n || index < 0)
 		hard_error("bad index");

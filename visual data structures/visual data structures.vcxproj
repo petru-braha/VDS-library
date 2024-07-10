@@ -117,6 +117,7 @@
     <ClInclude Include="include\queue.h" />
     <ClInclude Include="include\stack.h" />
     <ClInclude Include="include\testing_type.h" />
+    <ClInclude Include="include\tree.h" />
     <ClInclude Include="src\linked_list.cpp" />
     <ClInclude Include="test\array_tests.h" />
     <ClInclude Include="test\glfw_tests.h" />

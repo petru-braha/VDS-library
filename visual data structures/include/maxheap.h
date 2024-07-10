@@ -2,26 +2,24 @@
 #define default_heap_size 100
 
 template <class T = int>
-class iterator_maxheap
-{
-	T* value;
-public:
-	iterator_maxheap(T*& val) : value(val) {};
-
-	T		operator * () { return *value; }
-	void	operator ++() { value++; }
-	bool	operator !=(const iterator_maxheap& two) { return value != two.value; }
-};
-
-template <class T = int>
 class maxheap
 {
-	typedef iterator_maxheap<T> it;
 	typedef const T& type;
-protected:
+
 	size_t n;
 	size_t last;
 	T* values;
+
+	class iterator
+	{
+		T* value;
+	public:
+		iterator(T* val);
+
+		T		operator * () const;
+		void	operator ++();
+		bool	operator !=(const iterator& two) const;
+	};
 
 	void heapify(const size_t& nnn, const size_t& index); // we need f here
 public:
@@ -35,8 +33,8 @@ public:
 	~maxheap();
 
 	// iterator methods:
-	it begin() const;
-	it end() const;
+	iterator begin() const;
+	iterator end() const;
 
 	// specific methods:
 	maxheap<T>& operator = (const maxheap<T>& h);

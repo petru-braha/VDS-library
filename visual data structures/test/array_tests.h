@@ -9,8 +9,8 @@ TEST(array_p, initialisation) {
     std::initializer_list<int> sane = { 10, 20, 30, 40, 50 };
     array<int> people = (sane, n);
     EXPECT_EQ(people.getn(), n);
-    for (int i = 0; i < people.getl(); i++)
-        EXPECT_EQ(people[i], *(sane.begin() + 1));
+    for (int i = 0; i < people.getl() + 1; i++)
+        EXPECT_EQ(people[i], *(sane.begin() + i));
 
     //ASSERT_EXIT(a[n], ::testing::ExitedWithCode(EXIT_FAILURE), "fail");
     //testing_glfw();
@@ -21,7 +21,7 @@ TEST(array_p, initialisation) {
 TEST(array_p, sorting_bubbl) {
     array<> numbers = { 5111, 4, 3, 2, 1 };
     numbers.sort(bubble_sort);
-    FOR(numbers.getn() - 1)
+    FOR(numbers.getl())
         ASSERT_TRUE(numbers[i] <= numbers[i + 1]);
 }
 
@@ -36,6 +36,9 @@ TEST(array_p, sorting_quick) {
 
 TEST(array_p, defined_errors)
 {
+    array<> numbers = { 5111, 4, 3, 2, 1 };
+    for (auto i : numbers)
+        std::cout << i << ' ';
 
 }
 

@@ -6,23 +6,22 @@
 #define default_array_size 100
 
 template <class T = int>
-class iterator
-{
-	T* value;
-public:
-	iterator(T*& val);
-	
-	T		operator*();
-	void	operator++();
-	bool	operator!=(const iterator& two);
-};
-
-template <class T = int>
 class array
 {
 	size_t n;	// its purpose is just to allocate space
 	size_t last;// gurantees that elements selected by user are initialised contiguously // index of the last concrete value
 	T* values;
+
+	class iterator
+	{
+		T* value;
+	public:
+		iterator(T* val);
+
+		T		operator*() const;
+		void	operator++();
+		bool	operator!=(const iterator& two) const;
+	};
 
 	void shift_left(const size_t& left_position);
 public:
@@ -35,13 +34,13 @@ public:
 	~array();
 
 	// iterator methods:
-	iterator<T> begin() const;
-	iterator<T> end() const;
+	iterator begin() const;
+	iterator end() const;
 
 	// specific methods:
 	array<T>& operator = (const array<T>& arr);
 	void sort(const int& algorithm = quick_sort, bool (*f)(const T&, const T&) = nullptr);
-	void insert(const size_t& index = last + 1, const T& value);
+	void insert(const T& value, const size_t& index = last + 1);
 	void remove(const size_t& index);
 	void remove(const T& value, const bool& all = false);
 	bool search(const T& value) const; // used for crossng

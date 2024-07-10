@@ -18,6 +18,12 @@ queue<T>::queue(T* val) : adaptor(val) {};
 // specific methods:
 
 template <class T>
+queue<T>& queue<T>::operator = (const adaptor<T>& adp)
+{
+	this->values = adp.values;
+}
+
+template <class T>
 T queue<T>::front() const
 {
 	return values[0];
@@ -43,6 +49,12 @@ void queue<T>::pop()
 
 //------------------------------------------------
 // constant methods:
+
+template <class T>
+bool queue<T>::operator == (const adaptor<T>& adp) const
+{
+	return this->values == adp.values;
+}
 
 template <class T>
 void queue<T>::prnt() const

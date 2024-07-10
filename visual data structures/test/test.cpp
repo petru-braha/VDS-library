@@ -8,8 +8,3 @@
 
 
 // here will be a function dedicated to visualisation with no other testing
-
-int main()
-{
-	return 0;
-}

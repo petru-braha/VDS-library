@@ -40,6 +40,7 @@ types of errors		eazy 	hard 	fatal
 2. unallocated space 	x
 3. nothing to shift 		x
 4. no more memory	x	
+5. wrong parameters		x	x
 ```
 ## what should we test?
 
@@ -64,6 +65,16 @@ types of errors		eazy 	hard 	fatal
 ## Data structures themselfs:
 1. implementation
 - each data structure will cotain the following categories of methods:
+	private:
+	- typedefs
+	
+	protected:
+	- data members
+	- iterator class
+	* extra utility methods
+	
+	public:
+	* extra utility data members
 	- constructors 
 	- iterator methods (e. g. begin, end)
 	- specific methods (e. g. insert, remove)
@@ -101,10 +112,12 @@ types of errors		eazy 	hard 	fatal
 3. why maxheap does not inherit array? no matching methods
 
 4. about node_tree class - i had multiple approaches
+- preprocessing
 - the number of child nodes in template
 	- this strategy was automatically implying that children had to have the same number of children as their parent (no more/less)
 	- one solution was to define children as "node<T>*" and not "node_tree<T, nr_children>": by some verifications i realised this method was not reliable 
 - the number of child nodes non-existent, just in the constructor
 - the number of child nodes as a data member (x)
 
-5. iterator class will now be defined inside of the class that uses it
+5. iterator class defined inside of the class that uses it
+- no definitions of methods are allowed in header files for final types 

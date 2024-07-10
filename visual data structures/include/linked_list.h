@@ -13,10 +13,11 @@ class linked_list
 		node_list<T>* value;
 
 	public:
-		iterator(node_list<T>* value) : value(value) {};
-		T    operator  * () const { return value->get(); }
-		void operator ++ () { value = value->next; }
-		bool operator != (const iterator& two) const { return value != two.value; };
+		iterator(node_list<T>* val);
+		
+		T    operator  * () const;
+		void operator ++ ();
+		bool operator != (const iterator& two) const;
 	};
 
 public:
@@ -29,8 +30,8 @@ public:
 	~linked_list();
 	
 	// iterator methods:
-	iterator begin() const { return iterator(frst); }
-	iterator end() const { return iterator(last->next); }
+	iterator begin() const;
+	iterator end() const;
 
 	// specific methods:
 	linked_list<T>& operator = (const linked_list<T>& l);

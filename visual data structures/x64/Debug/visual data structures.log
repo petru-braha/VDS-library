@@ -1,2 +1,5 @@
-﻿  test.cpp
+﻿  array.cpp
+  test.cpp
+A:\projects\active\portfolio\data structures\visual data structures\test\array_tests.h(10,30): warning C4267: 'argument': conversion from 'size_t' to 'const int', possible loss of data
+  Generating Code...
   visual data structures.vcxproj -> A:\projects\active\portfolio\data structures\x64\Debug\visual data structures.exe

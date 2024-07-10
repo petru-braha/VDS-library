@@ -111,6 +111,42 @@ linked_list<T>::linked_list(const linked_list<T>&& l)
 }
 
 //------------------------------------------------
+// iterator methods:
+
+template <class T>
+linked_list<T>::iterator::iterator(node_list<T>* val) : value(val) {};
+
+template <class T>
+T linked_list<T>::iterator::operator  * () const 
+{ 
+	return value->get(); 
+}
+
+template <class T>
+void linked_list<T>::iterator::operator ++ () 
+{
+	value = value->next; 
+}
+
+template <class T>
+bool linked_list<T>::iterator::operator != (const iterator& two) const 
+{
+	return value != two.value; 
+}
+
+template <class T>
+typename linked_list<T>::iterator linked_list<T>::begin() const
+{ 
+	return iterator(frst); 
+}
+
+template <class T>
+typename linked_list<T>::iterator linked_list<T>::end() const
+{ 
+	return iterator(last->next); 
+}
+
+//------------------------------------------------
 // specific methods:
 
 template <class T>

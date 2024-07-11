@@ -1,6 +1,6 @@
 #pragma once
-#include <initializer_list>
 #include "linked_list.h"
+#include <initializer_list>
 
 template <class T = int>
 class adaptor
@@ -11,9 +11,7 @@ public:
 	//constructors:
 	adaptor() : values() {};
 	adaptor(std::initializer_list<T>& val) : values(val) {};
-	adaptor(T* val) : values(val) {};
-	adaptor(const adaptor<T>& adp) = default;
-	//adaptor(const adaptor<T>&& adp) = default;
+	adaptor(T* val, const size_t& val_size) : values(val, val_size) {};
 	virtual ~adaptor() = default;
 
 	// specific methods:
@@ -23,4 +21,8 @@ public:
 	// constant methods:
 	size_t get_size() const { return values.getn(); }
 	bool  empty() const { return values.empty(); }
+
+	// friend functions:
+	friend T* convert(const adaptor<T>& adp) { return convert(adp.values); }
+	friend std::ostream& operator << (std::ostream& out, const adaptor<T>& adp) { out << adp.values; return out; }
 };

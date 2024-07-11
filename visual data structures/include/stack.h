@@ -8,9 +8,9 @@ public:
 	// constructors
 	stack();
 	stack(std::initializer_list<T>& val);
-	stack(T* val);
-	//stack(const adaptor<T>& s) = default;
-	//stack(const adaptor<T>&& s) = default;
+	stack(T* val, const size_t& val_size);
+	stack(const adaptor<T>& adp);
+	stack(const adaptor<T>&& adp);
 	~stack() = default;
 
 	// specific methods

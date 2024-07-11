@@ -1,4 +1,6 @@
 #pragma once
+#include <initializer_list>
+
 #define default_heap_size 100
 
 template <class T = int>
@@ -22,12 +24,13 @@ class maxheap
 	};
 
 	void heapify(const size_t& nnn, const size_t& index); // we need f here
+	void arrange();
 public:
 	bool (*f)(type, type);
 	// constructors:
 	maxheap(const size_t& n = default_heap_size);
 	maxheap(const std::initializer_list<T>& val, const size_t& n = default_heap_size, bool (*f)(type, type) = nullptr);
-	maxheap(T* val, const size_t& n = default_heap_size, bool (*f)(type, type) = nullptr);
+	maxheap(T* val, const size_t& val_size, const size_t& n = default_heap_size, bool (*f)(type, type) = nullptr);
 	maxheap(const maxheap<T>& h);
 	maxheap(const maxheap<T>&& h);
 	~maxheap();
@@ -49,6 +52,10 @@ public:
 	size_t getl() const;
 	void   prnt() const;
 	bool  empty() const;
+
+	// friend functions:
+	friend T* convert(const maxheap<T>& h);
+	friend std::ostream& operator << (std::ostream& out, const maxheap<T>& h);
 };
 
 // parent(index) == floor( (index - 1) / 2 )

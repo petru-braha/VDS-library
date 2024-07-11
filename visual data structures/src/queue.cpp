@@ -12,7 +12,20 @@ template <class T>
 queue<T>::queue(std::initializer_list<T>& val) : adaptor(val) {};
 
 template <class T>
-queue<T>::queue(T* val) : adaptor(val) {};
+queue<T>::queue(T* val, const size_t& val_size) : adaptor(val, val_size) {};
+
+template <class T>
+queue<T>::queue(const adaptor<T>& adp)
+{
+	this->values = adp.values;
+}
+
+template <class T>
+queue<T>::queue(const adaptor<T>&& adp)
+{
+	this->values = adp.values;
+	delete adp;
+}
 
 //------------------------------------------------
 // specific methods:

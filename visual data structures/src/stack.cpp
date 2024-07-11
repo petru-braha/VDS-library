@@ -12,7 +12,20 @@ template <class T>
 stack<T>::stack(std::initializer_list<T>& val) : adaptor(val) {};
 
 template <class T>
-stack<T>::stack(T* val) : adaptor(val) {};
+stack<T>::stack(T* val, const size_t& val_size) : adaptor(val, val_size) {};
+
+template <class T>
+stack<T>::stack(const adaptor<T>& adp)
+{
+	this->values = adp.values;
+}
+
+template <class T>
+stack<T>::stack(const adaptor<T>&& adp)
+{
+	this->values = adp.values;
+	delete adp;
+}
 
 //------------------------------------------------
 // specific methods:

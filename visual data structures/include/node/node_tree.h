@@ -1,24 +1,28 @@
 #pragma once
 #include "node.h"
 
-#define left_child 0
-#define rght_child 1
-typedef unsigned long long int ull;
+// definitions:
+#define red 0
+#define blk 1
 
-template <class T = int>
+typedef const bool elemental;
+typedef const char red_black;
+
+// binary node for the tree class itself:
+template <class T = int, class node_type = elemental>
 class node_tree : public node<T>
 {
 public:
-	node_tree<T>** children;
-	// malloc n + 1 s.t. when iterating through children, last position is nullptr => we know we have to stop
+	node_tree<T>* left;
+	node_tree<T>* rght;
 
-	node_tree(const T& val = NULL, const size_t& nr_children = 2) : node<T>(val)
-	{
-		children = new node_tree<T>*[nr_children + 1];
-		for (size_t i = 0; i < nr_children + 1; i++)
-			children[i] = nullptr;
-	}
+	node_tree(const T& val = NULL) : node<T>(val), left(nullptr), rght(nullptr) {}
 	~node_tree() {}
+};
 
-	size_t nr_children() const { size_t i = 0; for (; children[i] == nullptr; i++); for (; children[i]; i++); return i; }
+template <class T>
+class node_tree<T, red_black> : public node_tree<T, elemental>
+{
+public:
+	bit color;
 };

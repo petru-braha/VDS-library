@@ -8,9 +8,9 @@ public:
 	// constructors:
 	queue();
 	queue(std::initializer_list<T>& val);
-	queue(T* val);
-	//queue(const adaptor<T>& adp) = default;
-	//queue(const adaptor<T>&& adp) = default;
+	queue(T* val, const size_t& val_size);
+	queue(const adaptor<T>& adp);
+	queue(const adaptor<T>&& adp);
 	~queue() = default;
 
 	// specific methods:

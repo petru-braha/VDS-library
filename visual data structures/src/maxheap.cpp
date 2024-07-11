@@ -4,7 +4,12 @@
 #include <initializer_list>
 #include "maxheap.h"
 
-#define maxh(){ for(int i = (last + 1)/2 - 1; i >= 0; i--) heapify(last + 1, i); }
+template <class T>
+void maxheap<T>::arrange()
+{
+	for (int i = (last + 1) / 2 - 1; i >= 0; i--) 
+		heapify(last + 1, i);
+}
 
 template <class T>
 void maxheap<T>::heapify(const size_t& nnn, const size_t& index)
@@ -61,28 +66,31 @@ maxheap<T>::maxheap(const std::initializer_list<T>& val, const size_t& n, bool (
 		values[index++] = i;
 	for (; index < n; index++)
 		values[index] = NULL;
-	maxh();
+	arrange();
 }
 
 template <class T>
-maxheap<T>::maxheap(T* val, const size_t& n, bool (*f)(type, type))
+maxheap<T>::maxheap(T* val, const size_t& val_size, const size_t& n, bool (*f)(type, type))
 {
 	this->f = f;
 	if (f == nullptr) this->f = [](type x, type y)->bool {return x > y; };
 	
 	this->n = n;
 	this->last = -1;
-	while (val)
+
+	size_t index = 0;
+	while (index < val_size)
 	{
 		values[++last] = *val;
 		val++;
+		index++;
 	}
 
 	if (last >= n)
 		hard_error("wrong number of elements given");
 	for (size_t i = last + 1; i < n; i++)
 		values[i] = NULL;
-	maxh();
+	arrange();
 }
 
 template <class T>
@@ -274,5 +282,25 @@ template <class T>
 bool maxheap<T>::empty() const
 {
 	return l == -1;
+}
+
+//------------------------------------------------
+// friend functions:
+
+template <class T>
+T* convert(const maxheap<T>& h)
+{
+	T* ptr = new T[h.last + 1];
+	for (size_t i = 0; i < h.last + 1; i++)
+		ptr[i] = h.values[i];
+	return ptr;
+}
+
+template <class T>
+std::ostream& operator << (std::ostream& out, const maxheap<T>& h)
+{
+	for (auto i : h)
+		out << i << ' ';
+	return out;
 }
 

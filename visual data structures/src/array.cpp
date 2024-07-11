@@ -38,14 +38,16 @@ array<T>::array(const std::initializer_list<T>& val, const size_t& n)
 }
 
 template <class T> 
-array<T>::array(T* val, const size_t& n)
+array<T>::array(T* val, const size_t& val_size, const size_t& n)
 {
+	size_t index = 0;
 	this->n = n;
 	this->last = -1;
-	while (val)
+	while (index < val_size)
 	{
 		values[++last] = *val;
 		val++;
+		index++;
 	}
 
 	for (size_t i = last + 1; i < n; i++)
@@ -132,6 +134,33 @@ array<T>& array<T>::operator = (const array<T>& arr)
 		this->values[++last] = i;
 }
 
+#include "array_sorting.cpp"
+template <class T>
+void array<T>::sort(const int& algorithm, bool (*f)(const T&, const T&))
+{
+	array_sorting<T>* sort_job = array_sorting<T>::get_instance();
+	switch (algorithm)
+	{
+	case bubble_sort:
+		sort_job->bubbs(values, last + 1, f);
+		break;
+	case selection_sort:
+		break;
+	case insertion_sort:
+		break;
+	case merge_sort:
+		break;
+	case heap_sort:
+		sort_job->heaps(values, last + 1, f);
+		break;
+	case quick_sort:
+		sort_job->qucks(values, 0, last, f);
+		break;
+	default:
+		break;
+	}
+}
+
 template <class T>
 void array<T>::shift_left(const size_t& left_position)
 {
@@ -143,7 +172,6 @@ void array<T>::shift_left(const size_t& left_position)
 		values[i] = values[i + 1];
 	values[last--] = NULL;
 }
-
 
 template <class T>
 T& array<T>::operator [] (const size_t& index) const
@@ -260,6 +288,15 @@ bool array<T>::empty() const
 // friend functions:
 
 template <class T>
+T* convert(const array<T>& arr)
+{
+	T* ptr = new T[arr.last + 1];
+	FOR(arr.last + 1)
+		ptr[i] = arr[i];
+	return ptr;
+}
+
+template <class T>
 array<T> linking(const array<T>& one, const array<T>& two)
 {
 	size_t new_n = one.getn() + two.getn();	
@@ -298,30 +335,11 @@ array<T> crossng(const array<T>& one, const array<T>& two) // O(n*m), n = |one|,
 	return new_array;
 }
 
-
-#include "array_sorting.cpp"
 template <class T>
-void array<T>::sort(const int& algorithm, bool (*f)(const T&, const T&))
+std::ostream& operator << (std::ostream& out, const array<T>& arr)
 {
-	array_sorting<T>* sort_job = array_sorting<T>::get_instance();
-	switch (algorithm)
-	{
-	case bubble_sort:
-		sort_job->bubbs(values, last + 1, f);
-		break;
-	case selection_sort:
-		break;
-	case insertion_sort:
-		break;
-	case merge_sort:
-		break;
-	case heap_sort:
-		sort_job->heaps(values, last + 1, f);
-		break;
-	case quick_sort:
-		sort_job->qucks(values, 0, last, f);
-		break;
-	default:
-		break;
-	}
+	for (auto i : arr)
+		out << i << ' ';
+	return out;
 }
+

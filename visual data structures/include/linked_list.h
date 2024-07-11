@@ -24,7 +24,7 @@ public:
 	// constructors:
 	linked_list();
 	linked_list(const std::initializer_list<T>& val);
-	linked_list(T* val);
+	linked_list(T* val, const size_t& val_size);
 	linked_list(const linked_list<T>& l);
 	linked_list(const linked_list<T>&& l);
 	~linked_list();
@@ -45,4 +45,9 @@ public:
 	size_t getn() const;
 	void   prnt() const;
 	bool  empty() const;
+	void* collection_ptr() const; // just for the collection!
+
+	// friend functions:
+	friend T* convert(const linked_list<T>& l);
+	friend std::ostream& operator << (std::ostream& out, const linked_list<T>& l);
 };

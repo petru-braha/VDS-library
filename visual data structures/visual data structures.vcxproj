@@ -110,13 +110,15 @@
     <ClInclude Include="include\bureaucracy.h" />
     <ClInclude Include="include\linked_list.h" />
     <ClInclude Include="include\maxheap.h" />
+    <ClInclude Include="include\minheap.h" />
     <ClInclude Include="include\node\node.h" />
     <ClInclude Include="include\node\node_list.h" />
     <ClInclude Include="include\node\node_tree.h" />
+    <ClInclude Include="include\node\node_trivial_tree.h" />
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\queue.h" />
     <ClInclude Include="include\stack.h" />
-    <ClInclude Include="include\testing_type.h" />
+    <ClInclude Include="include\convoluted.h" />
     <ClInclude Include="include\tree.h" />
     <ClInclude Include="include\trivial_tree.h" />
     <ClInclude Include="src\linked_list.cpp" />
@@ -124,12 +126,14 @@
     <ClInclude Include="test\glfw_tests.h" />
     <ClInclude Include="test\linked_list_tests.h" />
     <ClInclude Include="test\maxheap_tests.h" />
-    <ClInclude Include="test\tree_tests.h" />
+    <ClInclude Include="test\trivial_tree_tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\array.cpp" />
     <ClCompile Include="src\array_sorting.cpp" />
+    <ClCompile Include="src\convoluted.cpp" />
     <ClCompile Include="src\maxheap.cpp" />
+    <ClCompile Include="src\minheap.cpp" />
     <ClCompile Include="src\queue.cpp" />
     <ClCompile Include="src\stack.cpp" />
     <ClCompile Include="src\tree.cpp" />

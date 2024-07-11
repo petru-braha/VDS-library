@@ -1,5 +1,8 @@
 #pragma once
 
+typedef unsigned char bit;
+typedef unsigned long long int ull;
+
 template <class T = int>
 class node
 {
@@ -8,8 +11,7 @@ public:
 	node(const T& val = NULL) : data(val) {}
 	virtual ~node() = 0;
 
-	void set(const T& data) { this->data = data; }
-	T    get() const { return data; }
+	T& get() const { return data; }
 };
 
 template <class T>

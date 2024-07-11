@@ -1,7 +1,7 @@
 #pragma once
-#include <initializer_list>
 #include "bureaucracy.h"
 #include "array_sorting.h"
+#include <initializer_list>
 
 #define default_array_size 100
 
@@ -28,7 +28,7 @@ public:
 	// constructors:
 	array(const int& n = default_array_size);
 	array(const std::initializer_list<T>& val, const size_t& n = default_array_size);
-	array(T* val, const size_t& n = default_array_size);
+	array(T* val, const size_t& val_size, const size_t& n = default_array_size);
 	array(const array<T>& arr);
 	array(const array<T>&& arr);
 	~array();
@@ -54,8 +54,10 @@ public:
 	bool  empty() const;
 
 	// friend functions:
+	friend T* convert(const array<T>& arr);
 	friend array<T> linking(const array<T>& one, const array<T>& two);
 	friend void		ejectin(const array<T>& one, const array<T>& two);
 	friend array<T> crossng(const array<T>& one, const array<T>& two);
+	friend std::ostream& operator << (std::ostream& out, const array<T>& arr);
 };
 

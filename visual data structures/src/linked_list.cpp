@@ -46,14 +46,14 @@ linked_list<T>::linked_list(const std::initializer_list<T>& val)
 }
 
 template <class T>
-linked_list<T>::linked_list(T* val)
+linked_list<T>::linked_list(T* val, const size_t& val_size)
 {
 	this->frst = new node_list<T>(*val);
 	val++;
 	node_list<T>* it = frst;
 	
 	size_t i = 1;
-	while (*val)
+	while (i < val_size)
 	{
 		it->next = new node_list<T>(*val);
 		it = it->next;
@@ -278,4 +278,36 @@ template <class T>
 bool linked_list<T>::empty() const
 {
 	return n == 0;
+}
+
+template <class T>
+void* linked_list<T>::collection_ptr() const
+{
+	return (void*)frst;
+}
+
+//------------------------------------------------
+// friend functions:
+
+template <class T>
+T* convert(const linked_list<T>& l)
+{
+	T* ptr = new T[n];
+	size_t index = 0;
+	for (auto i : l)
+		ptr[index++] = i;
+	return ptr;
+}
+
+template <class T>
+std::ostream& operator << (std::ostream& out, const linked_list<T>& l)
+{
+	node_list<T>* it = l.frst;
+	while (it)
+	{
+		out << it->get() << ' ';
+		it = it->next;
+	}
+
+	return out;
 }

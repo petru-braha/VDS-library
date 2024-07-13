@@ -138,6 +138,7 @@ array<T>& array<T>::operator = (const array<T>& arr)
 template <class T>
 void array<T>::sort(const int& algorithm, bool (*f)(const T&, const T&))
 {
+	if (f == nullptr) f = [](type x, type y)->bool { return x > y; };
 	array_sorting<T>* sort_job = array_sorting<T>::get_instance();
 	switch (algorithm)
 	{
@@ -145,10 +146,13 @@ void array<T>::sort(const int& algorithm, bool (*f)(const T&, const T&))
 		sort_job->bubbs(values, last + 1, f);
 		break;
 	case selection_sort:
+		sort_job->seles(values, last + 1, f);
 		break;
 	case insertion_sort:
+		sort_job->insrs(values, last + 1, f);
 		break;
 	case merge_sort:
+		sort_job->mrges(values, 0, last, f);
 		break;
 	case heap_sort:
 		sort_job->heaps(values, last + 1, f);

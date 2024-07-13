@@ -35,7 +35,9 @@ types of errors		eazy 	hard 	fatal
 ~ sorting problem: it's essential for the compiler and user to understand a complex type object in terms of another one. for exemple which one is greater. solution: to help the compiler "understand" i shaped data structures (that support the sort operation) to incorporate a custom function. if it is not set by the user, then by default takes the functionality of a comparison operator. this encourages the user to train the program with the correct execution process and to implement for its type the comparison operators.
 ~ printing problem: i made the arbitrary decision to use the "<<" operator for printing. the solution for a compound type is to implement the same operator
 
-- a **well defined type** has:
+- it's necessary to add components that increase the difficulty of these problems, and not arbitrary ones (e. g. adding an iterator, wouldn't change how an object would behave in our situations, so coding it is a waste of time).
+
+- a `well defined type` has:
 	- diverse data members
 		- only primitives, no STL containers - for easier visualisation
 		- just one of each: normal type, a pointer and a reference - diverse but not agglomerate
@@ -162,3 +164,14 @@ requirements 	none			stability		space restrictions
 2. prnt VS <<
 
 3. adaptor VS tree
+
+4. operations of dynamic sets
+- queries
+	- search 
+	- minimum
+	- maximum
+	- predecessor - as value
+	- successor - as value
+- modifiers
+	- insert
+	- delete 

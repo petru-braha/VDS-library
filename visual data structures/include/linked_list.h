@@ -51,3 +51,5 @@ public:
 	friend T* convert(const linked_list<T>& l);
 	friend std::ostream& operator << (std::ostream& out, const linked_list<T>& l);
 };
+
+// if linked_lists would be sortable, merge_sort and quick_sort Lomuto scheme would be the obvious choice

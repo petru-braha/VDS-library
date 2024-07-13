@@ -57,7 +57,7 @@ void queue<T>::push(const T& val)
 template <class T>
 void queue<T>::pop()
 {
-	values.remove[0];
+	values.remove(0);
 }
 
 //------------------------------------------------

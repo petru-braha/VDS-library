@@ -12,9 +12,8 @@ enum traversal_types
 template <class T = int>
 class tree
 {
-protected:
     typedef node_tree<T>* ptr;
-    
+protected:
     size_t n;
     ptr root;
 public:
@@ -25,12 +24,12 @@ public:
     // specific methods:
     void  clear(ptr& parent = root); // postorder
     virtual void insert(const T& value) = 0;
-    virtual void remove(const T& value) = 0;
     virtual ptr  search(const T& value) const = 0;
+    //virtual void remove(const T& value) = 0; minheap has extract, not remove
 
     // constant methods:
     size_t getn() const;
-    void   prnt(ptr& parent = root, const short& traversal_method = inorder) const;
+    void   prnt(ptr& parent = root, const short& traversal_method) const;
     bool   empty() const;
     size_t height(ptr& parent = root) const;
     void*  collection_ptr() const; // just for the collection!

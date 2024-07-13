@@ -22,7 +22,6 @@ array_sorting<T>* array_sorting<T>::get_instance()
 template <class T>
 void array_sorting<T>::bubbs(T*& arr, szt n, bool (*f)(type, type))
 {
-	if (f == nullptr) f = [](type x, type y)->bool { return x > y; };
 	bool sorted = false;
 	do
 	{
@@ -38,8 +37,82 @@ void array_sorting<T>::bubbs(T*& arr, szt n, bool (*f)(type, type))
 	} while (sorted == false);
 }
 
-//--------------------------------------------------------------------------------------
-// heap sort: 
+template <class T>
+void array_sorting<T>::seles(T*& arr, szt n, bool (*f)(type, type))
+{
+	for (size_t i = 0; i < n - 1; i++)
+	{
+		size_t index_minimum = i;
+		for (size_t j = i + 1; j < n; j++)
+			if (f(arr[index_minimum], arr[j]))
+				index_minimum = j;
+
+		if (index_minimum != i)
+			swap(arr, index_minimum, i);
+	}
+}
+
+template <class T>
+void array_sorting<T>::insrs(T*& arr, szt n, bool (*f)(type, type))
+{
+	size_t key = 0;
+	for (size_t i = 1; i < n; i++)
+	{
+		key = arr[i];
+		for (size_t j = i - 1; f(arr[j], key); j--)
+		{
+			arr[j + 1] = arr[j];
+			if (j == 0) { arr[j] = key; break; }
+		}
+
+		if(j) arr[j + 1] = key;
+	}
+}
+//------------------------------------------------
+// merge_sort:
+
+template <class T>
+void array_sorting<T>::merge(T*& arr, size_t one_index_left, size_t one_index_rght, size_t two_index_left, size_t two_index_rght)
+{
+	size_t index_temp = 0, n_temp = two_index_rght - one_index_left;
+	T* temp_array = new T[n];
+
+	while (one_index_left < one_index_rght && two_index_left < two_index_rght)
+	{
+		if (arr[one_index_left] > arr[two_index_left])
+		{
+			temp_array[index_temp++] = arr[two_index_left];
+			two_index_left++;
+		}
+		else
+		{
+			temp_array[index_temp++] = arr[one_index_left];
+			one_index_left++;
+		}
+	}
+
+	for (; one_index_left < one_index_rght; one_index_left++)
+		temp_array[index_temp++] = arr[one_index_left];
+	for(; two_index_left > two_index_rght; two_index_left++)
+		temp_array[index_temp++] = arr[two_index_left];
+	for (size_t i = 0; i < n; i++)
+		arr[i + one_index_left] = temp_array[i];
+	delete[]temp_array;
+}
+
+template <class T>
+void array_sorting<T>::mrges(T*& arr, szt left, szt rght, bool (*f)(type, type))
+{
+	if (left >= rght)
+		return;
+	size_t index_middle = left + (rght - left) / 2;
+	mrges(arr, left, index_middle);
+	mrges(arr, index_middle + 1, rght);
+	merge(left, index_middle + 1, index_middle + 1, rght + 1);
+}
+
+//------------------------------------------------
+// heap_sort: 
 
 template <class T>
 void array_sorting<T>::heapify(T*& arr, szt n, szt index, bool (*f)(type, type))
@@ -62,7 +135,6 @@ template <class T>
 void array_sorting<T>::heaps(T*& arr, szt n, bool (*f)(type, type))
 {
 	// build
-	if (f == nullptr) f = [](type x, type y)->bool {return x > y; };
 	for (int i = n / 2 - 1; i >= 0; i--)
 		heapify(arr, n, i, f);
 
@@ -74,8 +146,8 @@ void array_sorting<T>::heaps(T*& arr, szt n, bool (*f)(type, type))
 	}
 }
 
-//--------------------------------------------------------------------------------------
-// quick sort: 
+//------------------------------------------------
+// quick_sort: 
 
 template <class T>
 T median_three(const T& one, const T& two, const T& three, bool (*f)(const T&, const T&))
@@ -103,8 +175,6 @@ T median_three(const T& one, const T& two, const T& three, bool (*f)(const T&, c
 template <class T>
 size_t array_sorting<T>::partition(T*& arr, szt left, szt rght, bool (*f)(type, type))
 {
-	if (f == nullptr) f = [](type x, type y)->bool { return x > y; };
-
 	T one = arr[left], two = arr[left + (rght - left) / 2], three = arr[rght];
 	T pivot = median_three(one, two, three, f);
 

@@ -24,11 +24,10 @@
 - my documentation regarding the design of this project is all based on: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest, Cormen
 
 ### TO DO:
-- build trivial_tree
-- build that crazy class
-- correct my text 
-- design header files
+- build trivial_tree, minheap, sorting algorithms 
+- correct my log text
 
+- design header files
 - design logically all the structures needed
 - use GLFW to display simple outputs of the operations
 

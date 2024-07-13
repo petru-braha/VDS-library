@@ -1,5 +1,7 @@
 #pragma once
 #include "pch.h"
+
+/*
 #include "trivial_tree.h"
 
 template <class T>
@@ -11,7 +13,7 @@ bool trivial_tree<T>::complete(ptr& parent) const
 
 	for (size_t i = 0; i < parent->nr_children() - 1; i++)
 	{
-		result = (result && complete(parent->children[i], traversal_method);
+		result = (result && complete(parent->children[i], traversal_method));
 		if (result == false)
 			return false;
 	}
@@ -370,3 +372,4 @@ size_t tree<T>::height(ptr& parent) const
 }
 
 
+*/

@@ -22,7 +22,7 @@ public:
 	trivial_tree(const std::initializer_list<T>& val, const short& traversal_method = bfs, const short& arity = 2);
 	trivial_tree(T* val, const short& traversal_method = bfs, const short& arity = 2);
 	trivial_tree(const tree<T>& t);
-	trivial_tree(const tree<T>&& t);
+	//trivial_tree(const tree<T>&& t);
     ~trivial_tree();
 
 

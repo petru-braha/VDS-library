@@ -2,6 +2,8 @@
 #include "node.h"
 
 // definitions:
+#define left_child 0
+#define rght_child 1
 #define red 0
 #define blk 1
 

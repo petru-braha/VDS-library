@@ -4,9 +4,9 @@
 template <class T = int>
 class node_trivial_tree : public node<T>
 {
-	byte arity;
+	bit arity;
 public:
-	node_trivial_tree<T>** children[arity];
+	node_trivial_tree<T>** children;
 
 	// constructors:
 	node_trivial_tree(const T& val = NULL, const size_t& arity = 2) : node<T>(val), arity(arity)
@@ -19,5 +19,5 @@ public:
 	~node_trivial_tree() {}
 
 	// constant methods:
-	size_t arity() const { return this->arity; }
+	size_t get_arity() const { return this->arity; }
 };

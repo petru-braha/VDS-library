@@ -17,7 +17,8 @@ class array_sorting // behavioral singleton
 	typedef const T& type;
 	typedef const size_t& szt;
 	
-	void   merge();
+	// one and two are considered arrays in the merge method
+	void   merge(T*& arr, size_t one_index_left, size_t one_index_rght, size_t two_index_left, size_t two_index_rght);
 	void   heapify(T*& arr, szt n, szt index, bool (*f)(type, type));
 	size_t partition(T*& arr, szt left, szt rght, bool (*f)(type, type));
 
@@ -27,10 +28,10 @@ public:
 	static array_sorting<T>* get_instance();
 
 	void bubbs(T*& arr, szt n, bool (*f)(type, type) = nullptr);
-	//void seles(bool (*f)(type, type) = nullptr);
-	//void insrs(bool (*f)(type, type) = nullptr);
+	void seles(T*& arr, szt n, bool (*f)(type, type) = nullptr);
+	void insrs(T*& arr, szt n, bool (*f)(type, type) = nullptr);
 
-	//void mrges(bool (*f)(type, type) = nullptr);
+	void mrges(T*& arr, szt left, szt rght, bool (*f)(type, type) = nullptr);
 	void heaps(T*& arr, szt n, bool (*f)(type, type) = nullptr);
 	void qucks(T*& arr, szt left, szt rght, bool (*f)(type, type) = nullptr); 
 };

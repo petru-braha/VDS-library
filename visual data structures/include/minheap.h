@@ -1,11 +1,11 @@
 #pragma once
-#include "tree.h"
+#include "special_binary_tree.h"
 #include <initializer_list>
 
 template <class T = int>
-class minheap : public tree<T>
+class minheap : public special_binary_tree<T, node_bint<T>>
 {
-	typedef node_tree<T>* ptr;
+	typedef node_bint<T>* ptr;
 	typedef const T& type;
 
 	class iterator 
@@ -22,10 +22,9 @@ class minheap : public tree<T>
 		void	operator ++();
 		bool	operator !=(const iterator& two) const;
 	};
-	iterator::n = 0;
 
 	void heapify(ptr& node);
-	void arrange(node_tree<T>*& node = root);
+	void arrange(ptr& node = root);
 public:
 	bool (*f)(type, type);
 	// constructors:
@@ -56,3 +55,6 @@ public:
 	friend T* convert(const minheap<T>& h);
 	friend std::ostream& operator << (std::ostream& out, const minheap<T>& h);
 };
+
+template<class T>
+size_t minheap<T>::iterator::n = 0;

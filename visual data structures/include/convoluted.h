@@ -8,7 +8,8 @@ class convoluted
 	char* address2;
 public:
 	// constructors:
-	convoluted(int number, bool& one, char* two);
+	convoluted(const int& number, bool& one, const char*& two);
+	convoluted(int null = NULL);
 	~convoluted();
 	
 	// specific methods: 

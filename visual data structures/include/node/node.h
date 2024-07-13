@@ -1,17 +1,17 @@
 #pragma once
 
-typedef unsigned char bit;
-typedef unsigned long long int ull;
-
-template <class T = int>
+template <class T>
 class node
 {
+	// data members:
 	T data;
 public:
-	node(const T& val = NULL) : data(val) {}
+	// constructors:
+	node(const T& value = NULL);
 	virtual ~node() = 0;
 
-	T& get() const { return data; }
+	// specific methods:
+	T& get() const;
 };
 
 template <class T>

@@ -13,7 +13,7 @@ bool letter(const char& character)
 	return true;
 }
 
-convoluted::convoluted(int number, bool& one, char* two) : number(number), address1(one)
+convoluted::convoluted(const int& number, bool& one, const char*& two) : number(number), address1(one)
 {
 	char* temp = new char[number];
 	for (int i = 0; i < number; i++)
@@ -27,6 +27,8 @@ convoluted::convoluted(int number, bool& one, char* two) : number(number), addre
 	
 	address2 = temp;
 }
+
+convoluted::convoluted(int null) : number(0), address1(reinterpret_cast<bool&>(null)), address2(nullptr) {}
 
 convoluted::~convoluted()
 {
@@ -87,7 +89,7 @@ void* convoluted::get_addr2() const
 
 size_t convoluted::get_bytes() const
 {
-	return number + 5;
+	return size_t(number + 5);
 }
 
 //------------------------------------------------

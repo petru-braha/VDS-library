@@ -1,19 +1,20 @@
 ## Classes of errors:
-- eazy (prints message)
-- hard (prints message and throw -1)
-- fatal(prints message and exit)
+- eazy (prints message) - used only in testing
+- hard (prints message and throw -1) - queries of the structure
+- fatal(prints message and exit) - modifiers of the structure
 
 - how to decide which types of errors matches our needs?
 
 ```
 types of errors		eazy 	hard 	fatal
-1. bad index 			x
-2. unallocated space 	x
+1. bad index 			x	x
+2. unallocated space 		x
 3. nothing to shift 		x
-4. no more memory	x	
-5. wrong parameters		x	x
-6. bad node		x	x
-7. incompatible data    x
+4. no more memory		x	
+5. wrong parameters		x	
+6. bad node			x
+7. incompatible data    	x
+8. no data - empty		x
 ```
 
 ## What should we test?
@@ -62,16 +63,28 @@ private:
 	
 protected:
 	- data members
-	- iterator class
-	* extra utility methods
+	- iterator concept
+	* auxiliar methods (e. g. left_rotation)
 	
 public:
-	* extra utility data members
+	* auxiliar utility (extra data members)
 	- constructors 
 	- iterator methods (e. g. begin, end)
 	- specific methods (e. g. insert, remove)
+	- query operations (e. g. minimum, maximum)
 	- constant methods (e. g. get, print)
 ```
+
+- each header has one data architecture, and it is composed of:
+```
+- pre-processing directives
+	- pragma
+	- include
+	- define
+- class
+* comments
+```
+
 2. fast access to a variable: `const type& variable`; do not do the same with the return type of a pointer function	
 
 ## Analysis of quick-sort
@@ -175,3 +188,6 @@ requirements 	none			stability		space restrictions
 - modifiers
 	- insert
 	- delete 
+
+5. typename vs class documentation regarding templates
+6. default non-static parameters are wrong

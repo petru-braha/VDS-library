@@ -45,11 +45,11 @@ public:
 	size_t getn() const;
 	void   prnt() const;
 	bool  empty() const;
-	void* collection_ptr() const; // just for the collection!
 
 	// friend functions:
 	friend T* convert(const linked_list<T>& l);
 	friend std::ostream& operator << (std::ostream& out, const linked_list<T>& l);
+	friend void* collection_ptr(const linked_list<T>& l); // just for the collection!
 };
 
-// if linked_lists would be sortable, merge_sort and quick_sort Lomuto scheme would be the obvious choice
+// if linked_lists would be sortable, merge_sort and quick_sort Lomuto scheme are the obvious choice

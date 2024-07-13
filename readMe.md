@@ -24,7 +24,10 @@
 - my documentation regarding the design of this project is all based on: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest, Cormen
 
 ### TO DO:
-- build trivial_tree, minheap, sorting algorithms 
+- array has to have as well a function for comparing...
+- review over the header, error types
+- build minheap, avl, rbt, trivial_tree
+- add predecessor, successor, minimum, maximum methods to all the data structures
 - correct my log text
 
 - design header files
@@ -32,5 +35,6 @@
 - use GLFW to display simple outputs of the operations
 
 ### Notes:
+- all my work should be modeled as "array.h"
 - SOLID principles are respected
 - current set-up: ISO C++14 Standard, VS 2022 version 17.10.4, GLFW 3.4

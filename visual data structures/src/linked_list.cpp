@@ -280,12 +280,6 @@ bool linked_list<T>::empty() const
 	return n == 0;
 }
 
-template <class T>
-void* linked_list<T>::collection_ptr() const
-{
-	return (void*)frst;
-}
-
 //------------------------------------------------
 // friend functions:
 
@@ -310,4 +304,10 @@ std::ostream& operator << (std::ostream& out, const linked_list<T>& l)
 	}
 
 	return out;
+}
+
+template <class T>
+void* collection_ptr(const linked_list<T>& l)
+{
+	return (void*)frst;
 }

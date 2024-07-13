@@ -1,2 +1,23 @@
-﻿  convoluted.cpp
+﻿  array_sorting.cpp
+  test.cpp
+A:\projects\active\portfolio\data structures\visual data structures\test\array_tests.h(12,30): warning C4267: 'argument': conversion from 'size_t' to 'const int', possible loss of data
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(63,29): warning C4267: 'argument': conversion from 'size_t' to 'const T', possible loss of data
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(63,29): warning C4267:         with
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(63,29): warning C4267:         [
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(63,29): warning C4267:             T=int
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(63,29): warning C4267:         ]
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(66,27): warning C4267: '=': conversion from 'size_t' to 'T', possible loss of data
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(66,27): warning C4267:         with
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(66,27): warning C4267:         [
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(66,27): warning C4267:             T=int
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(66,27): warning C4267:         ]
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(69,22): warning C4267: '=': conversion from 'size_t' to 'T', possible loss of data
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(69,22): warning C4267:         with
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(69,22): warning C4267:         [
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(69,22): warning C4267:             T=int
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(69,22): warning C4267:         ]
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(139,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+A:\projects\active\portfolio\data structures\visual data structures\src\array_sorting.cpp(143,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+x64\Debug\node_avlt.obj : warning LNK4042: object specified more than once; extras ignored
   visual data structures.vcxproj -> A:\projects\active\portfolio\data structures\x64\Debug\visual data structures.exe

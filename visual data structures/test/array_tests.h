@@ -1,5 +1,5 @@
 #pragma once
-#include "array.cpp"
+#include "array.h"
 #include "convoluted.h"
 
 //------------------------------------------------

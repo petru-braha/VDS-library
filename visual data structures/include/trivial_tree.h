@@ -5,15 +5,17 @@ enum traversal_types
 {
     bfs,
     preorder,
-    inorder, // default
+    inorder,
     postorder
 };
 
 template <class T>
 class trivial_tree // designed to have more control over a fictive tree
 {
+	typedef trivial_tree<T> tree;
 	typedef node_trivial_tree<T>* ptr;
 protected:
+	// data members:
 	size_t n;
 	ptr root;
 public:
@@ -22,9 +24,8 @@ public:
 	trivial_tree(const std::initializer_list<T>& val, const short& traversal_method = bfs, const short& arity = 2);
 	trivial_tree(T* val, const short& traversal_method = bfs, const short& arity = 2);
 	trivial_tree(const tree<T>& t);
-	//trivial_tree(const tree<T>&& t);
+	trivial_tree(const tree<T>&& t);
     ~trivial_tree();
-
 
 	// specific methods:
 	trivial_tree<T>& operator = (const trivial_tree<T>& t);
@@ -42,5 +43,10 @@ public:
 	
 	size_t height(ptr& parent = root) const;
 	bool complete(ptr& parent = root) const;
+
+	// friend functions:
+	friend T* convert(const tree& t);
+	friend std::ostream& operator << (std::ostream& out, const tree& t);
+	friend void* collection_ptr(const tree& t); // just for the collection!
 };
 

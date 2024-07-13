@@ -2,8 +2,8 @@
 #include "pch.h"
 #include "bureaucracy.h"
 #include "minheap.h"
-#include "queue.cpp"
-
+//#include "queue.cpp"
+/*
 template <class T>
 void swap(node_tree<T>*& one, node_tree<T>*& two)
 {
@@ -333,3 +333,4 @@ void minheap<T>::insert(const T& value)
 
 //------------------------------------------------
 // friend functions:
+*/

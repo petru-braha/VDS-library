@@ -59,6 +59,7 @@
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>$(SolutionDir)\visual data structures\src;$(SolutionDir)\visual data structures\include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>26495</DisableSpecificWarnings>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -93,6 +94,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(SolutionDir)\visual data structures\src;$(SolutionDir)\visual data structures\include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>26495</DisableSpecificWarnings>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -107,36 +109,44 @@
     <ClInclude Include="include\adaptor.h" />
     <ClInclude Include="include\array.h" />
     <ClInclude Include="include\array_sorting.h" />
+    <ClInclude Include="include\avl.h" />
     <ClInclude Include="include\bureaucracy.h" />
     <ClInclude Include="include\linked_list.h" />
     <ClInclude Include="include\maxheap.h" />
-    <ClInclude Include="include\minheap.h" />
     <ClInclude Include="include\node\node.h" />
     <ClInclude Include="include\node\node_list.h" />
-    <ClInclude Include="include\node\node_tree.h" />
+    <ClInclude Include="include\node\node_bint.h" />
+    <ClInclude Include="include\node\node_rb_t.h" />
     <ClInclude Include="include\node\node_trivial_tree.h" />
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\queue.h" />
     <ClInclude Include="include\stack.h" />
     <ClInclude Include="include\convoluted.h" />
-    <ClInclude Include="include\tree.h" />
+    <ClInclude Include="include\special_binary_tree.h" />
     <ClInclude Include="include\trivial_tree.h" />
     <ClInclude Include="src\linked_list.cpp" />
     <ClInclude Include="test\array_tests.h" />
+    <ClInclude Include="test\avl_tests.h" />
     <ClInclude Include="test\glfw_tests.h" />
     <ClInclude Include="test\linked_list_tests.h" />
     <ClInclude Include="test\maxheap_tests.h" />
     <ClInclude Include="test\trivial_tree_tests.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\array.cpp" />
+    <ClCompile Include="include\node\node_avlt.h" />
     <ClCompile Include="src\array_sorting.cpp" />
+    <ClCompile Include="src\avl.cpp" />
     <ClCompile Include="src\convoluted.cpp" />
     <ClCompile Include="src\maxheap.cpp" />
-    <ClCompile Include="src\minheap.cpp" />
+    <ClCompile Include="src\node\node.cpp" />
+    <ClCompile Include="src\node\node_avlt.cpp" />
+    <ClCompile Include="src\node\node_bint.cpp" />
+    <ClCompile Include="src\node\node_list.cpp" />
+    <ClCompile Include="src\node\node_rb_t.cpp" />
+    <ClCompile Include="src\node\node_trivial_tree.cpp" />
     <ClCompile Include="src\queue.cpp" />
     <ClCompile Include="src\stack.cpp" />
-    <ClCompile Include="src\tree.cpp" />
+    <ClCompile Include="src\special_binary_tree.cpp" />
     <ClCompile Include="src\trivial_tree.cpp" />
     <ClCompile Include="test\test.cpp" />
     <ClCompile Include="test\pch.cpp">

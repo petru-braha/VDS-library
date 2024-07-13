@@ -1,11 +1,14 @@
 #pragma once
-#include "node.h"
+#include "node/node.cpp"
 
-template <class T = int>
+template <class T>
 class node_list : public node<T>
 {
 public:
+	// auxiliar utility:
 	node_list<T>* next;
-	node_list(const T& val = NULL) : node<T>(val), next(nullptr) {}
-	~node_list() {}
+
+	// constructors:
+	node_list(const T& value = NULL);
+	~node_list();
 };

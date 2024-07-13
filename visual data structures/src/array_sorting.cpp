@@ -59,7 +59,8 @@ void array_sorting<T>::insrs(T*& arr, szt n, bool (*f)(type, type))
 	for (size_t i = 1; i < n; i++)
 	{
 		key = arr[i];
-		for (size_t j = i - 1; f(arr[j], key); j--)
+		size_t j = NULL;
+		for (j = i - 1; f(arr[j], key); j--)
 		{
 			arr[j + 1] = arr[j];
 			if (j == 0) { arr[j] = key; break; }
@@ -75,7 +76,7 @@ template <class T>
 void array_sorting<T>::merge(T*& arr, size_t one_index_left, size_t one_index_rght, size_t two_index_left, size_t two_index_rght)
 {
 	size_t index_temp = 0, n_temp = two_index_rght - one_index_left;
-	T* temp_array = new T[n];
+	T* temp_array = new T[n_temp];
 
 	while (one_index_left < one_index_rght && two_index_left < two_index_rght)
 	{
@@ -95,7 +96,7 @@ void array_sorting<T>::merge(T*& arr, size_t one_index_left, size_t one_index_rg
 		temp_array[index_temp++] = arr[one_index_left];
 	for(; two_index_left > two_index_rght; two_index_left++)
 		temp_array[index_temp++] = arr[two_index_left];
-	for (size_t i = 0; i < n; i++)
+	for (size_t i = 0; i < n_temp; i++)
 		arr[i + one_index_left] = temp_array[i];
 	delete[]temp_array;
 }
@@ -108,7 +109,7 @@ void array_sorting<T>::mrges(T*& arr, szt left, szt rght, bool (*f)(type, type))
 	size_t index_middle = left + (rght - left) / 2;
 	mrges(arr, left, index_middle);
 	mrges(arr, index_middle + 1, rght);
-	merge(left, index_middle + 1, index_middle + 1, rght + 1);
+	merge(arr, left, index_middle + 1, index_middle + 1, rght + 1);
 }
 
 //------------------------------------------------

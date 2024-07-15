@@ -146,15 +146,6 @@ requirements 	none			stability		space restrictions
 
 3. why maxheap does not inherit array? no matching methods
 
-4. about node_tree class - i had multiple approaches
-- preprocessing
-- the number of child nodes in template
-	- this strategy was automatically implying that children had to have the same number of children as their parent (no more/less)
-	- one solution was to define children as "node<T>*" and not "node_tree<T, nr_children>": by some verifications i realised this method was not reliable 
-- the number of child nodes non-existent, just in the constructor
-- the number of child nodes as a data member (x)
-- there is a lot more to talk about here !!!!!!!!!!!!!!!!
-
 5. iterator class defined inside of the class that uses it
 - no definitions of methods are allowed in header files for final types 
 
@@ -191,3 +182,20 @@ requirements 	none			stability		space restrictions
 
 5. typename vs class documentation regarding templates
 6. default non-static parameters are wrong
+
+4. about trees - i had multiple approaches
+
+- i was avoiding creating extra data members for small classes like node.
+
+- preprocessing - wrong
+- the number of child nodes in template
+	- this strategy was automatically implying that children had to have the same number of children as their parent (no more/less)
+	- one solution was to define children as "node<T>*" and not "node_tree<T, nr_children>": by some verifications i realised this method was not reliable 
+- the number of child nodes non-existent, just in the constructor
+- the number of child nodes as a data member (x)
+- there is a lot more to talk about here !!!!!!!!!!!!!!!!
+
+- problem - node_avlt was inheriting node_bint pointers!
+- solution - each class has its children
+- each type of tree has its own type of node
+- static polymorphism 

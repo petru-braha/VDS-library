@@ -1,5 +1,5 @@
 #pragma once
-#include "avl.cpp"
+#include "avl.h"
 
 //------------------------------------------------
 // primitives:

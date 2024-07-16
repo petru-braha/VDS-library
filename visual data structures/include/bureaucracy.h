@@ -10,4 +10,6 @@
 
 #define FOR(n) for(size_t i = 0; i < n; i++)
 
+typedef signed char bit;
+
 // to be considered as global header

@@ -1,20 +1,21 @@
 ## Classes of errors:
-- eazy (prints message) - used only in testing
+- easy (prints message) - used only in testing
 - hard (prints message and throw -1) - queries of the structure
 - fatal(prints message and exit) - modifiers of the structure
 
 - how to decide which types of errors matches our needs?
 
 ```
-types of errors		eazy 	hard 	fatal
+types of errors		easy 	hard 	fatal
 1. bad index 			x	x
 2. unallocated space 		x
-3. nothing to shift 		x
+3. empty			x
+3. empty - shift 		x
 4. no more memory		x	
 5. wrong parameters		x	
 6. bad node			x
 7. incompatible data    	x
-8. no data - empty		x
+8. 				x
 ```
 
 ## What should we test?
@@ -199,3 +200,11 @@ requirements 	none			stability		space restrictions
 - solution - each class has its children
 - each type of tree has its own type of node
 - static polymorphism 
+
+- https://www.cs.usfca.edu/~galles/visualization/source.html is my inspiration. the look of this project will be simpler 
+
+- class template == template<class t> class number
+- template class == number<int>
+- https://www.learncpp.com/cpp-tutorial/class-templates-with-member-functions/ 
+
+- non-recursive inorder traversal - requires a stackx

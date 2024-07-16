@@ -20,7 +20,7 @@ public:
 	void set(const T& value);
 
 	// constant methods:
-	T		get() const;
+	T&		get() const;
 	size_t  get_arity() const;
 };
 
@@ -51,9 +51,9 @@ void node<T, node_type, arity>::set(const T& value)
 // constant methods:
 
 template <class T, typename node_type, size_t arity>
-T node<T, node_type, arity>::get() const
+T& node<T, node_type, arity>::get() const
 {
-	return data;
+	return (T&)data;
 }
 
 template <class T, typename node_type, size_t arity>

@@ -8,7 +8,7 @@ class node_rb_t : node<T, node_rb_t<T>, 2>
 	bool color;
 public:
 	// constructors:
-	node_rb_t(const T& value, const bool& color = NULL);
+	node_rb_t(const T& value = NULL, const bool& color = NULL);
 	~node_rb_t();
 
 	// specific methods:

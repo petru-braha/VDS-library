@@ -6,7 +6,7 @@ class node_list : public node<T, node_list<T>, 1>
 {
 public:
 	// constructors:
-	node_list(const T& value);
+	node_list(const T& value = NULL);
 	~node_list();
 };
 

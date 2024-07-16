@@ -9,7 +9,7 @@ class node_avlt : public node<T, node_avlt<T>, 2>
 public:
 	// constructors:
 	~node_avlt();
-	node_avlt(const T& value);
+	node_avlt(const T& value = NULL);
 
 	// specific methods:
 	void set_height(const size_t& value);

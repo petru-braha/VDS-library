@@ -37,4 +37,4 @@
 ### Notes:
 - all my work should be modeled as "array.h"
 - SOLID principles are respected
-- current set-up: ISO C++14 Standard, VS 2022 version 17.10.4, GLFW 3.4
+- current set-up: ISO C++17 Standard, VS 2022 version 17.10.4, GLFW 3.4

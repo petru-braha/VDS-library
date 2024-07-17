@@ -2,10 +2,11 @@
 #include "linked_list.h"
 #include <initializer_list>
 
-template <class T = int>
+template <class T>
 class adaptor
 {
 protected:
+	// data members:
 	linked_list<T> values;
 public:
 	//constructors:

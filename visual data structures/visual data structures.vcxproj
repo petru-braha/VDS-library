@@ -106,13 +106,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\adaptor\adaptor.h" />
-    <ClInclude Include="include\array.h" />
+    <ClInclude Include="include\adaptor.h" />
+    <ClInclude Include="include\collection.h" />
+    <ClInclude Include="src\array.h" />
     <ClInclude Include="include\array_sorting.h" />
-    <ClInclude Include="include\avl.h" />
+    <ClInclude Include="src\avl.h" />
     <ClInclude Include="include\bureaucracy.h" />
-    <ClInclude Include="include\linked_list.h" />
-    <ClInclude Include="include\maxheap.h" />
+    <ClInclude Include="src\linked_list.h" />
     <ClInclude Include="include\node\node.h" />
     <ClInclude Include="include\node\node_avlt.h" />
     <ClInclude Include="include\node\node_bint.h" />
@@ -120,11 +120,10 @@
     <ClInclude Include="include\node\node_rb_t.h" />
     <ClInclude Include="include\node\node_trivial_tree.h" />
     <ClInclude Include="include\pch.h" />
-    <ClInclude Include="include\adaptor\queue.h" />
-    <ClInclude Include="include\adaptor\stack.h" />
+    <ClInclude Include="src\queue.h" />
+    <ClInclude Include="src\stack.h" />
     <ClInclude Include="include\convoluted.h" />
     <ClInclude Include="include\tree.h" />
-    <ClInclude Include="include\trivial_tree.h" />
     <ClInclude Include="test\array_tests.h" />
     <ClInclude Include="test\avl_tests.h" />
     <ClInclude Include="test\glfw_tests.h" />
@@ -135,10 +134,6 @@
     <ClInclude Include="test\trivial_tree_tests.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\array_sorting.cpp" />
-    <ClCompile Include="src\convoluted.cpp" />
-    <ClCompile Include="src\maxheap.cpp" />
-    <ClCompile Include="src\trivial_tree.cpp" />
     <ClCompile Include="test\test.cpp" />
     <ClCompile Include="test\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -1,24 +1,42 @@
-## Classes of errors:
-- easy (prints message) - used only in testing
+### Administrative:
+
+- "*" == optional attribute 
+- "-" == imperative attribute
+- this work is intended to be used by a "client", called from now on "user". the content here is assumed to stay unchanged and to be viewed as an utility.
+
+## I. Errors:
+
+1. classes:
+- easy (prints message) - used only in testing/by user
 - hard (prints message and throw -1) - queries of the structure
-- fatal(prints message and exit) - modifiers of the structure
+- fatal(prints message and exit) - modifiers and constructors of the structure
 
-- how to decide which types of errors matches our needs?
+2. which types of errors matches our needs?
+- potential inaccuracy of programmer's logic will be treated by the first class of faults. it's not their responsibility to treat an issue of the project; they exists only for the usage of this code.
+- even if queries are constant functions, they preserve a potential role for build compounded applications. in exceptional cases, they can't determine a solution and the program has to stop. allowing undefined behavior, more elaborated processes won't give the expected output. so, a "hard_error" takes care of this situation with well defined exceptions.
+- the job of a "fatal_error" is to kill the process. it is not optimal for the program to exit (data leakage), but there are some stages of a data structure when it interacts with outdoor types(std::initializer_list and blocks of memory). it has no control over the behavior of those types and can not manipulate how they are allocated/aligned. so, blindly will execute the modifiers, but will ask for some 
+information about itself (it has control over itself). in case of problems (unallocated memory, exceeded capacity), it exits. 
+- small reminder for the user: before an modifying operation, please check if the parameter is valid. a fatal error is a handler whenever this advice is discounted; should never be called!
 
+3. exemples:
+- hard error: linked_list<> numbers; /*empty list*/ std::cout << numbers.successor(1); 
+- fatal error: array<> numbers(1); numbers.insert(1); numbers.insert(1); // the second call generates a fatal handler
+
+4. list of defined exceptions:
 ```
 types of errors		easy 	hard 	fatal
-1. bad index 			x	x
-2. unallocated space 		x
-3. empty			x
-3. empty - shift 		x
-4. no more memory		x	
+1. unallocated space 		x	x
+2. no more memory		x	x
+3. empty			x	x
+4. empty - shift 		x	x
 5. wrong parameters		x	
-6. bad node			x
-7. incompatible data    	x
-8. 				x
+6. bad index 			x	
+7. bad node			x
+8. incompatible data    	x	x
+* the occurrence of any other exception, not defined here, is a mistake
 ```
 
-## What should we test?
+## II. What to test?
 
 1. it's indispensable to take into account the templatized system. our general design accepts any **well defined type**. thus testing arrangements of primitives has to be accompanied by verifying the same properties with special and complex types. for simplicity sake, in this project, only one complex type is used in this reasoning.
 
@@ -54,39 +72,51 @@ types of errors		easy 	hard 	fatal
 	- there is a test for all friend functions
 	- there is a test for correct error prompts (assuming the only types of errors that can exist are those created by us)
 
-## Data structures themselves:
+## III. File format: 
 
-1. implementation
-- each data structure will contain the following categories:
+1. directories explained:
+- "packages" directory - Google Testing files
+- "visual data structure" directory
+	- "include" directory 
+		- GLFW headers
+		- general header ("bureaucracy.h")
+		- all the headers used in the implementation of the data structures (such as interfaces)
+	- "lib" directory - GLFW library and its dll
+	- "src" directory - just the data structures' headers
+	- "test" directory - a testing file for each data structure, "pch.cpp", and main file ("test.cpp")
+	- additional files - VS configuration files
+- additional information
+	- text files
+	- diagram of classes
+
+2. Data structure implementation header:
 ```
+- pre-processing directives:
+	- pragma
+	- include
+	* define
+
+- class:
 private:
-	- typedefs
+	* typedefs
 	
 protected:
 	- data members
 	- iterator concept
-	* auxiliar methods (e. g. left_rotation)
+	* auxiliar utility (e. g. left_rotation, extra data members, comparing method)
 	
 public:
-	* auxiliar utility (extra data members)
 	- constructors 
 	- iterator methods (e. g. begin, end)
 	- specific methods (e. g. insert, remove)
 	- query operations (e. g. minimum, maximum)
 	- constant methods (e. g. get, print)
-```
+	- friend functions (e. g. operator <<)
 
-- each header has one data architecture, and it is composed of:
-```
-- pre-processing directives
-	- pragma
-	- include
-	- define
-- class
-* comments
-```
+* comments:
+- implementation of class methods:
 
-2. fast access to a variable: `const type& variable`; do not do the same with the return type of a pointer function	
+```
 
 ## Analysis of quick-sort
 
@@ -116,95 +146,3 @@ requirements 	none			stability		space restrictions
 	- time  θ(n*lg(n))
 	- space θ(lg(n))
 	- smaller constant that merge sort
-
-
-## Log - all my thoughts during the process:
-
-0. the initial implementation of the heap data structure:
-- as_array: bool = false;
-- as_btree: bool = true;
-- there were 2 abstract classes: heap<T, as_array> and heap<T, as_btree>
-- maxheap and minheap were supposed to inherit a template specilised class
-
-- maxheap
-	- as_array
-	- as_btree
-- minheap
-	- as_array
-	- as_btree
-
-- there are 4 types of heaps and six classes
-
-- i've changed the plan because of the bugs about inheriting template specialised classes
-- there will be only two classes: maxheap<T> (represented as an array) and minheap<T> represented as an btree
-
-
-1. friend functions was an experiemt. they should have existed only for general classes. 
-- they are not important i will exclude them from the thinking. only the array class implements those
-- each header of a structure will contain a list of potential other useful functions that can be developed
-
-2. new discover: the bug i was tallking about ealier was about VS's intellisense, c++ does great at templates
-
-3. why maxheap does not inherit array? no matching methods
-
-5. iterator class defined inside of the class that uses it
-- no definitions of methods are allowed in header files for final types 
-
-6. the default constructor initialise the memory
-7. binary tree only if no arity is written in the constructor
-
-8. how can i make the structures interact between them? if we are able to transform types into the data composition itself and back we solved the problem. the next question will be what would be the shape of the returned primitive? it must be primitive enough such that it can be converted back to a structure, but not the most primitive, such that we can lose functionality. think of a stack of queues of ints. to retreive the data from the stack it is enough to return the top queue, and not an block of memory with ints. transforming this into code logic: for each structure there will be a transform method whick will return a block of memory, a copy of the data cotained by the data storage.
-
-9. trivial_tree is the most general tree that can be build; it can be considered a playground for a developer. the arity is variable, it might be complete or not
-
-0. SOLID principles summary:
-- S - single-responsability - each class has only one job
-- O - open-close - open to add more, don't change existent
-- L - Liskov     - behavioral subtype
-- I - interface-segregation - a derived class implements and uses all its base's methods 
-- D - dependency-inversion  - high-level modules should not depend on low level modules
-
-1. operator == and = should be implemented in the final class / instantiable classes
-
-2. prnt VS <<
-
-3. adaptor VS tree
-
-4. operations of dynamic sets
-- queries
-	- search 
-	- minimum
-	- maximum
-	- predecessor - as value
-	- successor - as value
-- modifiers
-	- insert
-	- delete 
-
-5. typename vs class documentation regarding templates
-6. default non-static parameters are wrong
-
-4. about trees - i had multiple approaches
-
-- i was avoiding creating extra data members for small classes like node.
-
-- preprocessing - wrong
-- the number of child nodes in template
-	- this strategy was automatically implying that children had to have the same number of children as their parent (no more/less)
-	- one solution was to define children as "node<T>*" and not "node_tree<T, nr_children>": by some verifications i realised this method was not reliable 
-- the number of child nodes non-existent, just in the constructor
-- the number of child nodes as a data member (x)
-- there is a lot more to talk about here !!!!!!!!!!!!!!!!
-
-- problem - node_avlt was inheriting node_bint pointers!
-- solution - each class has its children
-- each type of tree has its own type of node
-- static polymorphism 
-
-- https://www.cs.usfca.edu/~galles/visualization/source.html is my inspiration. the look of this project will be simpler 
-
-- class template == template<class t> class number
-- template class == number<int>
-- https://www.learncpp.com/cpp-tutorial/class-templates-with-member-functions/ 
-
-- non-recursive inorder traversal - requires a stackx

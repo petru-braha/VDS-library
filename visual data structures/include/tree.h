@@ -1,8 +1,9 @@
 #pragma once
 #include "bureaucracy.h"
+#include "node/node_bint.h"
 #include "node/node_avlt.h"
 #include "node/node_rb_t.h"
-#include "queue.h" // for bfs traversal
+#include "queue.h" // bfs traversal
 
 enum traversal_types
 {

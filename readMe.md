@@ -3,17 +3,16 @@
 ## Goal:
 - to apply and understand the theory learned
 - to learn GLFW and to display the result in an intuitive way
-- the focus of my study does not imply the development of containers and adaptors 
+- to actually have my own implemented library of utilities
 
 ## List of the data structures in my project:
 1. array
-2. linked_list
+2. linked list
 3. stack, queue
 4. maxheap, minheap
-5. tree, AVL, red_black_tree, trie
-6. graph, collection()
-7. hash-map(chaining, open-addressing)
-*  trivial_tree
+5. tree, AVL tree, red black tree, trie
+6. graph, collection
+7. map
 
 ## Technologies used:
 - C/C++
@@ -21,20 +20,12 @@
 - OPENGL
 - GLFW library
 
-- my documentation regarding the design of this project is all based on: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest, Cormen
-
-### TO DO:
-- array has to have as well a function for comparing...
-- review over the header, error types
-- build minheap, avl, rbt, trivial_tree
-- add predecessor, successor, minimum, maximum methods to all the data structures
-- correct my log text
-
-- design header files
-- design logically all the structures needed
-- use GLFW to display simple outputs of the operations
-
 ### Notes:
-- all my work should be modeled as "array.h"
-- SOLID principles are respected
-- current set-up: ISO C++17 Standard, VS 2022 version 17.10.4, GLFW 3.4
+- read the md files in the following order:
+	1. README
+	2. wiki
+	3. log
+- the focus of my study does not imply the development of containers and adaptors 
+- my documentation is from: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest and Cormen
+- S.O.L.I.D. principles are respected
+- current set-up: ISO C++17 Standard, VS 2022 version 17.10.4, GLFW 3.4 (see more on the wiki page)

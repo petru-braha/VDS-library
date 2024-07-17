@@ -8,6 +8,10 @@
 template <class T = int>
 class array
 {
+	// typedefs:
+	typedef const T& type;
+	typedef bool (*fct)(type, type);
+
 	// data members:
 	size_t n;	// its purpose is just to allocate space
 	size_t last;// gurantees that elements selected by user are initialised contiguously // index of the last concrete value
@@ -25,7 +29,8 @@ class array
 		bool	operator!=(const iterator& two) const;
 	};
 
-	// auxiliar methods:
+	// auxiliar utility:
+	fct  compare;
 	void shift_left(const size_t& left_position);
 public:
 	// constructors:
@@ -42,8 +47,9 @@ public:
 
 	// specific methods:
 	array<T>& operator = (const array<T>& arr);
-	void sort(const int& algorithm = quick_sort, bool (*f)(const T&, const T&) = nullptr);
-	void insert(const T& value, const size_t& index = last + 1);
+	void setf(fct f);
+	void sort(const int& algorithm = quick_sort);
+	void insert(const T& value, const size_t& index);
 	void remove(const size_t& index);
 	void remove(const T& value, const bool& all = false);
 	
@@ -59,6 +65,7 @@ public:
 	T& operator [] (const size_t& index) const; // get / replace method, shift to the left until there is no more empty space
 	size_t getn() const;
 	size_t getl() const;
+	void*  getf() const;
 	void   prnt() const;
 	bool  empty() const;
 
@@ -202,9 +209,14 @@ array<T>& array<T>::operator = (const array<T>& arr)
 		this->values[++last] = i;
 }
 
-#include "array_sorting.cpp"
 template <class T>
-void array<T>::sort(const int& algorithm, bool (*f)(const T&, const T&))
+void array<T>::setf(fct f)
+{
+	this->compare = &f;
+}
+
+template <class T>
+void array<T>::sort(const int& algorithm)
 {
 	if (f == nullptr) f = [](const T& x, const T& y)->bool { return x > y; };
 	array_sorting<T>* sort_job = array_sorting<T>::get_instance();
@@ -404,6 +416,13 @@ size_t array<T>::getl() const
 {
 	return last;
 }
+
+template <class T>
+void* array<T>::getf() const
+{
+	return (void*)this->compare;
+}
+
 
 template <class T>
 void  array<T>::prnt() const

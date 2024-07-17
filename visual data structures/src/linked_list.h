@@ -7,6 +7,10 @@
 template <class T = int>
 class linked_list
 {
+	// typedef
+	typedef const T& type;
+	typedef bool (*fct)(type, type);
+
 	// data members:
 	node_list<T>* frst, * last;
 	size_t n;
@@ -24,6 +28,8 @@ class linked_list
 		bool operator != (const iterator& two) const;
 	};
 
+	// auxiliar utility:
+	//fct compare();
 public:
 	// constructors:
 	~linked_list();

@@ -1,15 +1,77 @@
 #pragma once
-#include "pch.h"
 #include "bureaucracy.h"
 #include <initializer_list>
-#include "maxheap.h"
 
-template <class T>
-void maxheap<T>::arrange()
+#define default_heap_size 100
+
+template <class T = int>
+class maxheap
 {
-	for (int i = (last + 1) / 2 - 1; i >= 0; i--) 
-		heapify(last + 1, i);
-}
+	// typedefs:
+	typedef const T& type;
+	typedef bool (*fct)(type, type);
+
+	// data members:
+	size_t n;
+	size_t last;
+	T* values;
+
+	// iterator concept:
+	class iterator
+	{
+		T* value;
+	public:
+		iterator(T* val);
+
+		T		operator * () const;
+		void	operator ++();
+		bool	operator !=(const iterator& two) const;
+	};
+
+	// auxiliar utility:
+	fct  compare;
+	void heapify(const size_t& nnn, const size_t& index); // we need f here
+	void arrange();
+public:
+	// constructors:
+	~maxheap();
+	maxheap(const size_t& n = default_heap_size);
+	maxheap(const std::initializer_list<T>& val, const size_t& n = default_heap_size, bool (*f)(type, type) = nullptr);
+	maxheap(T* val, const size_t& val_size, const size_t& n = default_heap_size, bool (*f)(type, type) = nullptr);
+	maxheap(const maxheap<T>& h);
+	maxheap(const maxheap<T>&& h);
+
+	// iterator methods:
+	iterator begin() const;
+	iterator end() const;
+
+	// specific methods:
+	maxheap<T>& operator = (const maxheap<T>& h);
+	void replce(const size_t& index, const T& value);
+	void insert(const T& value);
+	void extrct();
+	bool search(const T& value) const;
+
+	// constant methods:
+	bool operator == (const maxheap<T>& h) const;
+	size_t getn() const;
+	size_t getl() const;
+	void   prnt() const;
+	bool  empty() const;
+
+	// friend functions:
+	friend T* convert(const maxheap<T>& h);
+	friend std::ostream& operator << (std::ostream& out, const maxheap<T>& h);
+};
+
+// comments:
+// bfs traversal
+// parent(index) == floor( (index - 1) / 2 )
+// height()      == floor( log2(n) )
+// property()    == it is never broken
+
+//------------------------------------------------
+// auxiliar utility:
 
 template <class T>
 void maxheap<T>::heapify(const size_t& nnn, const size_t& index)
@@ -27,6 +89,13 @@ void maxheap<T>::heapify(const size_t& nnn, const size_t& index)
 		values[index_largest] = temp;
 		heapify(nnn, index_largest);
 	}
+}
+
+template <class T>
+void maxheap<T>::arrange()
+{
+	for (int i = (last + 1) / 2 - 1; i >= 0; i--)
+		heapify(last + 1, i);
 }
 
 //------------------------------------------------
@@ -54,10 +123,10 @@ maxheap<T>::maxheap(const std::initializer_list<T>& val, const size_t& n, bool (
 {
 	this->f = f;
 	if (f == nullptr) this->f = [](type x, type y)->bool { return x > y; };
-	
+
 	this->n = n;
 	last = val.size() - 1;
-	if(last >= n)
+	if (last >= n)
 		hard_error("wrong number of elements given");
 	values = new T[n];
 
@@ -74,7 +143,7 @@ maxheap<T>::maxheap(T* val, const size_t& val_size, const size_t& n, bool (*f)(t
 {
 	this->f = f;
 	if (f == nullptr) this->f = [](type x, type y)->bool {return x > y; };
-	
+
 	this->n = n;
 	this->last = -1;
 
@@ -133,19 +202,19 @@ maxheap<T>::iterator::iterator(T* val) : value(val) {};
 template <class T>
 T maxheap<T>::iterator::operator * () const
 {
-	return *value; 
+	return *value;
 }
 
 template <class T>
-void maxheap<T>::iterator::operator ++() 
-{ 
-	value++; 
+void maxheap<T>::iterator::operator ++()
+{
+	value++;
 }
 
 template <class T>
 bool maxheap<T>::iterator::operator !=(const iterator& two) const
-{ 
-	return value != two.value; 
+{
+	return value != two.value;
 }
 
 template <class T>

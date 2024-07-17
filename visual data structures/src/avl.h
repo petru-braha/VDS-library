@@ -1,14 +1,29 @@
 #pragma once
+#include "bureaucracy.h"
 #include "tree.h"
-#include "adaptor/stack.h"
-#include "ostream"
+#include "stack.h"
+#include <ostream>
 
 template <class T = int>
 class avl : public tree<T, node_avlt<T>>
 {
 	// typedef:
+	typedef const T& type;
 	typedef node_avlt<T>* ptr;
 	
+	// iterator concept:
+	class iterator
+	{
+		ptr current;
+		stack<ptr> nodes;
+	public:
+		iterator(ptr node);
+
+		T    operator * () const;
+		void operator ++();
+		bool operator !=(const iterator& s) const;
+	};
+
 	// auxiliar methods:
 	ptr left_rotation(ptr& node);
 	ptr rght_rotation(ptr& node);
@@ -18,8 +33,12 @@ class avl : public tree<T, node_avlt<T>>
 	ptr remove_call(ptr& parent, const T& value);
 public:
 	// constructors:
-	avl(const T& value = NULL);
 	~avl();
+	avl(const T& value = NULL);
+
+	// iterator methods:
+	iterator begin() const;
+	iterator end() const;
 
 	// specific methods:
 	avl<T>& operator = (const avl<T>& t);
@@ -41,6 +60,9 @@ public:
 	friend T* convert(const avl<T>& t);
 	friend std::ostream& operator << (std::ostream& out, const avl<T>& t);
 };
+
+// comments:
+// warning: test the iterator class
 
 //------------------------------------------------
 // auxiliar methods:
@@ -216,13 +238,59 @@ template <class T>
 avl<T>::~avl() {}
 
 //------------------------------------------------
-// specific methods:
+// iterator methods:
 
 template <class T>
-avl<T>& avl<T>::operator = (const avl<T>& t)
+avl<T>::iterator::iterator(ptr node) : nodes()
 {
-
+	ptr it = node;
+	this->current = it;
+	nodes.push(it);
 }
+
+template <class T>
+T avl<T>::iterator::operator * () const
+{
+	while (current)
+	{
+		nodes.push(current);
+		current = current->successor[left_child];
+	}
+
+	current = nodes.top();
+	nodes.pop();
+	return current->get();
+}
+
+template <class T>
+void avl<T>::iterator::operator ++ ()
+{
+	current = current->successor[rght_child];
+}
+
+template <class T>
+bool avl<T>::iterator::operator != (const iterator& s) const
+{
+	return !nodes.empty() || current;
+}
+
+template <class T>
+typename avl<T>::iterator avl<T>::begin() const
+{
+	return iterator(this->root);
+}
+
+template <class T>
+typename avl<T>::iterator avl<T>::end() const
+{
+	return iterator(nullptr);
+}
+
+//------------------------------------------------
+// specific methods:
+
+//template <class T>
+//avl<T>& avl<T>::operator = (const avl<T>& t);
 
 template <class T>
 void avl<T>::insert(const T& value)

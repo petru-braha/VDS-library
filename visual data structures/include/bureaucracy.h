@@ -1,6 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
+#include <ostream>
 
 #define ERROR_CODE -1
 
@@ -10,6 +11,5 @@
 
 #define FOR(n) for(size_t i = 0; i < n; i++)
 
+typedef const size_t& szt;
 typedef signed char bit;
-
-// to be considered as global header

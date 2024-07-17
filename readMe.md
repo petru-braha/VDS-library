@@ -21,10 +21,7 @@
 - GLFW library
 
 ### Notes:
-- read the md files in the following order:
-	1. README
-	2. wiki
-	3. log
+- it is recommended to consult the wiki pages 
 - the focus of my study does not imply the development of containers and adaptors 
 - my documentation is from: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest and Cormen
 - S.O.L.I.D. principles are respected

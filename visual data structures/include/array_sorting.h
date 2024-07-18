@@ -20,7 +20,7 @@ class array_sorting // behavioral singleton
 	typedef bool (*fct)(type, type);
 	
 	// auxiliar utility:
-	fct  compare = [](type x, type y)->bool { return x > y };
+	fct  compare = [](type x, type y)->bool { return x > y; };
 	
 	void   swap(T*& arr, szt one, szt two);
 	// one, two == arrays 
@@ -79,7 +79,7 @@ array_sorting<T>* array_sorting<T>::get_instance()
 template <class T>
 void array_sorting<T>::setf(fct f)
 {
-	this->compare = &f;
+	this->compare = f;
 }
 
 template <class T>
@@ -118,7 +118,7 @@ void array_sorting<T>::seles(T*& arr, szt n)
 template <class T>
 void array_sorting<T>::insrs(T*& arr, szt n)
 {
-	size_t key = 0;
+	T key = 0;
 	for (size_t i = 1; i < n; i++)
 	{
 		key = arr[i];
@@ -191,7 +191,7 @@ void array_sorting<T>::heapify(T*& arr, szt n, szt index)
 	if (index != index_largest)
 	{
 		swap(arr, index, index_largest);
-		heapify(arr, n, index_largest, f);
+		heapify(arr, n, index_largest);
 	}
 }
 
@@ -199,11 +199,11 @@ template <class T>
 void array_sorting<T>::heaps(T*& arr, szt n)
 {
 	// build
-	for (int i = n / 2 - 1; i >= 0; i--)
+	for (long long i = (long long)n / 2 - 1; i >= 0; i--)
 		heapify(arr, n, i);
 
 	//sort
-	for (int i = n - 1; i >= 0; i--)
+	for (long long i = (long long)n - 1; i >= 0; i--)
 	{
 		swap(arr, 0, i);
 		heapify(arr, i, 0);

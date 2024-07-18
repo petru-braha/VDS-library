@@ -1,67 +1,142 @@
 #pragma once
-#include "array.h"
+#include "pch.h"
 #include "convoluted.h"
+#include "array.h"
+
+class array_evaluation : public testing::Test
+{
+    // and a lot more
+    std::initializer_list<int> a;
+protected:
+    array<> small_n;
+    array<> numbrs1;
+    array<char> letters;
+    array<float> numbrs2;
+    //array<convoluted> structures;
+public:
+    void SetUp();
+    void TearDown();
+    //test sharing
+};
+
+// here will be a function dedicated to visualisation with no other testing
+TEST(array_evaluation, initialisation)
+{
+    EXPECT_TRUE(0 == 0);
+}
+
 
 //------------------------------------------------
-// primitives:
+// tests:
 
-TEST(array_p, initialisation) 
+
+// sort
+// insert__remove
+
+// query operations
+// constant methods
+// friend functions
+
+// errors
+
+
+
+/*
+old code:
+
+TEST(array_p, initialisation)
 {
-    size_t n = 10;
-    std::initializer_list<int> sane = { 10, 20, 30, 40, 50 };
-    array<int> people = (sane, n);
-    EXPECT_EQ(people.getn(), n);
-    for (int i = 0; i < people.getl() + 1; i++)
-        EXPECT_EQ(people[i], *(sane.begin() + i));
+    array<> number1;
+    array<> numbers = { 5111, 4, 3, 2, 1 };
 
-    //ASSERT_EXIT(a[n], ::testing::ExitedWithCode(EXIT_FAILURE), "fail");
+    std::initializer_list<char> letters = { 'd' , 'c', 'j', '2' };
+    array<char> word = (letters, 5);
+
+    array<float> fnr = { -1, 4.05f, 22, 0 };
+    array<float> fn2 = fnr;
+    array<float>* fn4 = new array<float>(array<float>(fn2));
+    delete fn4;
+
+    array<> numbrs2 = { 1 };
+    numbrs2 = numbers;
+    EXPECT_EQ(numbrs2[0], 5111);
+    EXPECT_EQ(numbrs2[4], 1);
 }
 
+//------------------------------------------------
 // specific methods:
 
-TEST(array_p, sorting_bubbl) {
-    array<> numbers = { 5111, 4, 3, 2, 1 };
-    numbers.sort(bubble_sort);
-    FOR(numbers.getl())
-        ASSERT_TRUE(numbers[i] <= numbers[i + 1]);
-}
-
-TEST(array_p, sorting_quick) {
-    array<> numbers = { 5111, 4, 3, 2, 1 };
-    numbers.sort();
-    FOR(numbers.getl())
-        ASSERT_TRUE(numbers[i] <= numbers[i + 1]);
-}
-
-// specific methods end;
-
-
-/*array<T>& operator = (const array<T>&arr);
-    void sort(const int& algorithm = quick_sort, bool (*f)(const T&, const T&) = nullptr);
-    void insert(const T & value, const size_t & index = last + 1);
-    void remove(const size_t & index);
-    void remove(const T & value, const bool& all = false);
-    bool search(const T & value) const; // used for crossng
-*/
-
-TEST(array_p, constant_methods)
+TEST(array_p, sorting_bubbs)
 {
-    /*bool operator == (const array<T>&arr) const;
-    T& operator [] (const size_t& index) const; // get / replace method, shift to the left until there is no more empty space
-    size_t getn() const;
-    size_t getl() const;
-    void   prnt() const;
-    bool  empty() const;*/
-
+    array<> numbers = { 5111, 4, -3, 2, 1, 1, -(-5) };
+    EXPECT_NO_THROW(numbers.sort(bubble_sort));
+    FOR(numbers.getl())
+        EXPECT_TRUE(numbers[i] <= numbers[i + 1]);
 }
 
-TEST(array_p, friend_functions)
+TEST(array_p, sorting_seles)
 {
-    /*T* convert(const array<T>&arr);
-    array<T> linking(const array<T>&one, const array<T>&two);
-    void		ejectin(const array<T>&one, const array<T>&two);
-    array<T> crossng(const array<T>&one, const array<T>&two);
-    std::ostream& operator << (std::ostream & out, const array<T>&arr);*/
+    array<size_t> numbers = { 0, 0, 0, ULLONG_MAX, LLONG_MAX, USHRT_MAX };
+    EXPECT_NO_THROW(numbers.sort(selection_sort));
+    FOR(numbers.getl())
+        EXPECT_TRUE(numbers[i] <= numbers[i + 1]);
+}
+
+TEST(array_p, sorting_insrs)
+{
+    array<char> numbers = { 'a', 'b', 'a' };
+    EXPECT_NO_THROW(numbers.sort(insertion_sort));
+    FOR(numbers.getl())
+        EXPECT_TRUE(numbers[i] <= numbers[i + 1]);
+}
+
+TEST(array_p, sorting_mrges)
+{
+    array<float> numbers = { -INT16_MAX, -5.06f , -5.04f , -5.05f , 0, 0, 12, INT16_MAX };
+    EXPECT_NO_THROW(numbers.sort(merge_sort));
+    FOR(numbers.getl())
+        EXPECT_TRUE(numbers[i] <= numbers[i + 1]);
+    //EXPECT_LE
+}
+
+TEST(array_p, sorting_heaps)
+{
+    array<> numbers = { -1, -1, -11, 22, LONG_MIN, LONG_MAX };
+    EXPECT_NO_THROW(numbers.sort(heap_sort));
+    FOR(numbers.getl())
+        EXPECT_TRUE(numbers[i] <= numbers[i + 1]);
+}
+
+TEST(array_p, sorting_qucks)
+{
+    array<float> numbers = { -55, 1.02f, 1.03f, 1, 0, 1.001f };
+    EXPECT_NO_THROW(numbers.sort());
+    FOR(numbers.getl())
+        EXPECT_TRUE(numbers[i] <= numbers[i + 1]);
+}
+
+TEST(array_p, insert)
+{
+    array<> numbers;
+    numbers.insert(1, 0);
+    numbers.insert(2, 0);
+    numbers.insert(444, 2);
+    numbers.insert(646, 2);
+    numbers.insert(646, 3);
+    EXPECT_EQ(numbers[0], 2);
+    EXPECT_EQ(numbers[1], 1);
+    EXPECT_EQ(numbers[2], 646);
+    EXPECT_EQ(numbers[3], 646);
+    EXPECT_EQ(numbers[4], 444);
+}
+
+TEST(array_p, remove)
+{
+    array<> numbers;
+    numbers.insert(1, 0);
+    numbers.insert(2, 0);
+    EXPECT_EQ(numbers[0], 2);
+    EXPECT_EQ(numbers[1], 1);
 }
 
 TEST(array_p, defined_errors)
@@ -73,9 +148,12 @@ TEST(array_p, defined_errors)
 }
 
 //------------------------------------------------
+//------------------------------------------------
 // convoluted types:
 
 TEST(array_c, initialisation)
 {
 
 }
+
+*/

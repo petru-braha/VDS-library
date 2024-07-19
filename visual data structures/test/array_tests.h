@@ -2,28 +2,23 @@
 #include "pch.h"
 #include "convoluted.h"
 #include "array.h"
+#include "trial_test_values.h"
 
 class array_evaluation : public testing::Test
 {
     // and a lot more
-    std::initializer_list<int> a;
+    //std::initializer_list<int> a;
 protected:
-    array<> small_n;
-    array<> numbrs1;
-    array<char> letters;
-    array<float> numbrs2;
+    //array<> small_n;
+    //array<> numbrs1;
+    //array<char> letters;
+    //array<float> numbrs2;
     //array<convoluted> structures;
 public:
-    void SetUp();
-    void TearDown();
+    void SetUp() {}
+    void TearDown() {}
     //test sharing
 };
-
-// here will be a function dedicated to visualisation with no other testing
-TEST(array_evaluation, initialisation)
-{
-    EXPECT_TRUE(0 == 0);
-}
 
 
 //------------------------------------------------

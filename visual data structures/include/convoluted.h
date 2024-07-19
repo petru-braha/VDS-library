@@ -9,9 +9,9 @@ class convoluted
 	char* address2;
 public:
 	// constructors:
-	convoluted(const int& number, bool& one, const char*& two);
-	convoluted(int null = NULL);
 	~convoluted();
+	convoluted(int number, bool one, const char* two);
+	convoluted(int null = NULL);
 	
 	// specific methods: 
 	void set_number(const int& value);
@@ -38,6 +38,12 @@ public:
 //------------------------------------------------
 // constructors:
 
+convoluted::~convoluted()
+{
+	if (address2)
+		delete[]address2;
+}
+
 bool letter(const char& character)
 {
 	if (character < 'A' || character > 'z')
@@ -47,7 +53,7 @@ bool letter(const char& character)
 	return true;
 }
 
-convoluted::convoluted(const int& number, bool& one, const char*& two) : number(number), address1(one)
+convoluted::convoluted(int number, bool one, const char* two) : number(number), address1(one)
 {
 	char* temp = new char[number];
 	for (int i = 0; i < number; i++)
@@ -64,12 +70,6 @@ convoluted::convoluted(const int& number, bool& one, const char*& two) : number(
 
 convoluted::convoluted(int null) : number(0), address1(reinterpret_cast<bool&>(null)), address2(nullptr) {}
 
-convoluted::~convoluted()
-{
-	if (address2)
-		delete[]address2;
-}
-
 //------------------------------------------------
 // specific methods: 
 
@@ -80,6 +80,10 @@ void convoluted::set_number(const int& value)
 
 bool convoluted::operator <  (const convoluted& c)
 {
+	if (address2 == nullptr)
+		return false;
+	if (c.address2 == nullptr)
+		return true;
 	return address2[0] < c.address2[0];
 }
 
@@ -90,6 +94,10 @@ bool convoluted::operator <= (const convoluted& c)
 
 bool convoluted::operator >  (const convoluted& c)
 {
+	if (address2 == nullptr)
+		return false;
+	if (c.address2 == nullptr)
+		return true;
 	return address2[0] < c.address2[0];
 }
 
@@ -100,6 +108,10 @@ bool convoluted::operator >= (const convoluted& c)
 
 bool convoluted::operator == (const convoluted& c)
 {
+	if (address2 == nullptr)
+		return false;
+	if (c.address2 == nullptr)
+		return true;
 	return address2[0] == c.address2[0];
 }
 
@@ -147,19 +159,33 @@ std::ostream& operator << (std::ostream& out, const convoluted& c)
 
 bool compare_numbr(const convoluted& one, const convoluted& two)
 {
+	if (one.number == two.number)
+		return compare_addss(one, two);
 	return one.number > two.number;
 }
 
 bool compare_addss(const convoluted& one, const convoluted& two)
 {
+	if (one.address1 == two.address1)
+		return compare_strng(one, two);
 	return one.address1 > two.address1;
 }
 
 bool compare_strng(const convoluted& one, const convoluted& two)
 {
+	// patch
+	if (one.address2 == nullptr)
+		return false;
+	if (one.address2 && two.address2 == nullptr)
+		return true;
+	
 	int minimum = one.number < two.number ? one.number : two.number;
+	int nr1 = 0, nr2 = 0;
 	for (int i = 0; i < minimum; i++)
-		if (one.address2[i] > two.address2[i])
-			return true;
-	return false;
+	{
+		nr1 += (i + 1) * one.address2[i];
+		nr2 += (i + 1) * two.address2[i];
+	}
+
+	return nr1 > nr2;
 }

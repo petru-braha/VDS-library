@@ -24,7 +24,7 @@ const convoluted obj7 = { 1, true, "z" };
 const convoluted obj8 = { 1, true, "a" };
 const convoluted obj9 = { 1, false, "a" };
 
-const std::initializer_list<convoluted> list_objects = { obj0, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8, obj9 };
+const std::initializer_list<const convoluted> list_objects = { obj0, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8, obj9 };
 const convoluted block_objects[maximum_size] = { obj0, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8, obj9 };
 
 // sorted using comparing method:

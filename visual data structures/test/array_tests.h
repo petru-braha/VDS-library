@@ -1,25 +1,37 @@
 #pragma once
-#include "pch.h"
 #include "convoluted.h"
 #include "array.h"
 #include "trial_test_values.h"
 
-class array_evaluation : public testing::Test
+class array_evaluation_p : public testing::Test
 {
-    // and a lot more
-    //std::initializer_list<int> a;
 protected:
-    //array<> small_n;
-    //array<> numbrs1;
-    //array<char> letters;
-    //array<float> numbrs2;
-    //array<convoluted> structures;
-public:
+    array<> a;
+    array<char> b;
+    array<float> c;
+    array<size_t> d;
+
     void SetUp() {}
     void TearDown() {}
     //test sharing
 };
 
+class array_evaluation_c : public testing::Test
+{
+protected:
+    array<convoluted> absolute;
+
+    void SetUp() {}
+    void TearDown() {}
+};
+
+//------------------------------------------------
+// tests:
+
+TEST_F(array_evaluation_p, dadad)
+{
+
+}
 
 //------------------------------------------------
 // tests:

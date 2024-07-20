@@ -27,3 +27,12 @@ how to test the defined errors?????
 each comparing function return true if the elements have to be changed
 
 
+
+actual design
+
+// execution direct from the terminal
+// data structure // 10 values + display construction
+// tests
+// after testing 
+// give the oportunity to insert delete and stop // 
+	

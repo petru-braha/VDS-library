@@ -32,7 +32,7 @@ actual design
 
 // execution direct from the terminal
 // data structure // 10 values + display construction
-// tests
+// tests  
 // after testing 
 // give the oportunity to insert delete and stop // 
 	

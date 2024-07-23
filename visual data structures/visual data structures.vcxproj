@@ -108,6 +108,7 @@
   <ItemGroup>
     <ClInclude Include="include\adaptor.h" />
     <ClInclude Include="include\collection.h" />
+    <ClInclude Include="include\list.h" />
     <ClInclude Include="include\trial_test_values.h" />
     <ClInclude Include="src\array.h" />
     <ClInclude Include="include\array_sorting.h" />
@@ -122,6 +123,7 @@
     <ClInclude Include="include\node\node_trivial_tree.h" />
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="src\queue.h" />
+    <ClInclude Include="src\red_black_tree.h" />
     <ClInclude Include="src\stack.h" />
     <ClInclude Include="include\convoluted.h" />
     <ClInclude Include="include\tree.h" />

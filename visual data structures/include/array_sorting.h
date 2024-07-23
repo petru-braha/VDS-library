@@ -1,7 +1,7 @@
 #pragma once
 #include "bureaucracy.h"
 
-enum
+enum sorting_algoritms
 {
 	bubble_sort,
 	selection_sort,

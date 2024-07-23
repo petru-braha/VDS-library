@@ -14,7 +14,7 @@ class array
 
 	// data members:
 	size_t n;			// its purpose is just to allocate space
-	size_t index_last;	// gurantees that elements selected by user are initialised contiguously // index of the index_last concrete value
+	loong index_last;	// gurantees that elements selected by user are initialised contiguously // index of the index_last concrete value
 	T* values;
 
 	// iterator concept:
@@ -22,7 +22,7 @@ class array
 	{
 		T* value;
 	public:
-		iterator(T* val);
+		iterator(T& val);
 
 		T		operator*() const;
 		void	operator++();
@@ -37,7 +37,7 @@ public:
 	~array();
 	array(const int& n = default_array_size);
 	array(const std::initializer_list<T>& val, const size_t& n = default_array_size);
-	array(T* val, const size_t& val_size, const size_t& n = default_array_size);
+	array(const T* val, const size_t& val_size, const size_t& n = default_array_size);
 	array(const array<T>& arr);
 	array(const array<T>&& arr);
 
@@ -45,11 +45,13 @@ public:
 	iterator begin() const;
 	iterator end() const;
 
-	// specific methods:
+	// modifier methods:
 	array<T>& operator = (const array<T>& arr);
 	void clear();
 	void setf(fct f);
-	void sort(const int& algorithm = quick_sort);
+
+	// specific methods:
+	void sort(const bit& algorithm = quick_sort);
 	void insert(const T& value, const size_t& index);
 	void remove(const size_t& index);
 	void remove(const T& value, const bool& all = false);
@@ -60,12 +62,12 @@ public:
 	size_t maximum() const;
 	size_t predcessr(const T& value) const;
 	size_t successor(const T& value) const;
+	T& operator [] (const size_t& index); // get / replace method, shift to the left until there is no more empty space
 
 	// constant methods:
 	bool operator == (const array<T>& arr) const;
-	T& operator [] (const size_t& index) const; // get / replace method, shift to the left until there is no more empty space
 	size_t getn() const;
-	size_t getl() const;
+	loong  getl() const;
 	void*  getf() const;
 	void   prnt() const;
 	bool  empty() const;
@@ -131,20 +133,16 @@ array<T>::array(const std::initializer_list<T>& val, const size_t& n)
 }
 
 template <class T>
-array<T>::array(T* val, const size_t& val_size, const size_t& n)
+array<T>::array(const T* val, const size_t& val_size, const size_t& n)
 {
 	if(val_size > n)
 		fatal_error("wrong parameters");
 	this->n = n;
-	this->index_last = -1;
+	values = new T[n];
 	
-	size_t index = 0;
-	while (index < val_size)
-	{
-		values[++index_last] = *val;
-		val++;
-		index++;
-	}
+	for (index_last = 0; index_last < val_size; index_last++)
+		values[index_last] = val[index_last];
+	index_last--;
 
 	for (size_t i = index_last + 1; i < n; i++)
 		values[i] = NULL;
@@ -181,9 +179,9 @@ array<T>::array(const array<T>&& arr)
 // iterator methods:
 
 template <class T>
-array<T>::iterator::iterator(T* val)
+array<T>::iterator::iterator(T& val)
 {
-	this->value = val;
+	this->value = &val;
 }
 
 template <class T>
@@ -201,23 +199,23 @@ void array<T>::iterator::operator ++ ()
 template <class T>
 bool array<T>::iterator::operator != (const iterator& two) const
 {
-	return (value != two.value);
+	return value != two.value;
 }
 
 template <class T>
 typename array<T>::iterator array<T>::begin() const
 {
-	return iterator(&values[0]);
+	return iterator(values[0]);
 }
 
 template <class T>
 typename array<T>::iterator array<T>::end() const
 {
-	return iterator(&values[index_last + 1]);
+	return iterator(values[index_last + 1]);
 }
 
 //------------------------------------------------
-// specific methods:
+// modifier methods:
 
 template <class T>
 array<T>& array<T>::operator = (const array<T>& arr)
@@ -236,17 +234,20 @@ void array<T>::clear()
 {
 	FOR(index_last + 1)
 		values[i] = NULL;
-	last = -1;
+	index_last = -1;
 }
 
 template <class T>
 void array<T>::setf(fct f)
 {
-	this->compare = &f;
+	this->compare = f;
 }
 
+//------------------------------------------------
+// specific methods:
+
 template <class T>
-void array<T>::sort(const int& algorithm)
+void array<T>::sort(const bit& algorithm)
 {
 	array_sorting<T>* sort_job = array_sorting<T>::get_instance();
 	sort_job->setf(this->compare);
@@ -409,12 +410,17 @@ bool array<T>::operator == (const array<T>& arr) const
 }
 
 template <class T>
-T& array<T>::operator [] (const size_t& index) const
+T& array<T>::operator [] (const size_t& index) 
 {
 	if (index >= n)
 		hard_error("bad index");
-	if (index > index_last)
+	if (index > index_last + 1)
 		hard_error("unallocated space"); // the user has to use insert, for adding a new value, not this operator
+	if (index == index_last + 1)
+	{
+		index_last++;
+		return values[index];
+	}
 
 	return values[index];
 };
@@ -426,7 +432,7 @@ size_t array<T>::getn() const
 }
 
 template <class T>
-size_t array<T>::getl() const
+loong array<T>::getl() const
 {
 	return index_last;
 }
@@ -443,6 +449,7 @@ void  array<T>::prnt() const
 {
 	FOR(index_last + 1)
 		std::cout << values[i] << ' ';
+	std::cout << '\n';
 }
 
 template <class T>

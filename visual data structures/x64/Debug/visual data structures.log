@@ -1,2 +1,7 @@
 ﻿  test.cpp
+A:\projects\active\portfolio\data structures\visual data structures\test\array_tests.h(48,9): warning C4018: '<': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\test\array_tests.h(54,9): warning C4018: '<': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(143,34): warning C4018: '<': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(235,2): warning C4018: '<': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(417,12): warning C4018: '>': signed/unsigned mismatch
   visual data structures.vcxproj -> A:\projects\active\portfolio\data structures\x64\Debug\visual data structures.exe

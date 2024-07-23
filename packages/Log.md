@@ -36,3 +36,16 @@ actual design
 // after testing 
 // give the oportunity to insert delete and stop // 
 	
+
+
+determine the categories of tests
+lists support all query operation
+
+insert and delete should not do the search!!! it is based on pointers!
+divide linked list in an abstract class to support adaptors as well : list
+
+fixtures are used only for modifier and specific methods
+
+constant methods will be tested at the same time with the specific ones
+
+for convoluted tests we will test just the default utilities. 

@@ -13,3 +13,5 @@
 
 typedef const size_t& szt;
 typedef signed char bit;
+typedef const char* text;
+typedef signed long long loong;

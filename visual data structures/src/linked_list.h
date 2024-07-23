@@ -1,6 +1,7 @@
 #pragma once
 #include "bureaucracy.h"
 #include "node/node_list.h"
+//#include "list.h"
 #include <initializer_list>
 #include <ostream>
 
@@ -10,6 +11,7 @@ class linked_list
 	// typedef
 	typedef const T& type;
 	typedef bool (*fct)(type, type);
+	typedef node_list<T>* ptr;
 
 	// data members:
 	node_list<T>* frst, * last;
@@ -28,14 +30,12 @@ class linked_list
 		bool operator != (const iterator& two) const;
 	};
 
-	// auxiliar utility:
-	//fct compare();
 public:
 	// constructors:
 	~linked_list();
-	linked_list(const T& val = NULL);
+	linked_list();
 	linked_list(const std::initializer_list<T>& val);
-	linked_list(T* val, const size_t& val_size);
+	linked_list(const T* val, const size_t& val_size);
 	linked_list(const linked_list<T>& l);
 	linked_list(const linked_list<T>&& l);
 
@@ -43,11 +43,16 @@ public:
 	iterator begin() const;
 	iterator end() const;
 
-	// specific methods:
+	// modifier methods:
 	linked_list<T>& operator = (const linked_list<T>& l);
+	void clear();
+
+	// specific methods:
 	void insert(const T& value, const size_t& index = n);
 	void remove(const T& index); // to enchance the use of the stack and queue
-	bool search(const T& value) const;
+	
+	// query operations:
+	ptr search(const T& value) const;
 
 	// constant methods:
 	bool operator == (const linked_list<T>& l) const;
@@ -64,6 +69,7 @@ public:
 
 // comments:
 // if linked_lists would be sortable, merge_sort and quick_sort Lomuto scheme are the obvious choice
+// does not support queries such as minimum, SOLID principles faults
 
 //------------------------------------------------
 // constructors:
@@ -71,20 +77,14 @@ public:
 template <class T>
 linked_list<T>::~linked_list()
 {
-	node_list<T>* it = frst;
-	while (it)
-	{
-		it = it->successor[0];
-		delete frst;
-		frst = it;
-	}
+	clear();
 }
 
 template <class T>
-linked_list<T>::linked_list(const T& val)
+linked_list<T>::linked_list()
 {
-	this->frst = this->last = new node_list<T>(val);
-	this->n = 1;
+	this->frst = this->last = nullptr;
+	this->n = 0;
 }
 
 template <class T>
@@ -104,7 +104,7 @@ linked_list<T>::linked_list(const std::initializer_list<T>& val)
 }
 
 template <class T>
-linked_list<T>::linked_list(T* val, const size_t& val_size)
+linked_list<T>::linked_list(const T* val, const size_t& val_size)
 {
 	this->frst = new node_list<T>(*val);
 	val++;
@@ -205,7 +205,7 @@ typename linked_list<T>::iterator linked_list<T>::end() const
 }
 
 //------------------------------------------------
-// specific methods:
+// modifier methods:
 
 template <class T>
 linked_list<T>& linked_list<T>::operator = (const linked_list<T>& l)
@@ -229,6 +229,23 @@ linked_list<T>& linked_list<T>::operator = (const linked_list<T>& l)
 	this->last = it;
 	this->n = l.getn();
 }
+
+template <class T>
+void linked_list<T>::clear()
+{
+	ptr it = frst;
+	while (it)
+	{
+		it = it->successor[0];
+		delete frst;
+		frst = it;
+		n--;
+	}
+	frst = last = nullptr;
+}
+
+//------------------------------------------------
+// specific methods:
 
 template <class T>
 void linked_list<T>::insert(const T& value, const size_t& index)
@@ -292,8 +309,11 @@ void linked_list<T>::remove(const T& index)
 	n--;
 }
 
+//------------------------------------------------
+// query operations:
+
 template <class T>
-bool linked_list<T>::search(const T& value) const
+node_list<T>* linked_list<T>::search(const T& value) const
 {
 	for (auto i : *this)
 		if (i == value)

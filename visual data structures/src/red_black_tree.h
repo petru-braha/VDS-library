@@ -1,8 +1,8 @@
 #pragma once
-#include "special_binary_tree.h"
+#include "tree.h"
 
 template <class T = int>
-class red_black_tree : special_binary_tree<T, node_rb_t<T>>
+class red_black_tree : tree<T, node_rb_t<T>>
 {
 	typedef node_rb_t<T>* ptr;
 
@@ -11,8 +11,8 @@ class red_black_tree : special_binary_tree<T, node_rb_t<T>>
 	void rght_rotation(ptr& node);
 public:
 	// constructors:
-	red_black_tree(const T& value);
 	~red_black_tree();
+	red_black_tree(const T& value);
 
 	// specific methods:
 	void insert(const T& value);

@@ -1,6 +1,6 @@
 #pragma once
 typedef unsigned int nat;
-
+// discussion about map VS hash-table
 template <class K, class V>
 class Map
 {

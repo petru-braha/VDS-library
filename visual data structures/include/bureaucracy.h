@@ -5,7 +5,7 @@
 
 #define ERROR_CODE -1
 
-#define fatal_error(msg){perror(msg); exit(EXIT_FAILURE);}
+#define fatal_error(msg){perror(msg); exit(ERROR_CODE);}
 #define  hard_error(msg){perror(msg); throw(ERROR_CODE);}
 #define  eazy_error(msg){perror(msg);}
 

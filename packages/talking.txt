@@ -1,0 +1,20 @@
+what is a data structure:
+is array hash-table map or dictionaries data structures?
+concept actual c++ implementation
+
+
+array errors:
+```
+method		error type	message
+shift_left 	fatal_error 	"nothing to shift"
+constructor	fatal_error	"wrong parameters"
+
+insert		hard_error	"bad index"
+insert 		fatal_error	"no more memory"
+remove 		hard_error	"bad index"
+queries 	hard_error	"no data"
+operator[]	hard_error  	"unallocated space"
+
+```
+
+- interfaces can not contain data members

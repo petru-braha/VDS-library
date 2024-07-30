@@ -54,7 +54,7 @@ public:
 	void sort(const bit& algorithm = quick_sort);
 	void insert(const T& value, const size_t& index);
 	void remove(const size_t& index);
-	void remove(const T& value, const bool& all = false);
+	void remove(const T& value, const bool& all);
 
 	// query operations:
 	size_t search(const T& value) const;
@@ -378,7 +378,6 @@ size_t array<T>::successor(const T& value) const
 {
 	if (this->empty())
 		hard_error("no data");
-	
 	
 	size_t index_successor = -1;
 	FOR(index_last + 1)

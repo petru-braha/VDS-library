@@ -1,5 +1,5 @@
 #pragma once
-#include "linked_list.h"
+#include "node/node_list.h"
 #include <initializer_list>
 
 template <class T>
@@ -7,23 +7,29 @@ class adaptor
 {
 protected:
 	// data members:
-	linked_list<T> values;
+	node_list<T>* frst, * last;
+	size_t n;
 public:
 	//constructors:
-	adaptor() : values() {};
-	adaptor(std::initializer_list<T>& val) : values(val) {};
-	adaptor(T* val, const size_t& val_size) : values(val, val_size) {};
 	virtual ~adaptor() = default;
+	adaptor();
+	adaptor(std::initializer_list<T>& val);
+	adaptor(T* val, const size_t& val_size);
 
 	// specific methods:
 	virtual void push(const T& val) = 0;
 	virtual void pop() = 0;
 
 	// constant methods:
-	size_t get_size() const { return values.getn(); }
-	bool  empty() const { return values.empty(); }
+	size_t getn() const;
+	bool  empty() const;
 
 	// friend functions:
-	friend T* convert(const adaptor<T>& adp) { return convert(adp.values); }
-	friend std::ostream& operator << (std::ostream& out, const adaptor<T>& adp) { out << adp.values; return out; }
+	friend T* convert(const adaptor<T>& adp);
+	friend std::ostream& operator << (std::ostream& out, const adaptor<T>& adp);
 };
+
+// comments:
+// it is similar to a linked list, but has limited functionality
+// allows repeating values
+

@@ -3,5 +3,15 @@ A:\projects\active\portfolio\data structures\visual data structures\test\array_t
 A:\projects\active\portfolio\data structures\visual data structures\test\array_tests.h(54,9): warning C4018: '<': signed/unsigned mismatch
 A:\projects\active\portfolio\data structures\visual data structures\src\array.h(143,34): warning C4018: '<': signed/unsigned mismatch
 A:\projects\active\portfolio\data structures\visual data structures\src\array.h(235,2): warning C4018: '<': signed/unsigned mismatch
-A:\projects\active\portfolio\data structures\visual data structures\src\array.h(417,12): warning C4018: '>': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(283,12): warning C4018: '>': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(286,21): warning C4018: '>=': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(309,23): warning C4018: '<=': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(302,12): warning C4018: '<=': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(325,2): warning C4018: '<': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(338,2): warning C4018: '<': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(351,2): warning C4018: '<': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(364,2): warning C4018: '<': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(383,2): warning C4018: '<': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(416,12): warning C4018: '>': signed/unsigned mismatch
+A:\projects\active\portfolio\data structures\visual data structures\src\array.h(95,35): warning C4018: '<': signed/unsigned mismatch
   visual data structures.vcxproj -> A:\projects\active\portfolio\data structures\x64\Debug\visual data structures.exe

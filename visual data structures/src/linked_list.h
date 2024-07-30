@@ -48,11 +48,15 @@ public:
 	void clear();
 
 	// specific methods:
-	void insert(const T& value, const size_t& index = n);
-	void remove(const T& index); // to enchance the use of the stack and queue
-	
+	void insert(ptr& value, ptr& before_inserted);
+	void remove(ptr& before_removed); 
+
 	// query operations:
 	ptr search(const T& value) const;
+	ptr mimimum() const;
+	ptr maximum() const;
+	ptr predcessr(const T& value) const;
+	ptr successor(const T& value) const;
 
 	// constant methods:
 	bool operator == (const linked_list<T>& l) const;
@@ -60,6 +64,8 @@ public:
 	size_t getn() const;
 	void   prnt() const;
 	bool  empty() const;
+	ptr get_frst() const;
+	ptr get_last() const;
 
 	// friend functions:
 	friend T* convert(const linked_list<T>& l);
@@ -68,8 +74,8 @@ public:
 };
 
 // comments:
-// if linked_lists would be sortable, merge_sort and quick_sort Lomuto scheme are the obvious choice
-// does not support queries such as minimum, SOLID principles faults
+// how to sort: merge_sort and quick_sort-Lomuto_scheme
+// allows repeating values
 
 //------------------------------------------------
 // constructors:

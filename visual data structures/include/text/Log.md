@@ -71,8 +71,8 @@
 - "operator <<" - displays where the user tells it so
 
 3. friend functions
-- general classes contains them. in practice for if it does depend to specification, they are implementend for abstract
-- i will exlude (merge, intersection, ejection)
+- instantiable classes contains them
+- i will exclude (linking, intersection, ejection)
 
 4. maxheap does not inherit array - no matching methods
 

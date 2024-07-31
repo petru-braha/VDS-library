@@ -89,14 +89,17 @@ public:
 
 2. there will be a test-based header file for each data structure. we will test the following list of objectives:
 * as i mentioned already: each objective for (primitives, convoluted)
-	- there is a test for each specific method
-	- there is a test for all query operations
-	- there is a test for all constant methods
-	- there is a test for all friend functions
-	- there is a test for correct error prompts (assuming the only types of errors that can exist are those created by us)
- 	* we will not consider tests for iterators and auxiliar utility:
- 	 	- they support all the tested methods anyway; their correct output implies the correct execution of iterators and auxiliary 
- 	 	- they are private data members
+- fixture: tests constructors and `operator=`
+- a test for:
+	- each modifier method
+	- each specific method
+	- all query operations
+	- all friend functions
+	- a test for correct error prompts (assuming the only types of errors that can exist are those created by us)
+ - we will not consider tests for iterators, auxiliar utility, constant methods and errors:
+ 	- their correct output implies the correct execution of the program
+  	- some are private members
+	- constant methods are tested along with 
 
 3. how to test:
 - the test functions should be:
@@ -135,6 +138,19 @@ public:
 - testing without fixtures 	
  	- constant methods will be tested at the same time with the specific ones
 - for convoluted tests we will test just the default utilities. 
+
+4. final config of a test suite:
+- fixture for primitives
+	- clear method
+	- sort method
+	- insert method
+	- remove method
+	- query operations
+	- friend functions
+- fixture for convoluted (only the necessary)
+	- sort method
+	- insert method
+	- remove method
 
 ## III. Errors:
 

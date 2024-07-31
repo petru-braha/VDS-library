@@ -28,7 +28,7 @@ public:
 	virtual ~tree();
 	tree(const T& value);
     
-    // specific methods:
+    // modifier methods:
     void clear(node_type*& parent); // postorder
 
 	// query operations:

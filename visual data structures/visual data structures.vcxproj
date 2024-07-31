@@ -129,6 +129,7 @@
     <ClInclude Include="include\tree.h" />
     <ClInclude Include="test\array_tests.h" />
     <ClInclude Include="test\glfw_tests.h" />
+    <ClInclude Include="test\linked_list_tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test\test.cpp" />

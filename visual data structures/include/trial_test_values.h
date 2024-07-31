@@ -3,11 +3,9 @@
 #define classic_size 10
 #define maximum_size 15 // allowing for testing to insert five more elements
 
-const std::initializer_list<float>			list_numbers = { -1, 1.01f, 1, UCHAR_MAX, USHRT_MAX, LONG_MIN, -1.01f, -0.99f, 0.99f, 1.01f };
-const std::initializer_list<const char*>	list_texts = { "a", "abd", "a", "abc", "A", "z", "", "0", "", "abd" };
-
-const float  block_numbers[maximum_size] = { -1, 1.01f, +1, UCHAR_MAX, USHRT_MAX, LONG_MIN, -1.01f, -0.99f, 0.99f, 1.01f };
-const char* block_texts[maximum_size] = { "a", "abd", "a", "abc", "A", "z", "", "0", "", "abd"};
+typedef const std::initializer_list<float> initializer;
+initializer list_numbers				= { -1, 1.01f, 1, UCHAR_MAX, USHRT_MAX, LONG_MIN, -1.01f, -0.99f, 0.99f, 1.01f };
+const float block_numbers[maximum_size] = { -1, 1.01f, 1, UCHAR_MAX, USHRT_MAX, LONG_MIN, -1.01f, -0.99f, 0.99f, 1.01f };
 
 const std::initializer_list<const convoluted> list_objects = {
 

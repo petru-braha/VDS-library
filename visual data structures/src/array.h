@@ -24,9 +24,9 @@ class array
 	public:
 		iterator(T& val);
 
-		T		operator*() const;
-		void	operator++();
-		bool	operator!=(const iterator& two) const;
+		T		operator  * () const;
+		void	operator ++ ();
+		bool	operator != (const iterator& two) const;
 	};
 
 	// auxiliar utility:
@@ -74,9 +74,11 @@ public:
 
 	// friend functions:
 	friend T* convert(const array<T>& arr);
+	
 	friend array<T> linking(const array<T>& one, const array<T>& two);
 	friend void		ejectin(const array<T>& one, const array<T>& two);
 	friend array<T> crossng(const array<T>& one, const array<T>& two);
+
 	friend std::ostream& operator << (std::ostream& out, const array<T>& arr);
 };
 
@@ -334,9 +336,9 @@ size_t array<T>::minimum() const
 	if (this->empty())
 		hard_error("no data");
 	
-	size_t index_minimum = 0;
+	size_t index_minimum = NULL;
 	FOR(index_last + 1)
-		if (values[i] < values[index_minimum])
+		if (!compare(values[i], values[index_minimum]))
 			index_minimum = i;
 	return index_minimum;
 }
@@ -347,9 +349,9 @@ size_t array<T>::maximum() const
 	if (this->empty())
 		hard_error("no data");
 
-	size_t index_maximum = 0;
+	size_t index_maximum = NULL;
 	FOR(index_last + 1)
-		if (values[i] > values[index_maximum])
+		if (compare(values[i], values[index_maximum]))
 			index_maximum = i;
 	return index_maximum;
 }
@@ -362,11 +364,11 @@ size_t array<T>::predcessr(const T& value) const
 	
 	size_t index_predecessor = -1;
 	FOR(index_last + 1)
-		if (values[i] < value)
+		if (!compare(values[i], value))
 		{
 			if (index_predecessor == -1)
 				index_predecessor = i;
-			else if(values[index_predecessor] < values[i])
+			else if(!compare(values[index_predecessor], values[i]))
 				index_predecessor = i;
 		}
 
@@ -381,11 +383,11 @@ size_t array<T>::successor(const T& value) const
 	
 	size_t index_successor = -1;
 	FOR(index_last + 1)
-		if (values[i] > value)
+		if (compare(values[i], value))
 		{
 			if (index_successor == -1)
 				index_successor = i;
-			else if (values[index_successor] > values[i])
+			else if (compare(values[index_successor], values[i]))
 				index_successor = i;
 		}
 

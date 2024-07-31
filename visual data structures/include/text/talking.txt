@@ -17,4 +17,13 @@ operator[]	hard_error  	"unallocated space"
 
 ```
 
-- interfaces can not contain data members
+- interfaces can not contain data members - except tree - i won't modify it
+- currently in my project there are two types of non-instantiable classes:
+- interfaces
+- private constructors classes: lists
+
+to do: 
+1. list - traditional insert, remove
+2. linked_list operators
+3. check queue, stack
+4. continue with tree and never come back

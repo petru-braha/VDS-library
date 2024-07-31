@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 
 #include "array_tests.h"
+#include "linked_list_tests.h"
 // more directives
 
 

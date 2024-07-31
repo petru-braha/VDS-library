@@ -7,18 +7,18 @@ typedef const std::initializer_list<float> initializer;
 initializer list_numbers				= { -1, 1.01f, 1, UCHAR_MAX, USHRT_MAX, LONG_MIN, -1.01f, -0.99f, 0.99f, 1.01f };
 const float block_numbers[maximum_size] = { -1, 1.01f, 1, UCHAR_MAX, USHRT_MAX, LONG_MIN, -1.01f, -0.99f, 0.99f, 1.01f };
 
-const std::initializer_list<const convoluted> list_objects = {
+const std::initializer_list<convoluted> list_objects = {
 
-{ 5, true, "letters" },
-{ 5, false, "letters" },
-{ 4, true, "letters" },
-{ 4, false, "letters" },
-{ 5, true, "ladders_zzz" },
-{ 5, false, "ladders_zzz" },
+{ 5, true, "letters\0" },
+{ 5, false, "letters\0" },
+{ 4, true, "letters\0" },
+{ 4, false, "letters\0" },
+{ 5, true, "ladders_zzz\0" },
+{ 5, false, "ladders_zzz\0" },
 NULL,
-{ 1, true, "z" },
-{ 1, true, "a" },
-{ 1, false, "a" }
+{ 1, true, "z\0" },
+{ 1, true, "a\0" },
+{ 1, false, "a\0" }
 };
 
 // sorted using comparing method:

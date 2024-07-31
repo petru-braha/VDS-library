@@ -26,6 +26,8 @@ class linked_list : public list<T>
 
 	// auxiliar utility:
 	fct compare = [](type x, type y)->bool { return x > y; };
+	void partition();
+	void quick_sort(const ptr& left, const ptr& rght);
 public:
 	// constructors:
 	~linked_list();
@@ -57,7 +59,6 @@ public:
 	bool  operator == (const linked_list<T>& l) const;
 	void* getf() const;
 	void  prnt() const;
-	bool empty() const = default;
 
 	// friend functions:
 	friend T* convert(const linked_list<T>& l);
@@ -227,6 +228,7 @@ linked_list<T>& linked_list<T>::operator = (const linked_list<T>& l)
 
 	this->last = it;
 	this->n = l.getn();
+	return *this;
 }
 
 template <class T>
@@ -238,8 +240,11 @@ void linked_list<T>::setf(fct f)
 //------------------------------------------------
 // specific methods:
 
-//template <class T>
-//void linked_list<T>::sort();
+template <class T>
+void linked_list<T>::sort()
+{
+	quick_sort(frst, last);
+}
 
 //------------------------------------------------
 // query operations:
@@ -256,27 +261,50 @@ node_list<T>* linked_list<T>::search(const T& value) const
 template <class T>
 node_list<T>* linked_list<T>::mimimum() const
 {
-	ptr it = frst;
-	for(auto i : *this)
-		if()
+	ptr minimum = frst;
+	for (ptr it = frst; it; it = it->successor[0])
+		if (compare(minimum->get(), it->get()))
+			minimum = it;
+	return minimum;
+			
 }
 
 template <class T>
 node_list<T>* linked_list<T>::maximum() const
 {
-
+	ptr maximum = frst;
+	for (ptr it = frst; it; it = it->successor[0])
+		if (compare(it->get(), maximum->get()))
+			maximum = it;
+	return maximum;
 }
 
 template <class T>
 node_list<T>* linked_list<T>::predcessr(const T& value) const
 {
+	ptr node = nullptr;
+	for (ptr it = frst; it; it = it->successor[0])
+	{
+		if (compare(value, it->get())) // it < value
+		{
+			if(node == nullptr || comapre(it->get(), node->get()))
+				node = it;
+		}
+	}
 
+	return node;
 }
 
 template <class T>
 node_list<T>* linked_list<T>::successor(const T& value) const
 {
+	ptr node = nullptr;
+	for (ptr it = frst; it; it = it->successor[0])
+		if (compare(it->get(), value)) // it > value
+			if (node == nullptr || comapre(node->get(), it->get()))
+				node = it;
 
+	return node;
 }
 
 //------------------------------------------------
@@ -324,6 +352,53 @@ T* convert(const linked_list<T>& l)
 	for (auto i : l)
 		ptr[index++] = i;
 	return ptr;
+}
+
+template <class T>
+linked_list<T> linking(const linked_list<T>& one, const linked_list<T>& two)
+{
+	linked_list<T> new_list(one);
+	new_list.last->succesor[0] = two.frst;
+	new_list.n += two.n;
+	new_list.last = two.last;
+	return new_list;
+}
+
+template <class T>
+linked_list<T> ejectin(const linked_list<T>& one, const linked_list<T>& two)
+{
+	linked_list<T> new_list(one);
+	
+	for (node_list<T>* it_two = two.frst; it_two; it_two = it_two->successor[0])
+		for (node_list<T>* it = new_list.frst; it; it = it->successor[0])
+		{
+			// patch
+			while (new_list.frst->get() == it_two->get())
+			{
+				new_list.remove(head_node);
+				it = new_list.frst;
+			}
+
+			if (it->successor[0]->get() == it_two->get())
+				new_list.remove(it);
+		}
+	
+	return new_list;
+}
+
+template <class T>
+linked_list<T> crossng(const linked_list<T>& one, const linked_list<T>& two)
+{
+	linked_list<T> new_list;
+
+	for (node_list<T>* it_two = two.frst; it_two; it_two = it_two->successor[0])
+		for (node_list<T>* it = one.frst; it; it = it->successor[0])
+		{
+			if (it->get() == it_two->get())
+				new_list.insert(it);
+		}
+
+	return new_list;
 }
 
 template <class T>

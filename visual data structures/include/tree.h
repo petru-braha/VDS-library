@@ -32,8 +32,8 @@ public:
     void clear(node_type*& parent); // postorder
 
 	// query operations:
-    virtual node_type* search(const T& value) const = 0;
 	virtual     size_t height(node_type*& parent) const;
+	virtual node_type* search(const T& value) const = 0;
 	virtual node_type* minimum() const = 0;
 	virtual node_type* maximum() const = 0;
 	virtual node_type* predcessr(const T& value) const = 0;

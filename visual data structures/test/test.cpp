@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 {
 	::testing::InitGoogleTest(&argc, argv);
 	//choose_structure();
-	::testing::GTEST_FLAG(filter) = strcat(choosen_structure, "*");
+	//::testing::GTEST_FLAG(filter) = strcat(choosen_structure, "*");
 
 	int exit_status = RUN_ALL_TESTS();
 

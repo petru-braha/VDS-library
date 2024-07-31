@@ -1,5 +1,6 @@
 #pragma once
 #include "bureaucracy.h"
+#include <cstring>
 
 class convoluted
 {
@@ -13,6 +14,9 @@ public:
 	convoluted(int number, bool one, const char* two);
 	convoluted(int null = NULL);
 	
+	// modifier methods:
+	convoluted& operator = (const convoluted& c);
+
 	// specific methods: 
 	void set_number(const int& value);
 	bool operator <  (const convoluted& c); // they only compare the first letter
@@ -29,6 +33,7 @@ public:
 	size_t get_bytes() const;
 
 	// friend functions:
+	friend bool operator >  (const convoluted& c1, const convoluted& c2);
 	friend std::ostream& operator << (std::ostream& out, const convoluted& c); // they assume: one > two
 	friend bool compare_numbr(const convoluted& one, const convoluted& two);
 	friend bool compare_addss(const convoluted& one, const convoluted& two);
@@ -71,6 +76,25 @@ convoluted::convoluted(int number, bool one, const char* two) : number(number), 
 convoluted::convoluted(int null) : number(0), address1(reinterpret_cast<bool&>(null)), address2(nullptr) {}
 
 //------------------------------------------------
+// modifier methods: 
+
+convoluted& convoluted::operator = (const convoluted& c)
+{
+	if (address2)
+		delete[]address2;
+	address2 = nullptr;
+	if (c.address2)
+	{
+		address2 = new char[c.number];
+		strcpy(this->address2, c.address2);
+	}
+
+	this->address1 = c.address1;
+	this->number = c.number;
+	return *this;
+}
+
+//------------------------------------------------
 // specific methods: 
 
 void convoluted::set_number(const int& value)
@@ -98,7 +122,7 @@ bool convoluted::operator >  (const convoluted& c)
 		return false;
 	if (c.address2 == nullptr)
 		return true;
-	return address2[0] < c.address2[0];
+	return address2[0] > c.address2[0];
 }
 
 bool convoluted::operator >= (const convoluted& c)
@@ -145,6 +169,16 @@ size_t convoluted::get_bytes() const
 
 //------------------------------------------------
 // friend functions:
+
+bool operator > (const convoluted& c1, const convoluted& c2)
+{
+	if (c1.address2 == nullptr)
+		return false;
+	if (c2.address2 == nullptr)
+		return true;
+	return c1.address2[0] > c2.address2[0];
+}
+
 
 std::ostream& operator << (std::ostream& out, const convoluted& c)
 {

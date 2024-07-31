@@ -68,16 +68,16 @@ public:
 	bool operator == (const array<T>& arr) const;
 	size_t getn() const;
 	loong  getl() const;
-	void*  getf() const;
+	void* getf() const;
 	void   prnt() const;
 	bool  empty() const;
 
 	// friend functions:
 	friend T* convert(const array<T>& arr);
-	
-	friend array<T> linking(const array<T>& one, const array<T>& two);
-	friend void		ejectin(const array<T>& one, const array<T>& two);
-	friend array<T> crossng(const array<T>& one, const array<T>& two);
+
+	template <class T> friend array<T> linking(const array<T>& one, const array<T>& two);
+	template <class T> friend array<T> ejectin(const array<T>& one, const array<T>& two);
+	template <class T> friend array<T> crossng(const array<T>& one, const array<T>& two);
 
 	friend std::ostream& operator << (std::ostream& out, const array<T>& arr);
 };
@@ -112,7 +112,7 @@ template <class T>
 array<T>::array(const int& n)
 {
 	this->n = n;
-	index_last = -1;
+	index_last = ERROR_CODE;
 	values = new T[n];
 	for (size_t i = 0; i < n; i++)
 		values[i] = NULL;
@@ -137,11 +137,11 @@ array<T>::array(const std::initializer_list<T>& val, const size_t& n)
 template <class T>
 array<T>::array(const T* val, const size_t& val_size, const size_t& n)
 {
-	if(val_size > n)
+	if (val_size > n)
 		fatal_error("wrong parameters");
 	this->n = n;
 	values = new T[n];
-	
+
 	for (index_last = 0; index_last < val_size; index_last++)
 		values[index_last] = val[index_last];
 	index_last--;
@@ -154,7 +154,7 @@ template <class T>
 array<T>::array(const array<T>& arr)
 {
 	this->n = arr.getn();
-	this->index_last = -1;
+	this->index_last = ERROR_CODE;
 	values = new T[n];
 
 	for (auto i : arr)
@@ -167,14 +167,13 @@ template <class T>
 array<T>::array(const array<T>&& arr)
 {
 	this->n = arr.getn();
-	this->index_last = -1;
+	this->index_last = ERROR_CODE;
 	values = new T[n];
 
 	for (auto i : arr)
 		this->values[++this->index_last] = i;
 	for (size_t i = index_last + 1; i < n; i++)
 		values[i] = NULL;
-	delete arr;
 }
 
 //------------------------------------------------
@@ -223,7 +222,7 @@ template <class T>
 array<T>& array<T>::operator = (const array<T>& arr)
 {
 	this->n = arr.n;
-	this->index_last = -1;
+	this->index_last = ERROR_CODE;
 	delete[]this->values;
 	this->values = new T[n];
 	for (auto i : arr)
@@ -236,7 +235,7 @@ void array<T>::clear()
 {
 	FOR(index_last + 1)
 		values[i] = NULL;
-	index_last = -1;
+	index_last = ERROR_CODE;
 }
 
 template <class T>
@@ -284,11 +283,11 @@ void array<T>::insert(const T& value, const size_t& index)
 {
 	if (index > index_last + 1 || index < 0)
 		hard_error("bad index");
-	
+
 	if (index_last + 1 >= n)
 		fatal_error("no more memory")
 
-	index_last++;
+		index_last++;
 	for (size_t i = index_last; i > index; i--) // shift right
 		values[i] = values[i - 1];
 	values[index] = value;
@@ -327,7 +326,7 @@ size_t array<T>::search(const T& value) const
 	FOR(index_last + 1)
 		if (values[i] == value)
 			return i;
-	return NULL;
+	return ERROR_CODE;
 }
 
 template <class T>
@@ -335,10 +334,10 @@ size_t array<T>::minimum() const
 {
 	if (this->empty())
 		hard_error("no data");
-	
+
 	size_t index_minimum = NULL;
 	FOR(index_last + 1)
-		if (!compare(values[i], values[index_minimum]))
+		if (compare(values[index_minimum], values[i]))
 			index_minimum = i;
 	return index_minimum;
 }
@@ -361,14 +360,14 @@ size_t array<T>::predcessr(const T& value) const
 {
 	if (this->empty())
 		hard_error("no data");
-	
-	size_t index_predecessor = -1;
+
+	size_t index_predecessor = ERROR_CODE;
 	FOR(index_last + 1)
-		if (!compare(values[i], value))
+		if (compare(value, values[i]))
 		{
-			if (index_predecessor == -1)
+			if (index_predecessor == ERROR_CODE)
 				index_predecessor = i;
-			else if(!compare(values[index_predecessor], values[i]))
+			else if (compare(values[i], values[index_predecessor]))
 				index_predecessor = i;
 		}
 
@@ -380,12 +379,12 @@ size_t array<T>::successor(const T& value) const
 {
 	if (this->empty())
 		hard_error("no data");
-	
-	size_t index_successor = -1;
+
+	size_t index_successor = ERROR_CODE;
 	FOR(index_last + 1)
 		if (compare(values[i], value))
 		{
-			if (index_successor == -1)
+			if (index_successor == ERROR_CODE)
 				index_successor = i;
 			else if (compare(values[index_successor], values[i]))
 				index_successor = i;
@@ -404,14 +403,14 @@ bool array<T>::operator == (const array<T>& arr) const
 		return false;
 	if (this->index_last != arr.index_last)
 		return false;
-	FOR (index_last + 1)
+	FOR(index_last + 1)
 		if (values[i] != arr[i])
 			return false;
 	return true;
 }
 
 template <class T>
-T& array<T>::operator [] (const size_t& index) 
+T& array<T>::operator [] (const size_t& index)
 {
 	if (index >= n)
 		hard_error("bad index");
@@ -456,7 +455,7 @@ void  array<T>::prnt() const
 template <class T>
 bool array<T>::empty() const
 {
-	return index_last == -1;
+	return index_last == ERROR_CODE;
 }
 
 //------------------------------------------------
@@ -484,27 +483,31 @@ array<T> linking(const array<T>& one, const array<T>& two)
 }
 
 template <class T>
-void ejectin(const array<T>& one, const array<T>& two)
+array<T> ejectin(const array<T>& one, const array<T>& two)
 {
+	array<T> new_array(one);
 	for (auto value : two)
-		one.remove(value, true);
+		new_array.remove(value, true);
+	return new_array;
 }
 
 template <class T>
 array<T> crossng(const array<T>& one, const array<T>& two) // O(n*m), n = |one|, m = |two|. can be done in O(n + m) with a hash table
 {
-	array<T> new_array = (one.getn() + two.getn());
+	array<T> new_array(one.getn() + two.getn());
 	if (one.getl() < two.getl())
 	{
 		for (auto key : two)
-			if (one.search[key])
-				new_array.insert(key);
+			if (one.search(key) != ERROR_CODE)
+				new_array.insert(key, new_array.getl() + 1);
 	}
 	else
 	{
 		for (auto key : one)
-			if (two.search[key])
-				new_array.insert(key);
+		{
+			if (two.search(key) != ERROR_CODE)
+				new_array.insert(key, new_array.getl() + 1);
+		}
 	}
 
 	return new_array;

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ostream>
 
+#define SZT_ERROR ULLONG_MAX
 #define ERROR_CODE -1
 
 #define fatal_error(msg){perror(msg); exit(ERROR_CODE);}

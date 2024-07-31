@@ -7,7 +7,7 @@
 class linked_list_evaluation_p : public testing::Test
 {
 protected:
-    linked_list<float> linked_numbers;
+    linked_list<float> numbers;
 
     ~linked_list_evaluation_p() = default;
     linked_list_evaluation_p();
@@ -16,9 +16,9 @@ protected:
 //------------------------------------------------
 // constructors:
 
-linked_list_evaluation_p::linked_list_evaluation_p() : linked_numbers(list_numbers)
+linked_list_evaluation_p::linked_list_evaluation_p() : numbers(list_numbers)
 {
-    linked_numbers = linked_list<float>(linked_list<float>(block_numbers, classic_size));
+    numbers = linked_list<float>(linked_list<float>(block_numbers, classic_size));
 };
 
 //------------------------------------------------

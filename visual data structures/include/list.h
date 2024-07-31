@@ -20,7 +20,6 @@ protected:
 	virtual ~list();
 	list();
 	list(const list<T>& l) = default;
-	list(const list<T>&& l) = default;
 public:
 	// modifier methods:
 	void clear();

@@ -1,7 +1,7 @@
 #pragma once
 #include "convoluted.h"
-#include "array.h"
 #include "trial_test_values.h"
+#include "array.h"
 #include <cstring>
 
 class array_evaluation_p : public testing::Test
@@ -31,16 +31,15 @@ TEST_F(array_evaluation_p, clear_method)
 
 TEST_F(array_evaluation_p, sort_method)
 {
+    numbers.setf([](const float& x, const float& y)->bool { return x < y; });
     for (bit algorithm = bubble_sort;; algorithm++)
     {
-        numbers.setf([](const float& x, const float& y)->bool { return x < y; });
         EXPECT_NO_THROW(numbers.sort(algorithm));
-
         FOR(numbers.getl())
-            EXPECT_GE(numbers[i], numbers[i]) << "for the " << algorithm << '\n';
+            EXPECT_GE(numbers[i], numbers[i + 1]) << "for the " << algorithm << '\n';
 
         // last one
-        if (algorithm == insertion_sort)
+        if (algorithm == quick_sort)
             break;
     }
 }
@@ -97,28 +96,29 @@ TEST(array_p, friend_functions)
     array<> secnd = { 5, 6, 7, 8, 9 };
 
     array<> temp;
-    //temp = linking(first, secnd);
+    temp = linking(first, secnd);
     EXPECT_EQ(temp.getn(), 200);
     EXPECT_EQ(temp.getl(), 9);
-    //EXPECT_EQ(temp[4], temp[5]);
+    EXPECT_EQ(temp[4], temp[5]);
 
-    //temp = crossng(first, secnd);
+    temp = ejectin(first, secnd);
+    EXPECT_EQ(temp.getl(), 3); 
+    
+    temp = crossng(first, secnd);
     EXPECT_EQ(temp.getn(), 200);
     EXPECT_EQ(temp.getl(), 0);
-
-    //ejectin(first, secnd);
-    EXPECT_EQ(first.getl(), 3);
 }
-/*
+
 //------------------------------------------------
 // next class:
 
 class array_evaluation_c : public testing::Test
 {
 protected:
-    array<convoluted> arr_obj;
-    void SetUp();
+    array<convoluted> objects;
+
     void TearDown();
+    array_evaluation_c();
 };
 
 //------------------------------------------------
@@ -126,24 +126,20 @@ protected:
 
 void array_evaluation_c::TearDown()
 {
-
 }
 
-void array_evaluation_c::SetUp()
-{
-
-}
+array_evaluation_c::array_evaluation_c() : objects() {}
 
 //------------------------------------------------
 // tests:
 
-TEST_F(array_evaluation_c, sort)
+TEST_F(array_evaluation_c, sort_method)
 {
 
 }
 
-TEST_F(array_evaluation_c, insert_delete)
+
+TEST_F(array_evaluation_c, query_operations)
 {
 
 }
-*/

@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>A:\projects\active\portfolio\data structures\x64\Debug\visual data structures.exe</FullPath>
+      <FullPath>A:\portfolio\active\data structures\x64\Debug\visual data structures.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

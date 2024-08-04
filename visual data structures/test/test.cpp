@@ -49,6 +49,7 @@ int main(int argc, char** argv)
 	strt_visual();
 	loop_visual();
 	stop_visual();
+
 	
 	return exit_status;
 }	

@@ -128,18 +128,26 @@ void array_evaluation_c::TearDown()
 {
 }
 
-array_evaluation_c::array_evaluation_c() : objects() {}
+array_evaluation_c::array_evaluation_c() : objects(list_objects, maximum_size) {}
 
 //------------------------------------------------
 // tests:
 
 TEST_F(array_evaluation_c, sort_method)
 {
-
+    objects.setf(compare_numbr);
+    EXPECT_NO_THROW(objects.sort());
+    
+    objects.setf(compare_addss);
+    EXPECT_NO_THROW(objects.sort());
+    
+    objects.setf(compare_strng);
+    EXPECT_NO_THROW(objects.sort());
 }
 
 
 TEST_F(array_evaluation_c, query_operations)
 {
+    objects.setf(compare_numbr);
 
 }

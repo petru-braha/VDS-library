@@ -68,7 +68,7 @@ public:
 	bool operator == (const array<T>& arr) const;
 	size_t getn() const;
 	loong  getl() const;
-	void* getf() const;
+	void*  getf() const;
 	void   prnt() const;
 	bool  empty() const;
 
@@ -128,8 +128,12 @@ array<T>::array(const std::initializer_list<T>& val, const size_t& n)
 	values = new T[n];
 
 	size_t index = 0;
-	for (auto i : val)
-		values[index++] = i;
+	for (auto key = val.begin(); key != val.end(); key++)
+	{
+		values[index] = *key;
+		index++;
+	}
+
 	for (; index < n; index++)
 		values[index] = NULL;
 }

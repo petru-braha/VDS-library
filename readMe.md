@@ -13,18 +13,17 @@
 
 ## Data structures list
 0. array
+1. linked list
+2. stack
+3. queue
+4. maxheap
+5. minheap
+6. trivial tree
+7. AVL tree
+8. red black tree
+9. trie
+0. graph
 1. hash table
-2. linked list
-3. stack
-4. queue
-5. maxheap
-6. minheap
-7. trivial tree
-8. AVL tree
-9. red black tree
-0. trie
-1. graph
-2. map
 
 ## Notes
 - please consult the wiki pages 

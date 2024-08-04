@@ -12,6 +12,7 @@ public:
 	// constructors:
 	~convoluted();
 	convoluted(int number, bool one, const char* two);
+	bool constructor_ = false; // patch
 	convoluted(int null = NULL);
 	
 	// modifier methods:
@@ -28,8 +29,8 @@ public:
 	
 	// constant methods:
 	int    get_numbr() const;
-	bool&  get_addr1() const;
-	void*  get_addr2() const;
+	bool   get_addr1() const;
+	char*  get_addr2() const;
 	size_t get_bytes() const;
 
 	// friend functions:
@@ -39,6 +40,10 @@ public:
 	friend bool compare_addss(const convoluted& one, const convoluted& two);
 	friend bool compare_strng(const convoluted& one, const convoluted& two);
 };
+
+// comments:
+// convoluted::number doesn't depend on the char array, but helps at initializing it in constructors
+// this class should look arbitrarly built, the structures have to work as expected even if this header doesn't make sense
 
 //------------------------------------------------
 // constructors:
@@ -60,26 +65,27 @@ bool letter(const char& character)
 
 convoluted::convoluted(int number, bool one, const char* two) : number(number), address1(one)
 {
-	char* temp = new char[number];
-	for (int i = 0; i < number; i++)
+	this->number = number;
+	address2 = new char[number];
+	for (int i = 0; i < number - 1; i++)
 	{
 		if (letter(two[i]))
-			temp[i] = two[i];
+			address2[i] = two[i];
 		else
-			temp[i] = 'A';
+			address2[i] = 'A';
 	}
-	temp[number - 1] = 0;
 
-	address2 = temp;
+	address2[number - 1] = 0;
 }
 
-convoluted::convoluted(int null) : number(0), address1(reinterpret_cast<bool&>(null)), address2(nullptr) {}
+convoluted::convoluted(int null) : number(0), address1(constructor_), address2(nullptr) {}
 
 //------------------------------------------------
 // modifier methods: 
 
 convoluted& convoluted::operator = (const convoluted& c)
 {
+	this->number = c.number;
 	if (address2)
 		delete[]address2;
 	address2 = nullptr;
@@ -89,8 +95,8 @@ convoluted& convoluted::operator = (const convoluted& c)
 		strcpy(this->address2, c.address2);
 	}
 
-	this->address1 = c.address1;
-	this->number = c.number;
+	bool temp = c.address1;
+	this->address1 = temp;
 	return *this;
 }
 
@@ -152,12 +158,12 @@ int convoluted::get_numbr() const
 	return number;
 }
 
-bool& convoluted::get_addr1() const
+bool convoluted::get_addr1() const
 {
 	return address1;
 }
 
-void* convoluted::get_addr2() const
+char* convoluted::get_addr2() const
 {
 	return address2;
 }
@@ -179,14 +185,17 @@ bool operator > (const convoluted& c1, const convoluted& c2)
 	return c1.address2[0] > c2.address2[0];
 }
 
-
 std::ostream& operator << (std::ostream& out, const convoluted& c)
 {
 	out << "\n";
 	out << "|" << "----------" << "----------" << "----------" << "|\n";
-	out << "|" << " strlen: " << c.number << "\n";
-	out << "|" << " address: " << c.address1 << "\n";
-	out << "|" << " text: " << c.address2 << "\n";
+	out << "|" << " number: " << c.number << "\n";
+	out << "|" << " abstract: " << c.address1 << "\n";
+	out << "|" << " text: ";
+	
+	if (c.address2) out << c.address2;
+	else out << "nullptr";
+	out << "\n";
 	out << "|" << "----------" << "----------" << "----------" << "|\n" << "\n";
 	return out;
 }
@@ -200,9 +209,9 @@ bool compare_numbr(const convoluted& one, const convoluted& two)
 
 bool compare_addss(const convoluted& one, const convoluted& two)
 {
-	if (one.address1 == two.address1)
+	if ((bool)one.address1 == (bool)two.address1)
 		return compare_strng(one, two);
-	return one.address1 > two.address1;
+	return (bool)one.address1 > (bool)two.address1;
 }
 
 bool compare_strng(const convoluted& one, const convoluted& two)
@@ -213,13 +222,12 @@ bool compare_strng(const convoluted& one, const convoluted& two)
 	if (one.address2 && two.address2 == nullptr)
 		return true;
 	
-	int minimum = one.number < two.number ? one.number : two.number;
-	int nr1 = 0, nr2 = 0;
-	for (int i = 0; i < minimum; i++)
+	for (size_t i = 0;; i++)
 	{
-		nr1 += (i + 1) * one.address2[i];
-		nr2 += (i + 1) * two.address2[i];
+		if (one.address2[i] == 0 || two.address2[i] == 0)
+			return false;
+		if (one.address2[i] > two.address2[i])
+			return true;
 	}
-
-	return nr1 > nr2;
+	return false;
 }

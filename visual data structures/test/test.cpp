@@ -12,18 +12,17 @@ char choosen_structure[30];
 void print_possibilities()
 {
 	std::cout << "0. array" << '\n'
-		<< "1. hash_table" << '\n'
-		<< "2. linked_list" << '\n'
-		<< "3. stack" << '\n'
-		<< "4. queue" << '\n'
-		<< "5. maxheap" << '\n'
-		<< "6. minheap" << '\n'
-		<< "7. trivial_tree" << '\n'
-		<< "8. AVL_tree" << '\n'
-		<< "9. red_black_tree" << '\n'
-		<< "0. trie" << '\n'
-		<< "1. graph" << '\n'
-		<< "2. map" << '\n';
+		<< "1. linked_list" << '\n'
+		<< "2. stack" << '\n'
+		<< "3. queue" << '\n'
+		<< "4. maxheap" << '\n'
+		<< "5. minheap" << '\n'
+		<< "6. trivial_tree" << '\n'
+		<< "7. AVL_tree" << '\n'
+		<< "8. red_black_tree" << '\n'
+		<< "9. trie" << '\n'
+		<< "0. graph" << '\n'
+		<< "1. hash_table" << '\n';
 }
 
 void choose_structure()
@@ -40,17 +39,15 @@ void stop_visual() {}
 
 int main(int argc, char** argv)
 {
-	//::testing::InitGoogleTest(&argc, argv);
+	::testing::InitGoogleTest(&argc, argv);
 	//choose_structure();
 	//::testing::GTEST_FLAG(filter) = strcat(choosen_structure, "*");
 
-	int exit_status = 1;// = RUN_ALL_TESTS();
+	int exit_status = RUN_ALL_TESTS();
 
 	strt_visual();
 	loop_visual();
 	stop_visual();
 
-	array<convoluted> aaa(list_objects, classic_size, maximum_size);
-	aaa.prnt();
 	return exit_status;
 }

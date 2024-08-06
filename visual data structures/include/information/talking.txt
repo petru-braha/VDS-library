@@ -30,3 +30,8 @@ to do:
 - data structures should be independent of the base type that it stores. there is just one part of the implementation that requires more analysis: ordering of the elements. the ordering problem is based on sorting and comparisons. the convoluted types should be tested when it comes to this problem, testing them with insertions is redundant;
 
 the data structures should be aggregate
+
+
+// proof - robustness of testing:
+// why sorting calls may fail:
+merge sort redefenition

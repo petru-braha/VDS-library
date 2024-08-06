@@ -25,7 +25,7 @@ NULL,
 };
 
 // indexes of the sorted 'list_objects' using the friend comparing methods:
-// 1. number - int: { 6, 4, 7, 5, 8, 9, 2, 1, 3, 0 }
+// 1. number - int: { 6, 4, 7, 5, 8, 9, 1, 2, 3, 0 }
 // 2. bool address: { 6, 9, 1, 3, 5, 8, 0, 2, 4, 7 }
 // 3. char address: { 6, 8, 9, 0, 1, 2, 3, 4, 5, 7 }
 

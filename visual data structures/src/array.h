@@ -12,6 +12,7 @@ class array
 	// typedefs:
 	typedef const T& type;
 	typedef bool (*fct)(type, type);
+	typedef const size_t& szt;
 
 	// data members:
 	size_t n;			// its purpose is just to allocate space
@@ -61,9 +62,9 @@ public:
 	size_t search(const T& value) const;
 	size_t minimum() const;
 	size_t maximum() const;
-	size_t predcessr(const T& value) const;
-	size_t successor(const T& value) const;
-	T& operator [] (const size_t& index); // get / replace method, shift to the left until there is no more empty space
+	size_t predcessr(szt index) const;
+	size_t successor(szt index) const;
+	T& operator [] (szt index); // get / replace method, shift to the left until there is no more empty space
 
 	// constant methods:
 	bool operator == (const array<T>& arr) const;
@@ -361,14 +362,16 @@ size_t array<T>::maximum() const
 }
 
 template <class T>
-size_t array<T>::predcessr(const T& value) const
+size_t array<T>::predcessr(szt index) const
 {
 	if (this->empty())
 		hard_error("no data");
+	if (index > index_last)
+		hard_error("wrong parameters");
 
 	size_t index_predecessor = ERROR_CODE;
 	FOR(index_last + 1)
-		if (compare(value, values[i]))
+		if (compare(values[index], values[i]))
 		{
 			if (index_predecessor == ERROR_CODE)
 				index_predecessor = i;
@@ -380,14 +383,16 @@ size_t array<T>::predcessr(const T& value) const
 }
 
 template <class T>
-size_t array<T>::successor(const T& value) const
+size_t array<T>::successor(szt index) const
 {
 	if (this->empty())
 		hard_error("no data");
+	if (index > index_last)
+		hard_error("wrong parameters");
 
 	size_t index_successor = ERROR_CODE;
 	FOR(index_last + 1)
-		if (compare(values[i], value))
+		if (compare(values[i], values[index]))
 		{
 			if (index_successor == ERROR_CODE)
 				index_successor = i;
@@ -397,6 +402,22 @@ size_t array<T>::successor(const T& value) const
 
 	return index_successor;
 }
+
+template <class T>
+T& array<T>::operator [] (szt index)
+{
+	if (index >= n)
+		hard_error("bad index");
+	if (index > index_last + 1)
+		hard_error("unallocated space"); // the user has to use insert, for adding a new value, not this operator
+	if (index == index_last + 1)
+	{
+		index_last++;
+		return values[index];
+	}
+
+	return values[index];
+};
 
 //------------------------------------------------
 // constant methods:
@@ -413,22 +434,6 @@ bool array<T>::operator == (const array<T>& arr) const
 			return false;
 	return true;
 }
-
-template <class T>
-T& array<T>::operator [] (const size_t& index)
-{
-	if (index >= n)
-		hard_error("bad index");
-	if (index > index_last + 1)
-		hard_error("unallocated space"); // the user has to use insert, for adding a new value, not this operator
-	if (index == index_last + 1)
-	{
-		index_last++;
-		return values[index];
-	}
-
-	return values[index];
-};
 
 template <class T>
 size_t array<T>::getn() const

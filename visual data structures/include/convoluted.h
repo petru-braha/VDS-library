@@ -246,9 +246,9 @@ bool compare_numbr(const convoluted& one, const convoluted& two)
 
 bool compare_addss(const convoluted& one, const convoluted& two)
 {
-	if ((bool)one.address1 == (bool)two.address1)
+	if (*one.address1 == *two.address1)
 		return compare_strng(one, two);
-	return (bool)one.address1 > (bool)two.address1;
+	return *one.address1 > *two.address1;
 }
 
 bool compare_strng(const convoluted& one, const convoluted& two)
@@ -259,13 +259,8 @@ bool compare_strng(const convoluted& one, const convoluted& two)
 	if (one.address2 && two.address2 == nullptr)
 		return true;
 	
-	for (size_t i = 0;; i++)
-	{
-		if (one.address2[i] == 0 || two.address2[i] == 0)
-			return false;
-		if (one.address2[i] > two.address2[i])
-			return true;
-	}
+	if (strcmp(one.address2, two.address2) > 0)
+		return true;
 	return false;
 }
 
@@ -293,7 +288,12 @@ bool absolute_equality(const convoluted& c1, const convoluted& c2)
 {
 	if (c1.number != c2.number)
 		return false;
-	if ((bool)c1.address1 != (bool)c2.address1)
+	if (*c1.address1 != *c2.address1)
+		return false;
+	
+	if (c1.address2 == nullptr && c2.address2 == nullptr)
+		return true;
+	if ((c1.address2 == nullptr && c2.address2) || c1.address2 && c2.address2 == nullptr)
 		return false;
 	if (strcmp(c1.address2, c2.address2) != 0)
 		return false;

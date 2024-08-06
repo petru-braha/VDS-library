@@ -82,12 +82,12 @@ TEST_F(array_evaluation_p, remove_method)
 TEST_F(array_evaluation_p, query_operations)
 {
     // all the numbers bellow are indexes
-    size_t index = ULLONG_MAX;
-    EXPECT_EQ(index = numbers.search(-1), 0);
-    EXPECT_EQ(index = numbers.minimum(), 5);
-    EXPECT_EQ(index = numbers.maximum(), 4);
-    EXPECT_EQ(index = numbers.predcessr(1), 8);
-    EXPECT_EQ(index = numbers.successor(1), 1);
+    size_t index = 0;
+    EXPECT_EQ(index = numbers.search(-1), 0) << "searching failed.\n";
+    EXPECT_EQ(index = numbers.minimum(), 5) << "minimum failed.\n";
+    EXPECT_EQ(index = numbers.maximum(), 4) << "maximum failed.\n";
+    EXPECT_EQ(index = numbers.predcessr(2), 8) << "predecessor failed.\n";
+    EXPECT_EQ(index = numbers.successor(2), 1) << "successor failed.\n";
 }
 
 TEST(array_p, friend_functions)
@@ -128,36 +128,44 @@ void array_evaluation_c::TearDown()
 {
 }
 
-array_evaluation_c::array_evaluation_c() : objects(list_objects, maximum_size) {}
+array_evaluation_c::array_evaluation_c() : objects(list_objects, classic_size, maximum_size) {}
 
 //------------------------------------------------
 // tests:
 
-TEST_F(array_evaluation_c, sort_method) 
+// it is imposed to use a stable algorithm
+TEST_F(array_evaluation_c, sort_method)
 {
-    const int indexes1[] = { 6, 4, 7, 5, 8, 9, 2, 1, 3, 0 };
-    objects.setf(compare_numbr);
-    EXPECT_NO_THROW(objects.sort(bubble_sort));
-    //for (size_t i = 0; i < 10; i++)
-        //EXPECT_TRUE(absolute_equality(objects[i], objects[indexes1[i]]));
-
-    /*
-    const int indexes2[] = { 6, 9, 1, 3, 5, 8, 0, 2, 4, 7 };
-    objects.setf(compare_addss);
-    EXPECT_NO_THROW(objects.sort());
-    for (size_t i = 0; i < 10; i++)
-        EXPECT_TRUE(absolute_equality(objects[i], objects[indexes2[i]]));
+    array<convoluted> sorted = objects;
+    const int indexes1[] = { 6, 4, 7, 5, 8, 9, 1, 2, 3, 0 };
+    sorted.setf(compare_numbr);
+    EXPECT_NO_THROW(sorted.sort());
+    FOR(10)
+        EXPECT_TRUE(absolute_equality(sorted[i], objects[indexes1[i]])) << "number comparison - index: " << i << '\n';
+    sorted = objects;
     
-    const int indexes3[] = { 6, 8, 9, 0, 1, 2, 3, 4, 5, 7 };
-    objects.setf(compare_strng);
-    EXPECT_NO_THROW(objects.sort());
-    for (size_t i = 0; i < 10; i++)
-        EXPECT_TRUE(absolute_equality(objects[i], objects[indexes3[i]]));*/
-}
+    const int indexes2[] = { 6, 9, 1, 3, 5, 8, 0, 2, 4, 7 };
+    sorted.setf(compare_addss);
+    EXPECT_NO_THROW(sorted.sort(bubble_sort));
+    FOR(10)
+        EXPECT_TRUE(absolute_equality(sorted[i], objects[indexes2[i]])) << "address comparison - index: " << i << '\n';
+    sorted = objects;
 
+    // this, last section, can't be stable because of the satellite data, and poor implementation of 'compare_strng'
+    const int indexes3[] = { 6, 8, 9, 0, 1, 2, 3, 4, 5, 7 };
+    sorted.setf(compare_strng);
+    EXPECT_NO_THROW(sorted.sort(bubble_sort));
+    FOR(10)
+        EXPECT_TRUE(absolute_equality(sorted[i], objects[indexes3[i]])) << "string comparison - index: " << i << '\n';
+}
 
 TEST_F(array_evaluation_c, query_operations)
 {
     objects.setf(compare_numbr);
+    EXPECT_EQ(objects.minimum(), 6);
+    EXPECT_EQ(objects.maximum(), 0);
 
+    objects.setf(compare_addss);
+    EXPECT_EQ(objects.predcessr(8), 5);
+    EXPECT_EQ(objects.successor(9), 1);
 }

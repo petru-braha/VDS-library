@@ -6,14 +6,15 @@ class convoluted
 {
 	// data members:
 	int number;
-	bool& address1;
+	bool* address1;
 	char* address2;
 public:
 	// constructors:
 	~convoluted();
-	convoluted(int number, bool one, const char* two);
-	bool constructor_ = false; // patch
+	convoluted(int number, const bool& one, const char* two);
 	convoluted(int null = NULL);
+	convoluted(const convoluted& c);
+	convoluted(const convoluted&& c);
 	
 	// modifier methods:
 	convoluted& operator = (const convoluted& c);
@@ -39,20 +40,18 @@ public:
 	friend bool compare_numbr(const convoluted& one, const convoluted& two);
 	friend bool compare_addss(const convoluted& one, const convoluted& two);
 	friend bool compare_strng(const convoluted& one, const convoluted& two);
+	
+	friend bit  swap(convoluted& c1, convoluted& c2);
+	friend bool absolute_equality(const convoluted& c1, const convoluted& c2);
 };
 
 // comments:
 // convoluted::number doesn't depend on the char array, but helps at initializing it in constructors
 // this class should look arbitrarly built, the structures have to work as expected even if this header doesn't make sense
+// address2 can be nullptr
 
 //------------------------------------------------
-// constructors:
-
-convoluted::~convoluted()
-{
-	if (address2)
-		delete[]address2;
-}
+// auxiliary utility:
 
 bool letter(const char& character)
 {
@@ -63,22 +62,55 @@ bool letter(const char& character)
 	return true;
 }
 
-convoluted::convoluted(int number, bool one, const char* two) : number(number), address1(one)
-{
-	this->number = number;
-	address2 = new char[number];
-	for (int i = 0; i < number - 1; i++)
-	{
-		if (letter(two[i]))
-			address2[i] = two[i];
-		else
-			address2[i] = 'A';
-	}
+//------------------------------------------------
+// constructors:
 
-	address2[number - 1] = 0;
+convoluted::~convoluted()
+{
+	delete address1;
+	if (address2)
+		delete[]address2;
 }
 
-convoluted::convoluted(int null) : number(0), address1(constructor_), address2(nullptr) {}
+convoluted::convoluted(int number, const bool& one, const char* two) : number(number)
+{
+	address1 = new bool {one};
+	address2 = new char[number];
+	
+	size_t sz = strlen(two) + 1;
+	sz = sz < number ? sz : number;
+	for (size_t i = 0; i < sz - 1; i++)
+	{
+		if (0 == two[i])
+		{
+			this->address2[i] = 0;
+			break;
+		}
+
+		address2[i] = letter(two[i]) ? two[i] : 'A';
+	}
+
+	address2[sz - 1] = 0;
+}
+
+convoluted::convoluted(int null) : number(0), address1(new bool{ false }), address2(nullptr) {}
+
+convoluted::convoluted(const convoluted& c)
+{
+	this->number = c.number;
+	this->address1 = new bool{ *c.address1 };
+	
+	if (nullptr == c.address2)
+	{
+		this->address2 = nullptr;
+		return;
+	}
+
+	size_t sz = strlen(c.address2) + 1;
+	this->address2 = new char[sz];
+	for (size_t i = 0; i < sz; i++)
+		this->address2[i] = c.address2[i];
+}
 
 //------------------------------------------------
 // modifier methods: 
@@ -86,17 +118,22 @@ convoluted::convoluted(int null) : number(0), address1(constructor_), address2(n
 convoluted& convoluted::operator = (const convoluted& c)
 {
 	this->number = c.number;
-	if (address2)
+	
+	delete address1;
+	if(address2)
 		delete[]address2;
+	address1 = nullptr;
 	address2 = nullptr;
-	if (c.address2)
-	{
-		address2 = new char[c.number];
-		strcpy(this->address2, c.address2);
-	}
 
-	bool temp = c.address1;
-	this->address1 = temp;
+	address1 = new bool{ *c.address1 };
+	
+	if (c.address2 == nullptr)
+		return *this;
+	size_t sz = strlen(c.address2) + 1;
+	address2 = new char[sz];
+	for (size_t i = 0; i < sz; i++)
+		this->address2[i] = c.address2[i];
+
 	return *this;
 }
 
@@ -160,7 +197,7 @@ int convoluted::get_numbr() const
 
 bool convoluted::get_addr1() const
 {
-	return address1;
+	return *address1;
 }
 
 char* convoluted::get_addr2() const
@@ -190,7 +227,7 @@ std::ostream& operator << (std::ostream& out, const convoluted& c)
 	out << "\n";
 	out << "|" << "----------" << "----------" << "----------" << "|\n";
 	out << "|" << " number: " << c.number << "\n";
-	out << "|" << " abstract: " << c.address1 << "\n";
+	out << "|" << " abstract: " << *c.address1 << "\n";
 	out << "|" << " text: ";
 	
 	if (c.address2) out << c.address2;
@@ -230,4 +267,35 @@ bool compare_strng(const convoluted& one, const convoluted& two)
 			return true;
 	}
 	return false;
+}
+
+bit swap(convoluted& c1, convoluted& c2)
+{
+	// number
+	int nr = c1.number;
+	c1.number = c2.number;
+	c2.number = nr;
+	
+	// address1
+	bool ad = *c1.address1;
+	*c1.address1 = false == *c2.address1 ? false : true;
+	*c2.address1 = false == ad ? false: true;
+	
+	// address2
+	char* ptr = c1.address2;
+	c1.address2 = c2.address2;
+	c2.address2 = ptr;
+	
+	return 0;
+}
+
+bool absolute_equality(const convoluted& c1, const convoluted& c2)
+{
+	if (c1.number != c2.number)
+		return false;
+	if ((bool)c1.address1 != (bool)c2.address1)
+		return false;
+	if (strcmp(c1.address2, c2.address2) != 0)
+		return false;
+	return true;
 }

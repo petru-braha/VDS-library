@@ -32,7 +32,7 @@ class array_sorting // behavioral singleton
 
 	// constructors:
 	static array_sorting<T>* instance;
-	array_sorting() = default;
+	array_sorting() {}
 public:
 	static array_sorting<T>* get_instance();
 
@@ -93,9 +93,7 @@ void array_sorting<T>::bubbs(T*& arr, szt n)
 			if (compare(arr[index - 1], arr[index]))
 			{
 				sorted = false;
-				const T temp = arr[index - 1];
-				arr[index - 1] = arr[index];
-				arr[index] = temp;
+				swap(arr, index - 1, index);
 			}
 	} while (sorted == false);
 }
@@ -140,6 +138,8 @@ void array_sorting<T>::merge(T*& arr, size_t one_index_left, size_t one_index_rg
 {
 	size_t index_temp = 0, n_temp = two_index_rght - one_index_left;
 	T* temp_array = new T[n_temp];
+	FOR(n_temp)
+		temp_array[i] = NULL;
 
 	while (one_index_left < one_index_rght && two_index_left < two_index_rght)
 	{

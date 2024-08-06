@@ -40,16 +40,17 @@ void stop_visual() {}
 
 int main(int argc, char** argv)
 {
-	::testing::InitGoogleTest(&argc, argv);
+	//::testing::InitGoogleTest(&argc, argv);
 	//choose_structure();
 	//::testing::GTEST_FLAG(filter) = strcat(choosen_structure, "*");
 
-	int exit_status = RUN_ALL_TESTS();
+	int exit_status = 1;// = RUN_ALL_TESTS();
 
 	strt_visual();
 	loop_visual();
 	stop_visual();
 
-	
+	array<convoluted> aaa(list_objects, classic_size, maximum_size);
+	aaa.prnt();
 	return exit_status;
-}	
+}

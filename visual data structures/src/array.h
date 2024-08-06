@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning (once:4018)
 #include "bureaucracy.h"
 #include "array_sorting.h"
 #include <initializer_list>
@@ -35,11 +36,11 @@ class array
 public:
 	// constructors:
 	~array();
-	array(const int& n = default_array_size);
+	array(const size_t& n = default_array_size);
 	array(const std::initializer_list<T>& val, const size_t& n = default_array_size);
 	array(const T* val, const size_t& val_size, const size_t& n = default_array_size);
 	array(const array<T>& arr);
-	array(const array<T>&& arr);
+	array(const array<T>&& arr) noexcept;
 
 	// iterator methods:
 	iterator begin() const;
@@ -109,7 +110,7 @@ array<T>::~array()
 }
 
 template <class T>
-array<T>::array(const int& n)
+array<T>::array(const size_t& n)
 {
 	this->n = n;
 	index_last = ERROR_CODE;
@@ -168,7 +169,7 @@ array<T>::array(const array<T>& arr)
 }
 
 template <class T>
-array<T>::array(const array<T>&& arr)
+array<T>::array(const array<T>&& arr) noexcept
 {
 	this->n = arr.getn();
 	this->index_last = ERROR_CODE;

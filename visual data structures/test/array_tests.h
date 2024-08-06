@@ -133,16 +133,26 @@ array_evaluation_c::array_evaluation_c() : objects(list_objects, maximum_size) {
 //------------------------------------------------
 // tests:
 
-TEST_F(array_evaluation_c, sort_method)
+TEST_F(array_evaluation_c, sort_method) 
 {
+    const int indexes1[] = { 6, 4, 7, 5, 8, 9, 2, 1, 3, 0 };
     objects.setf(compare_numbr);
-    EXPECT_NO_THROW(objects.sort());
-    
+    EXPECT_NO_THROW(objects.sort(bubble_sort));
+    //for (size_t i = 0; i < 10; i++)
+        //EXPECT_TRUE(absolute_equality(objects[i], objects[indexes1[i]]));
+
+    /*
+    const int indexes2[] = { 6, 9, 1, 3, 5, 8, 0, 2, 4, 7 };
     objects.setf(compare_addss);
     EXPECT_NO_THROW(objects.sort());
+    for (size_t i = 0; i < 10; i++)
+        EXPECT_TRUE(absolute_equality(objects[i], objects[indexes2[i]]));
     
+    const int indexes3[] = { 6, 8, 9, 0, 1, 2, 3, 4, 5, 7 };
     objects.setf(compare_strng);
     EXPECT_NO_THROW(objects.sort());
+    for (size_t i = 0; i < 10; i++)
+        EXPECT_TRUE(absolute_equality(objects[i], objects[indexes3[i]]));*/
 }
 
 

@@ -23,3 +23,16 @@ linked_list_evaluation_p::linked_list_evaluation_p() : numbers(list_numbers)
 
 //------------------------------------------------
 // tests:
+
+TEST_F(linked_list_evaluation_p, clear_method)
+{
+
+}
+
+// clear
+// sort
+// insert
+// remove
+// query: predecessor successor search minimum maximum
+// friend:
+// convoluted: sort query

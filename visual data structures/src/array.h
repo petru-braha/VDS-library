@@ -115,9 +115,7 @@ array<T>::array(const size_t& n)
 {
 	this->n = n;
 	index_last = ERROR_CODE;
-	values = new T[n];
-	for (size_t i = 0; i < n; i++)
-		values[i] = NULL;
+	values = new T[n]{}; // the initializer brachets will initialise everything with NULL
 }
 
 template <class T>
@@ -127,7 +125,7 @@ array<T>::array(const std::initializer_list<T>& val, const size_t& n)
 		fatal_error("wrong parameters");
 	this->n = n;
 	index_last = val.size() - 1;
-	values = new T[n];
+	values = new T[n]{};
 
 	size_t index = 0;
 	for (auto key = val.begin(); key != val.end(); key++)
@@ -135,9 +133,6 @@ array<T>::array(const std::initializer_list<T>& val, const size_t& n)
 		values[index] = *key;
 		index++;
 	}
-
-	for (; index < n; index++)
-		values[index] = NULL;
 }
 
 template <class T>
@@ -146,14 +141,11 @@ array<T>::array(const T* val, const size_t& val_size, const size_t& n)
 	if (val_size > n)
 		fatal_error("wrong parameters");
 	this->n = n;
-	values = new T[n];
+	values = new T[n]{};
 
 	for (index_last = 0; index_last < val_size; index_last++)
 		values[index_last] = val[index_last];
 	index_last--;
-
-	for (size_t i = index_last + 1; i < n; i++)
-		values[i] = NULL;
 }
 
 template <class T>
@@ -161,12 +153,10 @@ array<T>::array(const array<T>& arr)
 {
 	this->n = arr.getn();
 	this->index_last = ERROR_CODE;
-	values = new T[n];
+	values = new T[n]{};
 
 	for (auto i : arr)
-		this->values[++this->index_last] = i;
-	for (size_t i = index_last + 1; i < n; i++)
-		values[i] = NULL;
+		this->values[++index_last] = i;
 }
 
 template <class T>
@@ -174,12 +164,10 @@ array<T>::array(const array<T>&& arr) noexcept
 {
 	this->n = arr.getn();
 	this->index_last = ERROR_CODE;
-	values = new T[n];
+	values = new T[n]{};
 
 	for (auto i : arr)
 		this->values[++this->index_last] = i;
-	for (size_t i = index_last + 1; i < n; i++)
-		values[i] = NULL;
 }
 
 //------------------------------------------------
@@ -528,5 +516,6 @@ std::ostream& operator << (std::ostream& out, const array<T>& arr)
 {
 	for (auto i : arr)
 		out << i << ' ';
+	out << '\n';
 	return out;
 }

@@ -5,7 +5,7 @@
 
 
 template <class T>
-class list 
+class list
 {
 	// typedefs:
 	typedef node_list<T>* ptr;
@@ -13,7 +13,7 @@ class list
 	typedef const T& type;
 protected:
 	// data members:
-	node_list<T>* frst, * last;
+	node_list<T>* head, * tail;
 	size_t n;
 
 	// constructors:
@@ -23,7 +23,7 @@ protected:
 public:
 	// modifier methods:
 	void clear();
-	
+
 	// specific methods:
 	void atypical_insert(type value, szt index);
 	void atypical_remove(szt index);
@@ -35,8 +35,8 @@ public:
 	// constant methods:
 	size_t getn() const;
 	bool  empty() const;
-	ptr get_frst() const;
-	ptr get_last() const;
+	ptr get_head() const;
+	ptr get_tail() const;
 
 
 private: // linked_list inherit this class
@@ -46,7 +46,7 @@ private: // linked_list inherit this class
 
 // comments:
 // it is not allowed for adaptors to interact with private data of a linked_list => private friendship
-// for insert and remove methods, the case frst actually means the second node
+// for insert and remove methods, the case head actually means the second node
 // PAY ATTENTION TO THE SYNTAX: "BEFORE_INSERTED", "BEFORE_REMOVED"
 // allows repeating values
 
@@ -62,7 +62,7 @@ list<T>::~list()
 template <class T>
 list<T>::list()
 {
-	frst = last = nullptr;
+	head = tail = nullptr;
 	n = 0;
 }
 
@@ -72,28 +72,28 @@ list<T>::list()
 template <class T>
 void list<T>::clear()
 {
-	ptr it = frst;
+	ptr it = head;
 	while (it)
 	{
 		it = it->successor[0];
-		delete frst;
-		frst = it;
+		delete head;
+		head = it;
 		n--;
 	}
-	frst = last = nullptr;
+	head = tail = nullptr;
 }
 
 //------------------------------------------------
 // specific methods:
- 
+
 template <class T>
 void list<T>::atypical_insert(type value, szt index)
 {
 	// optimisation:
 	if (index == n)
 	{
-		last->successor[0] = new node_list<T>(value);
-		last = last->successor[0];
+		tail->successor[0] = new node_list<T>(value);
+		tail = tail->successor[0];
 		n++;
 		return;
 	}
@@ -101,13 +101,13 @@ void list<T>::atypical_insert(type value, szt index)
 	if (index == 0)
 	{
 		node_list<T>* it = new node_list<T>(value);
-		it->successor[0] = frst;
-		frst = it;
+		it->successor[0] = head;
+		head = it;
 		n++;
 		return;
 	}
 
-	node_list<T>* it = frst;
+	node_list<T>* it = head;
 	for (size_t i = 0; i + 1 < index; i++)
 		it = it->successor[0];
 	if (it == nullptr)
@@ -132,14 +132,14 @@ void list<T>::atypical_remove(szt index)
 	// deleting the first element
 	if (index == 0)
 	{
-		node_list<T>* it = frst;
-		frst = frst->successor[0];
+		node_list<T>* it = head;
+		head = head->successor[0];
 		delete it;
 		n--;
 		return;
 	}
 
-	node_list<T>* it = frst;
+	node_list<T>* it = head;
 	for (size_t i = 0; i + 1 < index; i++)
 		it = it->successor[0];
 	node_list<T>* nxt = it->successor[0];
@@ -149,7 +149,7 @@ void list<T>::atypical_remove(szt index)
 }
 
 template <class T>
-void list<T>::insert(ptr& value, ptr& before_inserted) 
+void list<T>::insert(ptr& value, ptr& before_inserted)
 {
 	n++;
 	ptr actual = new ptr(value->get()); // if value has successors
@@ -159,27 +159,27 @@ void list<T>::insert(ptr& value, ptr& before_inserted)
 	{
 		if (empty())
 		{
-			frst = last = actual;
+			head = tail = actual;
 			return;
 		}
-		
-		actual->successor[0] = frst; // not empty => insert as a first node
-		frst = actual;
+
+		actual->successor[0] = head; // not empty => insert as a first node
+		head = actual;
 		return;
 	}
 
-	// case frst
-	if (before_inserted == frst)
+	// case head
+	if (before_inserted == head)
 	{
-		actual->successor[0] = frst->successor[0];
-		frst->successor[0] = actual;
+		actual->successor[0] = head->successor[0];
+		head->successor[0] = actual;
 		return;
 	}
 
-	// case last
-	if (before_inserted == last)
+	// case tail
+	if (before_inserted == tail)
 	{
-		last = last->successor[0] = actual;
+		tail = tail->successor[0] = actual;
 		return;
 	}
 
@@ -198,13 +198,13 @@ void list<T>::remove(ptr& before_removed)
 	// case head_node
 	if (before_removed == head_node)
 	{
-		ptr it = frst;
-		frst = frst->successor[0];
+		ptr it = head;
+		head = head->successor[0];
 		delete it;
 		return;
 	}
 
-	// case mid, similiar to case frst, there is no case last
+	// case mid, similiar to case head, there is no case tail
 	ptr it = before_removed->successor[0];
 	before_removed->successor[0] = it->successor[0];
 	delete it;
@@ -227,14 +227,13 @@ bool list<T>::empty() const
 }
 
 template <class T>
-node_list<T>* list<T>::get_frst() const
+node_list<T>* list<T>::get_head() const
 {
-	return frst;
+	return head;
 }
 
 template <class T>
-node_list<T>* list<T>::get_last() const
+node_list<T>* list<T>::get_tail() const
 {
-	return last;
+	return tail;
 }
-

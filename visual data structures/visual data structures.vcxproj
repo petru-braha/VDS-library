@@ -122,11 +122,14 @@
     <ClInclude Include="include\node\node_rb_t.h" />
     <ClInclude Include="include\node\node_trivial_tree.h" />
     <ClInclude Include="include\pch.h" />
+    <ClInclude Include="src\maxheap.h" />
+    <ClInclude Include="src\minheap.h" />
     <ClInclude Include="src\queue.h" />
     <ClInclude Include="src\red_black_tree.h" />
     <ClInclude Include="src\stack.h" />
     <ClInclude Include="include\convoluted.h" />
     <ClInclude Include="include\tree.h" />
+    <ClInclude Include="src\trivial_tree.h" />
     <ClInclude Include="test\array_tests.h" />
     <ClInclude Include="test\glfw_tests.h" />
     <ClInclude Include="test\linked_list_tests.h" />

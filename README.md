@@ -1,0 +1,1 @@
+# personal archive of my beginner's journey into computer science. here you would only find a comparison state between the present branch/project and my inexperienced brain from two years ago. there is no use to navigate these files; please consult the master branch.

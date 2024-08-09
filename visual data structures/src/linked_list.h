@@ -133,7 +133,7 @@ node_list<T>* linked_list<T>::quick_sort(ptr& h, ptr& t) // returns new head of 
 
 		head_s = quick_sort(head_s, temp);
 		
-		temp = tail(head_s);
+		temp = tail_s;
 		temp->successor[0] = pivot;
 	}
 

@@ -26,7 +26,9 @@ linked_list_evaluation_p::linked_list_evaluation_p() : numbers(list_numbers)
 
 TEST_F(linked_list_evaluation_p, clear_method)
 {
-
+    numbers.prnt();
+    numbers.sort();
+    numbers.prnt();
 }
 
 // clear

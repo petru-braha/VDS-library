@@ -9,10 +9,11 @@
 
 int main(int argc, char** argv)
 {
-	if (argc != 2)
-		fatal_error("the driver takes one argument");
+	//if (argc != 2)
+		//fatal_error("the driver takes one argument");
 	::testing::InitGoogleTest(&argc, argv);
-	::testing::GTEST_FLAG(filter) = strcat(argv[1], "*\0");
+	char temp[199] = "linked_list";
+	::testing::GTEST_FLAG(filter) = strcat(temp, "*");
 
 	int exit_status = RUN_ALL_TESTS();
 

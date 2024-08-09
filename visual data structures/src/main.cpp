@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include <cstdlib>
 #include <string>
 #include <unordered_map>
@@ -65,8 +66,9 @@ int main(int argc, char** argv)
 
 	}
 
-	string argument = visual_data_structures.at(choosen_index);
-	//execv("./debug_testing.exe", argument); // calls the compiled test.cpp with te argument
+	char argument[50] {};
+	strcpy_s(argument, visual_data_structures.at(choosen_index).c_str());
+	execl("a.exe", argument, NULL); // calls the compiled test.cpp with the argument
 
 	std::cout << "lauching the project failed.\n";
 	return EXIT_FAILURE;

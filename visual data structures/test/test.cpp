@@ -4,16 +4,15 @@
 
 #include "array_tests.h"
 #include "linked_list_tests.h"
-// more directives
-
+#include "avl_tests.h"
 
 int main(int argc, char** argv)
 {
 	//if (argc != 2)
 		//fatal_error("the driver takes one argument");
 	::testing::InitGoogleTest(&argc, argv);
-	char temp[199] = "linked_list";
-	::testing::GTEST_FLAG(filter) = strcat(temp, "*");
+	//::testing::GTEST_FLAG(filter) = strcat(argv[1], "*");
+	::testing::GTEST_FLAG(filter) = "linked_list*";
 
 	int exit_status = RUN_ALL_TESTS();
 

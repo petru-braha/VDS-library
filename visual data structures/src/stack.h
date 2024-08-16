@@ -12,16 +12,16 @@ public:
 	~stack() = default;
 	stack();
 	stack(std::initializer_list<T>& val);
-	stack(T* val, const size_t& val_size);
-	stack(const adaptor<T>& adp);
-	stack(const adaptor<T>&& adp);
+	stack(const T* val, const size_t& val_size);
+	stack(const stack<T>& s);
+	stack(const stack<T>&& s);
 
 	// modifier methods:
-	stack<T>& operator = (const adaptor<T>& adp);
+	stack<T>& operator = (const stack<T>& s);
 	
 	// specific methods:
 	T    top() const;
-	void push(const T& val);
+	void push(const T& value);
 	void pop();
 
 	// constant methods:
@@ -44,7 +44,7 @@ stack<T>::stack(std::initializer_list<T>& val) : values()
 }
 
 template <class T>
-stack<T>::stack(T* val, const size_t& val_size) : values()
+stack<T>::stack(const T* val, const size_t& val_size) : values()
 {
 	FOR(val_size)
 	{

@@ -107,6 +107,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\adaptor.h" />
+    <ClInclude Include="include\bst.h" />
     <ClInclude Include="include\collection.h" />
     <ClInclude Include="include\list.h" />
     <ClInclude Include="include\trial_test_values.h" />
@@ -114,6 +115,8 @@
     <ClInclude Include="include\array_sorting.h" />
     <ClInclude Include="src\avl.h" />
     <ClInclude Include="include\bureaucracy.h" />
+    <ClInclude Include="src\graph.h" />
+    <ClInclude Include="src\hash_table.h" />
     <ClInclude Include="src\linked_list.h" />
     <ClInclude Include="include\node\node.h" />
     <ClInclude Include="include\node\node_avlt.h" />
@@ -129,8 +132,8 @@
     <ClInclude Include="src\stack.h" />
     <ClInclude Include="include\convoluted.h" />
     <ClInclude Include="include\tree.h" />
-    <ClInclude Include="src\trivial_tree.h" />
     <ClInclude Include="test\array_tests.h" />
+    <ClInclude Include="test\avl_tests.h" />
     <ClInclude Include="test\glfw_tests.h" />
     <ClInclude Include="test\linked_list_tests.h" />
   </ItemGroup>

@@ -8,9 +8,12 @@ template <class T>
 class list
 {
 	// typedefs:
-	typedef node_list<T>* ptr;
-	typedef const size_t& szt;
 	typedef const T& type;
+	typedef const size_t& szt;
+
+	typedef node_list<T>* ptr;
+	typedef const node_list<T>* ptr_return;
+	
 protected:
 	// data members:
 	node_list<T>* head, * tail;
@@ -19,7 +22,6 @@ protected:
 	// constructors:
 	virtual ~list();
 	list();
-	list(const list<T>& l) = default;
 public:
 	// modifier methods:
 	void clear();
@@ -29,15 +31,14 @@ public:
 	void atypical_remove(szt index);
 
 	// traditional ways:
-	void insert(ptr& value, ptr& before_inserted);
-	void remove(ptr& before_removed);
+	void insert(const ptr& value, ptr before_inserted = head_node);
+	void remove(ptr before_removed);
 
 	// constant methods:
 	size_t getn() const;
 	bool  empty() const;
-	ptr get_head() const;
-	ptr get_tail() const;
-
+	ptr_return get_head() const;
+	ptr_return get_tail() const;
 
 private: // linked_list inherit this class
 	// friend functions:
@@ -149,10 +150,10 @@ void list<T>::atypical_remove(szt index)
 }
 
 template <class T>
-void list<T>::insert(ptr& value, ptr& before_inserted)
+void list<T>::insert(const ptr& value, ptr before_inserted)
 {
 	n++;
-	ptr actual = new ptr(value->get()); // if value has successors
+	ptr actual = new node_list<float>(value->get()); // if value has successors
 
 	// case head_node
 	if (before_inserted == head_node)
@@ -189,7 +190,7 @@ void list<T>::insert(ptr& value, ptr& before_inserted)
 }
 
 template <class T>
-void list<T>::remove(ptr& before_removed)
+void list<T>::remove(ptr before_removed)
 {
 	if (empty())
 		fatal_error("no more memory");
@@ -227,13 +228,13 @@ bool list<T>::empty() const
 }
 
 template <class T>
-node_list<T>* list<T>::get_head() const
+const node_list<T>* list<T>::get_head() const
 {
 	return head;
 }
 
 template <class T>
-node_list<T>* list<T>::get_tail() const
+const node_list<T>* list<T>::get_tail() const
 {
 	return tail;
 }

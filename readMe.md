@@ -18,15 +18,13 @@
 3. queue
 4. maxheap
 5. minheap
-6. trivial tree
-7. AVL tree
-8. red black tree
-9. trie
-0. graph
-1. hash table
+6. AVL tree
+7. red black tree
+8. graph
+9. hash table
 
 ## Notes
 - please consult the wiki pages 
 - the focus of my study does not imply the development of containers and adaptors
-- my documentation is from: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest and Cormen
+- my documentation: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest and Cormen
 - current set-up: ISO C++17 Standard, VS 2022 version 17.10.4, GLFW 3.4 

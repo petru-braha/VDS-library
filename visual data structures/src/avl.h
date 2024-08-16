@@ -1,60 +1,76 @@
 #pragma once
 #include "bureaucracy.h"
 #include "tree.h"
-#include "stack.h"
+#include "bst.h"
 #include <ostream>
 
 template <class T = int>
-class avl : public tree<T, node_avlt<T>>
+class avl : public tree<T, node_avlt<T>>, bst<T, node_avlt>
 {
-	// typedef:
+	// typedefs:
 	typedef const T& type;
-	typedef node_avlt<T>* ptr;
+	typedef bool (*fct)(type, type);
+	typedef const size_t& szt;
 	
+	typedef node_avlt<T>* ptr;
+	typedef const node_avlt<T>*& ptr_ref;
+	typedef const node_avlt<T>* ptr_return;
+
 	// iterator concept:
 	class iterator
 	{
 		ptr current;
-		stack<ptr> nodes;
+		//stack<ptr> nodes;
 	public:
 		iterator(ptr node);
 
-		T    operator * () const;
-		void operator ++();
-		bool operator !=(const iterator& s) const;
+		T    operator *  () const;
+		void operator ++ ();
+		bool operator != (const iterator& s) const;
 	};
 
-	// auxiliar methods:
+	// auxiliar utility:
 	ptr left_rotation(ptr& node);
 	ptr rght_rotation(ptr& node);
-	bit balnce_factor(ptr& node) const;
-
-	ptr insert_call(ptr& parent, const T& value);
-	ptr remove_call(ptr& parent, const T& value);
+	bit balnce_factor(const ptr& node) const;
 public:
 	// constructors:
 	~avl();
-	avl(const T& value = NULL);
+	avl();
+	avl(const std::initializer_list<T>& val);
+	avl(const T* val, szt val_size);
+	avl(const avl<T>& t);
+	avl(const avl<T>&& t);
 
 	// iterator methods:
 	iterator begin() const;
 	iterator end() const;
 
-	// specific methods:
+	// modifier methods:
 	avl<T>& operator = (const avl<T>& t);
-	void insert(const T& value);
-	void remove(const T& value);
+	void clear();
+	void setf(fct f);
+
+	// specific methods:
+	void insert(const ptr& value);
+	void remove(const ptr& value);
 
 	// query operations:
-	ptr    search(const T& value) const;
-	size_t height(ptr& parent) const;
-	ptr minimum() const;
-	ptr maximum() const;
-	ptr predcessr(const T& value);
-	ptr successor(const T& value);
+	size_t height(ptr_ref parent) const;
+	ptr_return search(const T& value) const;
+	ptr_return minimum() const;
+	ptr_return maximum() const;
+	ptr_return predcessr(ptr_ref value) const;
+	ptr_return successor(ptr_ref value) const;
 
 	// constant methods:
 	bool operator == (const avl<T>& t);
+	size_t get_arity() const;
+	size_t		getn() const;
+	ptr_return	getr() const;
+	void*		getf() const;
+	void		prnt() const;
+	bool	   empty() const;
 
 	// friend functions:
 	friend T* convert(const avl<T>& t);
@@ -65,7 +81,7 @@ public:
 // warning: test the iterator class
 
 //------------------------------------------------
-// auxiliar methods:
+// auxiliar utility:
 
 template <class T>
 node_avlt<T>* avl<T>::left_rotation(ptr& node)
@@ -102,11 +118,12 @@ node_avlt<T>* avl<T>::rght_rotation(ptr& node)
 }
 
 template <class T>
-bit avl<T>::balnce_factor(ptr& node) const
+bit avl<T>::balnce_factor(const ptr& node) const
 {
 	return node->successor[left_child]->get_height() - node->successor[rght_child]->get_height();
 }
 
+/*
 template <class T>
 node_avlt<T>* avl<T>::insert_call(ptr& parent, const T& value)
 {
@@ -227,15 +244,16 @@ node_avlt<T>* avl<T>::remove_call(ptr& parent, const T& value)
 		left_rotation(parent);
 	}
 }
+*/
 
 //------------------------------------------------
 // constructors:
-
-template <class T>
-avl<T>::avl(const T& value) : tree<T, node_avlt<T>>(value) {}
-
+/*
 template <class T>
 avl<T>::~avl() {}
+
+template <class T>
+avl<T>::avl() : tree<T, node_avlt<T>>() {}
 
 //------------------------------------------------
 // iterator methods:
@@ -293,21 +311,20 @@ typename avl<T>::iterator avl<T>::end() const
 //avl<T>& avl<T>::operator = (const avl<T>& t);
 
 template <class T>
-void avl<T>::insert(const T& value)
+void avl<T>::insert(const ptr& value)
 {
-	insert_call(root, value);
+	//insert_call(root, value);
 }
 
 template <class T>
-void avl<T>::remove(const T& value)
+void avl<T>::remove(const ptr& value)
 {
-	remove_call(root, value);
+	//remove_call(root, value);
 }
 
 //------------------------------------------------
 // query operations:
 
-// search
 template <class T>
 node_avlt<T>* avl<T>::search(const T& value) const
 {
@@ -322,7 +339,7 @@ node_avlt<T>* avl<T>::search(const T& value) const
 			it = it->successor[rght_child];
 	}
 }
-
+/*
 template <class T>
 size_t avl<T>::height(ptr& parent) const
 {
@@ -395,27 +412,7 @@ node_avlt<T>* avl<T>::successor(const T& value)
 			it = it->successor[rght_child];
 		}
 	}
-}
+}*/
 
 //------------------------------------------------
 // friend functions:
-
-template <class T>
-T* convert(const avl<T>& t)
-{
-
-}
-
-template <class T>
-std::ostream& operator << (std::ostream& out, const avl<T>& t)
-{
-	stack<node_avlt<T>*> nodes;
-
-	node_avlt<T>* it = root;
-	while (it)
-	{
-		nodes.push(it);
-		it = it->successor[left_child];
-	}
-	
-}

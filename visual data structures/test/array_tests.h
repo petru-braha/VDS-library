@@ -27,6 +27,8 @@ array_evaluation_p::array_evaluation_p() : numbers(list_numbers, maximum_size)
 TEST_F(array_evaluation_p, clear_method)
 {
     numbers.clear();
+    EXPECT_TRUE(numbers.empty());
+    EXPECT_EQ(-1, numbers.getl());
 }
 
 TEST_F(array_evaluation_p, sort_method)

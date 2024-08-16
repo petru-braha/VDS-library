@@ -9,8 +9,10 @@ class linked_list : public list<T>
 	// typedef:
 	typedef const T& type;
 	typedef bool (*fct)(type, type);
-	typedef node_list<T>* ptr;
 	typedef const linked_list<T>& lnkl;
+
+	typedef node_list<T>* ptr;
+	typedef const node_list<T>* ptr_return;
 
 	// iterator concept:
 	class iterator
@@ -49,11 +51,11 @@ public:
 	void sort();
 
 	// query operations:
-	ptr search(const T& value) const;
-	ptr mimimum() const;
-	ptr maximum() const;
-	ptr predcessr(ptr value) const;
-	ptr successor(ptr value) const;
+	ptr_return search(const T& value) const;
+	ptr_return mimimum() const;
+	ptr_return maximum() const;
+	ptr_return predcessr(ptr value) const;
+	ptr_return successor(ptr value) const;
 
 	// constant methods:
 	bool  operator == (const linked_list<T>& l) const;
@@ -72,6 +74,7 @@ public:
 };
 
 // comments:
+// good practice: use only the object / only the node pointers
 // how to sort: merge_sort and quick_sort_Lomuto_scheme
 // allows repeating values
 
@@ -316,7 +319,7 @@ void linked_list<T>::sort()
 // query operations:
 
 template <class T>
-node_list<T>* linked_list<T>::search(const T& value) const
+const node_list<T>* linked_list<T>::search(const T& value) const
 {
 	for (auto i : *this)
 		if (i == value)
@@ -325,7 +328,7 @@ node_list<T>* linked_list<T>::search(const T& value) const
 }
 
 template <class T>
-node_list<T>* linked_list<T>::mimimum() const
+const node_list<T>* linked_list<T>::mimimum() const
 {
 	ptr minimum = head;
 	for (ptr it = head; it; it = it->successor[0])
@@ -336,7 +339,7 @@ node_list<T>* linked_list<T>::mimimum() const
 }
 
 template <class T>
-node_list<T>* linked_list<T>::maximum() const
+const node_list<T>* linked_list<T>::maximum() const
 {
 	ptr maximum = head;
 	for (ptr it = head; it; it = it->successor[0])
@@ -346,7 +349,7 @@ node_list<T>* linked_list<T>::maximum() const
 }
 
 template <class T>
-node_list<T>* linked_list<T>::predcessr(ptr value) const
+const node_list<T>* linked_list<T>::predcessr(ptr value) const
 {
 	ptr node = nullptr;
 	for (ptr it = head; it; it = it->successor[0])
@@ -364,7 +367,7 @@ node_list<T>* linked_list<T>::predcessr(ptr value) const
 }
 
 template <class T>
-node_list<T>* linked_list<T>::successor(ptr value) const
+const node_list<T>* linked_list<T>::successor(ptr value) const
 {
 	ptr node = nullptr;
 	for (ptr it = head; it; it = it->successor[0])

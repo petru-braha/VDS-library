@@ -35,3 +35,14 @@ the data structures should be aggregate
 // proof - robustness of testing:
 // why sorting calls may fail:
 merge sort redefenition
+
+
+- 
+log : getl now throws if it is empty
+to do: yoda, check for more bugs, more error checking for array, optimisation friend methods
+
+- about stack and queues: linked lists, not lists
+
+? returning discussion:
+- should insert return index of the last element? returning reference to allow obj.method.method
+- i can not allow modifying structures outside of themselves => return constant indexes/nodes

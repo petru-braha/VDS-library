@@ -52,7 +52,7 @@ public:
 
 	// modifier methods:
 	void clear();
-	linked_list<T>& operator = (const linked_list<T>& l);
+	linked_list<T>& operator = (lnkl l);
 	void setf(fct f);
 
 	// specific methods:
@@ -64,14 +64,14 @@ public:
 	void remove(const node_list<T>* before_removed); // traditional, time complexity O(1)
 
 	// query operations:
-	ptr_return search(const T& value) const;
+	ptr_return search(type value) const;
 	ptr_return mimimum() const;
 	ptr_return maximum() const;
-	ptr_return predcessr(ptr value) const;
-	ptr_return successor(ptr value) const;
+	ptr_return predcessr(ptr& value) const;
+	ptr_return successor(ptr& value) const;
 
 	// constant methods:
-	bool  operator == (const linked_list<T>& l) const;
+	bool  operator == (lnkl l) const;
 	size_t getn() const;
 	void*  getf() const;
 	
@@ -82,14 +82,14 @@ public:
 	ptr_return get_tail() const;
 
 	// friend functions:
-	friend T* convert(const linked_list<T>& l);
+	template <class T> friend T* convert(const linked_list<T>& l);
 
-	friend linked_list<T> linking(const linked_list<T>& one, const linked_list<T>& two);
-	friend linked_list<T> ejectin(const linked_list<T>& one, const linked_list<T>& two);
-	friend linked_list<T> crossng(const linked_list<T>& one, const linked_list<T>& two);
+	template <class T> friend linked_list<T> linking(const linked_list<T>& one, const linked_list<T>& two);
+	template <class T> friend linked_list<T> ejectin(const linked_list<T>& one, const linked_list<T>& two);
+	template <class T> friend linked_list<T> crossng(const linked_list<T>& one, const linked_list<T>& two);
 
-	friend std::ostream& operator << (std::ostream& out, const linked_list<T>& l);
-	friend void* collection_ptr(const linked_list<T>& l); // just for the collection!
+	template <class T> friend std::ostream& operator << (std::ostream& out, const linked_list<T>& l);
+	template <class T> friend void* collection_ptr(const linked_list<T>& l); // just for the collection!
 };
 
 // comments:
@@ -174,7 +174,7 @@ linked_list<T>::~linked_list()
 }
 
 template <class T>
-linked_list<T>::linked_list() : n(0), frst(nullptr), last(nullptr) {}
+linked_list<T>::linked_list() : n(0), head(nullptr), tail(nullptr) {}
 
 template <class T>
 linked_list<T>::linked_list(const std::initializer_list<T>& val) : n(0), head(nullptr), tail(nullptr)
@@ -235,7 +235,7 @@ linked_list<T>::linked_list(const linked_list<T>& l) : n(0), head(nullptr), tail
 }
 
 template <class T>
-linked_list<T>::linked_list(const linked_list<T>&& l) : n(0), haed(nullptr), tail(nullptr)
+linked_list<T>::linked_list(const linked_list<T>&& l) : n(0), head(nullptr), tail(nullptr)
 {
 	this->head = new node_list<T>(*l.begin());
 
@@ -254,7 +254,6 @@ linked_list<T>::linked_list(const linked_list<T>&& l) : n(0), haed(nullptr), tai
 
 	this->tail = it;
 	this->n = l.getn();
-	delete l;
 }
 
 //------------------------------------------------
@@ -311,7 +310,7 @@ void linked_list<T>::clear()
 }
 
 template <class T>
-linked_list<T>& linked_list<T>::operator = (const linked_list<T>& l)
+linked_list<T>& linked_list<T>::operator = (lnkl l)
 {
 	clear();
 	this->head = new node_list<T>(*l.begin());
@@ -348,10 +347,6 @@ void linked_list<T>::sort()
 {
 	quick_sort(head, tail);
 }
-
-
-//------------------------------------------------
-// specific methods:
 
 template <class T>
 void linked_list<T>::atypical_insert(type value, szt index)
@@ -495,7 +490,7 @@ void linked_list<T>::remove(const node_list<T>* before_removed)
 // query operations:
 
 template <class T>
-const node_list<T>* linked_list<T>::search(const T& value) const
+const node_list<T>* linked_list<T>::search(type value) const
 {
 	auto it = head;
 	FOR(n)
@@ -529,7 +524,7 @@ const node_list<T>* linked_list<T>::maximum() const
 }
 
 template <class T>
-const node_list<T>* linked_list<T>::predcessr(ptr value) const
+const node_list<T>* linked_list<T>::predcessr(ptr& value) const
 {
 	ptr node = nullptr;
 	for (ptr it = head; it; it = it->successor[0])
@@ -547,7 +542,7 @@ const node_list<T>* linked_list<T>::predcessr(ptr value) const
 }
 
 template <class T>
-const node_list<T>* linked_list<T>::successor(ptr value) const
+const node_list<T>* linked_list<T>::successor(ptr& value) const
 {
 	ptr node = nullptr;
 	for (ptr it = head; it; it = it->successor[0])
@@ -566,7 +561,7 @@ const node_list<T>* linked_list<T>::successor(ptr value) const
 // constant methods:
 
 template <class T>
-bool linked_list<T>::operator == (const linked_list<T>& l) const
+bool linked_list<T>::operator == (lnkl l) const
 {
 	if (this->n != l.n || this->head->get())
 		return false;
@@ -648,7 +643,7 @@ template <class T>
 linked_list<T> linking(const linked_list<T>& one, const linked_list<T>& two)
 {
 	linked_list<T> new_list(one);
-	new_list.tail->succesor[0] = two.head;
+	new_list.tail->successor[0] = two.head;
 	new_list.n += two.n;
 	new_list.tail = two.tail;
 	return new_list;

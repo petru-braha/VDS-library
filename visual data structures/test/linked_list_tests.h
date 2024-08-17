@@ -96,14 +96,29 @@ TEST_F(linked_list_evaluation_p, remove_method)
 TEST_F(linked_list_evaluation_p, query_operations)
 {
     EXPECT_EQ(numbers.search(-1), numbers.get_node(0));
+    EXPECT_EQ(numbers.search(60), nullptr);
+
     EXPECT_EQ(numbers.mimimum(), numbers.get_node(5));
     EXPECT_EQ(numbers.maximum(), numbers.get_node(4));
+
     //EXPECT_EQ(numbers.predcessr(), numbers.get_node(4));
 }
 
-TEST_F(linked_list_evaluation_p, friend_functions)
+TEST(linked_list_p, friend_functions)
 {
+    linked_list<> first(frnd_values1);
+    linked_list<> secnd(frnd_values2);
+    linked_list<> temp;
+    
+    temp = linking(first, secnd);
+    temp.prnt();
+    /*
+    temp = ejectin(first, secnd);
+    temp.prnt();
 
+    temp = crossng(first, secnd);
+    temp.prnt();
+    */
 }
 
 //------------------------------------------------

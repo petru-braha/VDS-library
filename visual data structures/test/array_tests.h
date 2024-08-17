@@ -28,7 +28,7 @@ TEST_F(array_evaluation_p, clear_method)
 {
     numbers.clear();
     EXPECT_TRUE(numbers.empty());
-    EXPECT_EQ(-1, numbers.getl());
+    EXPECT_THROW(numbers.getl(), int);
 }
 
 TEST_F(array_evaluation_p, sort_method)
@@ -55,14 +55,13 @@ TEST_F(array_evaluation_p, insert_method)
     numbers.insert(insertions[4], 3);
 
     // array has fixed size
-    EXPECT_EXIT(numbers.insert(100.0f, 0), testing::ExitedWithCode(ERROR_CODE), "no more memory");
+    EXPECT_EXIT(numbers.insert(100.0f, 0), testing::ExitedWithCode(ERROR_CODE), "");
 
     EXPECT_EQ(numbers[0], insertions[2]);
     EXPECT_EQ(numbers[1], insertions[0]);
     EXPECT_EQ(numbers[2], insertions[1]);
     EXPECT_EQ(numbers[3], insertions[4]);
     EXPECT_EQ(numbers[numbers.getl()], insertions[3]);
-    numbers.prnt();
 }
 
 TEST_F(array_evaluation_p, remove_method)
@@ -75,10 +74,6 @@ TEST_F(array_evaluation_p, remove_method)
     EXPECT_EQ(numbers[1], block_numbers[2]);
     EXPECT_EQ(numbers[2], block_numbers[4]);
     EXPECT_NO_THROW(numbers.remove(numbers.getl() - 1));
-
-    numbers.remove(1.01f, true);
-    for (auto i : numbers)
-        EXPECT_NE(i, 1.01f);
 }
 
 TEST_F(array_evaluation_p, query_operations)
@@ -96,11 +91,11 @@ TEST(array_p, friend_functions)
 {
     array<> first = { 1, 2, 3, 4, 5 };
     array<> secnd = { 5, 6, 7, 8, 9 };
-
     array<> temp;
+    
     temp = linking(first, secnd);
-    EXPECT_EQ(temp.getn(), 200);
-    EXPECT_EQ(temp.getl(), 9);
+    EXPECT_EQ(temp.getn(), 200) << "n\n";
+    EXPECT_EQ(temp.getl(), 9) << "l\n";
     EXPECT_EQ(temp[4], temp[5]);
 
     temp = ejectin(first, secnd);
@@ -163,10 +158,11 @@ TEST_F(array_evaluation_c, sort_method)
 
 TEST_F(array_evaluation_c, query_operations)
 {
+    
     objects.setf(compare_numbr);
     EXPECT_EQ(objects.minimum(), 6);
     EXPECT_EQ(objects.maximum(), 0);
-
+    
     objects.setf(compare_addss);
     EXPECT_EQ(objects.predcessr(8), 5);
     EXPECT_EQ(objects.successor(9), 1);

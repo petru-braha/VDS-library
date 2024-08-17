@@ -9,16 +9,20 @@
 
 int main(int argc, char** argv)
 {
+	// redirect std::cerr to a file
 	//if (argc != 2)
 		//fatal_error("the driver takes one argument");
 	::testing::InitGoogleTest(&argc, argv);
 	//::testing::GTEST_FLAG(filter) = strcat(argv[1], "*");
-	::testing::GTEST_FLAG(filter) = "linked_list*";
+	::testing::GTEST_FLAG(filter) = "array*";
+	//::testing::GTEST_FLAG(filter) = "linked_list*";
 
 	int exit_status = RUN_ALL_TESTS();
 
 	// don't forget about visual!!!!
 	// maybe lauch into execution another compiler visual cpp
 	
+	log_file.clear();
+	log_file.close();
 	return exit_status;
 }

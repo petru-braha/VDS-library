@@ -109,6 +109,7 @@
     <ClInclude Include="include\adaptor.h" />
     <ClInclude Include="include\bst.h" />
     <ClInclude Include="include\collection.h" />
+    <ClInclude Include="include\data_structure.h" />
     <ClInclude Include="include\trial_test_values.h" />
     <ClInclude Include="src\array.h" />
     <ClInclude Include="include\array_sorting.h" />

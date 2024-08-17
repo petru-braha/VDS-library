@@ -1,5 +1,4 @@
 #pragma once
-#pragma warning (once:4018)
 #include "bureaucracy.h"
 #include "array_sorting.h"
 #include <initializer_list>
@@ -14,9 +13,11 @@ class array
 	typedef bool (*fct)(type, type);
 	typedef const size_t& szt;
 
+	typedef const array<T>& ary;
+
 	// data members:
 	size_t n;			// its purpose is just to allocate space
-	loong index_last;	// gurantees that elements selected by user are initialised contiguously // index of the index_last concrete value
+	size_t index_last;	// gurantees that elements selected by user are initialised contiguously // index of the index_last concrete value
 	T* values;
 
 	// iterator concept:
@@ -33,13 +34,13 @@ class array
 
 	// auxiliar utility:
 	fct  compare = [](type x, type y)->bool { return x > y; };
-	void shift_left(const size_t& left_position);
+	void shift_left(szt left_position);
 public:
 	// constructors:
 	~array();
-	array(const size_t& n = default_array_size);
-	array(const std::initializer_list<T>& val, const size_t& n = default_array_size);
-	array(const T* val, const size_t& val_size, const size_t& n = default_array_size);
+	array(szt n = default_array_size);
+	array(const std::initializer_list<T>& val, szt n = default_array_size);
+	array(const T* val, szt val_size, szt n = default_array_size);
 	array(const array<T>& arr);
 	array(const array<T>&& arr) noexcept;
 
@@ -48,18 +49,17 @@ public:
 	iterator end() const;
 
 	// modifier methods:
-	array<T>& operator = (const array<T>& arr);
+	array<T>& operator = (ary arr);
 	void clear();
 	void setf(fct f);
 
 	// specific methods:
-	void sort(const bit& algorithm = quick_sort);
-	void insert(const T& value, const size_t& index);
-	void remove(const size_t& index);
-	void remove(const T& value, const bool& all);
+	void sort(bit algorithm = quick_sort);
+	void insert(type value, szt index);
+	void remove(szt index);
 
 	// query operations:
-	size_t search(const T& value) const;
+	size_t search(type value) const;
 	size_t minimum() const;
 	size_t maximum() const;
 	size_t predcessr(szt index) const;
@@ -67,21 +67,22 @@ public:
 	T& operator [] (szt index); // get / replace method, shift to the left until there is no more empty space
 
 	// constant methods:
-	bool operator == (const array<T>& arr) const;
-	size_t getn() const;
-	loong  getl() const;
-	void*  getf() const;
+	bool operator == (ary arr) const;
 	void   prnt() const;
+	size_t getn() const;
+	size_t getl() const;
+	void*  getf() const;
 	bool  empty() const;
+	T get(szt index) const;
 
 	// friend functions:
-	friend T* convert(const array<T>& arr);
+	template <class T> friend T* convert(const array<T>& arr);
 
 	template <class T> friend array<T> linking(const array<T>& one, const array<T>& two);
 	template <class T> friend array<T> ejectin(const array<T>& one, const array<T>& two);
 	template <class T> friend array<T> crossng(const array<T>& one, const array<T>& two);
 
-	friend std::ostream& operator << (std::ostream& out, const array<T>& arr);
+	template <class T> friend std::ostream& operator << (std::ostream& out, const array<T>& arr);
 };
 
 // comments:
@@ -92,7 +93,7 @@ public:
 // auxiliar utility:
 
 template <class T>
-void array<T>::shift_left(const size_t& left_position)
+void array<T>::shift_left(szt left_position)
 {
 	if (empty())
 		fatal_error("nothing to shift");
@@ -111,15 +112,15 @@ array<T>::~array()
 }
 
 template <class T>
-array<T>::array(const size_t& n)
+array<T>::array(szt n)
 {
 	this->n = n;
-	index_last = ERROR_CODE;
+	index_last = SZT_ERROR;
 	values = new T[n]{}; // the initializer brachets will initialise everything with NULL
 }
 
 template <class T>
-array<T>::array(const std::initializer_list<T>& val, const size_t& n)
+array<T>::array(const std::initializer_list<T>& val, szt n)
 {
 	if (val.size() > n)
 		fatal_error("wrong parameters");
@@ -136,7 +137,7 @@ array<T>::array(const std::initializer_list<T>& val, const size_t& n)
 }
 
 template <class T>
-array<T>::array(const T* val, const size_t& val_size, const size_t& n)
+array<T>::array(const T* val, szt val_size, szt n)
 {
 	if (val_size > n)
 		fatal_error("wrong parameters");
@@ -213,12 +214,12 @@ typename array<T>::iterator array<T>::end() const
 // modifier methods:
 
 template <class T>
-array<T>& array<T>::operator = (const array<T>& arr)
+array<T>& array<T>::operator = (ary arr)
 {
 	this->n = arr.n;
 	this->index_last = ERROR_CODE;
 	delete[]this->values;
-	this->values = new T[n];
+	this->values = new T[n]{};
 	for (auto i : arr)
 		this->values[++this->index_last] = i;
 	return *this;
@@ -227,9 +228,10 @@ array<T>& array<T>::operator = (const array<T>& arr)
 template <class T>
 void array<T>::clear()
 {
-	FOR(index_last + 1)
+	FOR(index_last)
 		values[i] = NULL;
-	index_last = ERROR_CODE;
+	values[index_last + 1] = NULL;
+	index_last = SZT_ERROR;
 }
 
 template <class T>
@@ -242,7 +244,7 @@ void array<T>::setf(fct f)
 // specific methods:
 
 template <class T>
-void array<T>::sort(const bit& algorithm)
+void array<T>::sort(bit algorithm)
 {
 	array_sorting<T>* sort_job = array_sorting<T>::get_instance();
 	sort_job->setf(this->compare);
@@ -273,22 +275,22 @@ void array<T>::sort(const bit& algorithm)
 }
 
 template <class T>
-void array<T>::insert(const T& value, const size_t& index)
+void array<T>::insert(type value, szt index)
 {
 	if (index > index_last + 1 || index < 0)
 		hard_error("bad index");
 
 	if (index_last + 1 >= n)
-		fatal_error("no more memory")
+		fatal_error("no more memory");
 
-		index_last++;
+	index_last++;
 	for (size_t i = index_last; i > index; i--) // shift right
 		values[i] = values[i - 1];
 	values[index] = value;
 }
 
 template <class T>
-void array<T>::remove(const size_t& index)
+void array<T>::remove(szt index)
 {
 	if (empty())
 		return;
@@ -298,24 +300,11 @@ void array<T>::remove(const size_t& index)
 		shift_left(index);
 }
 
-template <class T>
-void array<T>::remove(const T& value, const bool& all)
-{
-	for (size_t i = 0; i <= index_last; i++)
-		if (values[i] == value)
-		{
-			shift_left(i);
-			if (all == false)
-				return;
-			i--;
-		}
-}
-
 //------------------------------------------------
 // query operations:
 
 template <class T>
-size_t array<T>::search(const T& value) const
+size_t array<T>::search(type value) const
 {
 	FOR(index_last + 1)
 		if (values[i] == value)
@@ -411,7 +400,7 @@ T& array<T>::operator [] (szt index)
 // constant methods:
 
 template <class T>
-bool array<T>::operator == (const array<T>& arr) const
+bool array<T>::operator == (ary arr) const
 {
 	if (this->n != arr.n)
 		return false;
@@ -430,8 +419,10 @@ size_t array<T>::getn() const
 }
 
 template <class T>
-loong array<T>::getl() const
+size_t array<T>::getl() const
 {
+	if (empty())
+		hard_error("no data");
 	return index_last;
 }
 
@@ -453,7 +444,15 @@ void  array<T>::prnt() const
 template <class T>
 bool array<T>::empty() const
 {
-	return index_last == ERROR_CODE;
+	return (values[0] == NULL && SZT_ERROR == index_last);
+}
+
+template <class T>
+T array<T>::get(szt index) const
+{
+	if (index > index_last)
+		hard_error("bad index");
+	return values[index];
 }
 
 //------------------------------------------------
@@ -471,12 +470,24 @@ T* convert(const array<T>& arr)
 template <class T>
 array<T> linking(const array<T>& one, const array<T>& two)
 {
+	if (one.getn() > SZT_ERROR / 2 && two.getn() > SZT_ERROR / 2)
+		hard_error("no more memory");
 	size_t new_n = one.getn() + two.getn();
 	array<T> new_array(new_n);
+	
+	size_t index = 0;
 	for (auto value : one)
-		new_array.insert(value, new_array.getl() + 1);
+	{
+		new_array.insert(value, index);
+		index++;
+	}
+	
 	for (auto value : two)
-		new_array.insert(value, new_array.getl() + 1);
+	{
+		new_array.insert(value, index);
+		index++;
+	}
+
 	return new_array;
 }
 
@@ -485,7 +496,9 @@ array<T> ejectin(const array<T>& one, const array<T>& two)
 {
 	array<T> new_array(one);
 	for (auto value : two)
-		new_array.remove(value, true);
+		FOR(new_array.getl() + 1)
+			if (new_array.get(i) == value)
+				new_array.remove(i);
 	return new_array;
 }
 
@@ -493,18 +506,25 @@ template <class T>
 array<T> crossng(const array<T>& one, const array<T>& two) // O(n*m), n = |one|, m = |two|. can be done in O(n + m) with a hash table
 {
 	array<T> new_array(one.getn() + two.getn());
+	size_t index = 0;
 	if (one.getl() < two.getl())
 	{
 		for (auto key : two)
 			if (one.search(key) != ERROR_CODE)
-				new_array.insert(key, new_array.getl() + 1);
+			{
+				new_array.insert(key, index);
+				index++;
+			}
 	}
 	else
 	{
 		for (auto key : one)
 		{
 			if (two.search(key) != ERROR_CODE)
-				new_array.insert(key, new_array.getl() + 1);
+			{
+				new_array.insert(key, index);
+				index++;
+			}
 		}
 	}
 

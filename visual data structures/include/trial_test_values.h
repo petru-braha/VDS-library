@@ -12,6 +12,10 @@ const float block_numbers[maximum_size] = { -1, 1.01f, 1, UCHAR_MAX, USHRT_MAX, 
 const float insertions[5] = { 10.5f, 10.6f, 10.4f, 10.8f, 10.7f }; // index: 0 1 0 end 3 
 initializer final_numbers = { 10.4f, 10.5f, 10.6f, 10.7f, -1, 1.01f, 1, UCHAR_MAX, USHRT_MAX, LONG_MIN, -1.01f, -0.99f, 0.99f, 1.01f, 10.8f };
 
+// for friend functions:
+const std::initializer_list<int> frnd_values1 = { 1, 2, 3, 4, 5 };
+const std::initializer_list<int> frnd_values2 = { 5, 6, 7, 8, 9 };
+
 //------------------------------------------------
 // convoluted type:
 

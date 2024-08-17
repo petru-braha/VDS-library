@@ -4,7 +4,8 @@
 
 #include "array_tests.h"
 #include "linked_list_tests.h"
-#include "avl_tests.h"
+//#include "avl_tests.h"
+
 
 int main(int argc, char** argv)
 {

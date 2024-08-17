@@ -36,7 +36,7 @@ TEST_F(linked_list_evaluation_p, clear_method)
 
 TEST_F(linked_list_evaluation_p, sort_method)
 {
-    //numbers.sort();
+    EXPECT_NO_THROW(numbers.sort());
     const node_list<float>* it = numbers.get_head(), * nxt = nullptr;
     for (auto nxt = it->successor[0]; nxt; nxt = nxt->successor[0])
     {
@@ -47,33 +47,73 @@ TEST_F(linked_list_evaluation_p, sort_method)
 
 TEST_F(linked_list_evaluation_p, insert_method)
 {
-    n node1(5);
-    n node2(6);
-    n node3(7);
-    n node4(8);
-    n node5(9);
+    n node0(insertions[0]);
+    n node1(insertions[1]);
+    n node2(insertions[2]);
+    n node3(insertions[3]);
+    n node4(insertions[4]);
 
-    const n* h = numbers.get_head();
-    n* it = h->successor[0];
-    numbers.insert(&node1);
-    EXPECT_EQ(numbers.get_head->get(), node1.get());
+    numbers.insert(&node0, head_node);
+
+    auto it = numbers.get_head(); 
+    numbers.insert(&node1, it);
     
-    numbers.insert(&node2, it);
-    numbers.insert(&node3);
+    numbers.insert(&node2, head_node);
+    
+    it = numbers.get_tail();
+    numbers.insert(&node3, it);
+
+    it = numbers.get_node(2);
     numbers.insert(&node4, it);
-    
-    h = numbers.get_tail();
-    it = const_cast<n*>(h);
-    numbers.insert(&node5, it);
+
+    linked_list<float> temp(final_numbers);
+    FOR(15)
+    {
+        auto one = numbers.get_node(i)->get(), two = temp.get_node(i)->get();
+        EXPECT_EQ(one, two);
+    }
 }
 
 TEST_F(linked_list_evaluation_p, remove_method)
-{}
+{
+    // delete first
+    numbers.remove(head_node);
+    EXPECT_EQ(numbers.get_node(0)->get(), block_numbers[1]);
 
-// clear
-// sort
-// insert
-// remove
-// query: predecessor successor search minimum maximum
-// friend:
-// convoluted: sort query
+    // delete last
+    auto it = numbers.get_head();
+    while (it->successor[0] != numbers.get_tail())
+        it = it->successor[0];
+    numbers.remove(it);
+    EXPECT_EQ(numbers.get_tail()->get(), block_numbers[8]);
+
+    // delete somewhere in the middle
+    it = numbers.get_node(3);
+    numbers.remove(it);
+    EXPECT_EQ(numbers.get_node(3)->get(), block_numbers[4]);
+}
+
+TEST_F(linked_list_evaluation_p, query_operations)
+{
+    EXPECT_EQ(numbers.search(-1), numbers.get_node(0));
+    EXPECT_EQ(numbers.mimimum(), numbers.get_node(5));
+    EXPECT_EQ(numbers.maximum(), numbers.get_node(4));
+    //EXPECT_EQ(numbers.predcessr(), numbers.get_node(4));
+}
+
+TEST_F(linked_list_evaluation_p, friend_functions)
+{
+
+}
+
+//------------------------------------------------
+// next class:
+
+
+//------------------------------------------------
+// constructors:
+
+//------------------------------------------------
+// tests:
+
+// TO DO: convoluted: sort query

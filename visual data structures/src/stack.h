@@ -1,12 +1,12 @@
 #pragma once
-#include "list.h"
+#include "linked_list.h"
 #include "adaptor.h"
 
 template <class T = int>
 class stack : public adaptor<T>
 {
 	// data members:
-	list<T> values;
+	linked_list<T> values;
 public:
 	// constructors:
 	~stack() = default;
@@ -25,7 +25,7 @@ public:
 	void pop();
 
 	// constant methods:
-	bool operator == (const adaptor<T>& adp) const;
+	bool operator == (const stack<T>& s) const;
 	size_t getn() const;
 	bool  empty() const;
 };
@@ -54,24 +54,24 @@ stack<T>::stack(const T* val, const size_t& val_size) : values()
 }
 
 template <class T>
-stack<T>::stack(const adaptor<T>& adp)
+stack<T>::stack(const stack<T>& s)
 {
-	this->values = adp.values;
+	this->values = s.values;
 }
 
 template <class T>
-stack<T>::stack(const adaptor<T>&& adp)
+stack<T>::stack(const stack<T>&& s)
 {
-	this->values = adp.values;
+	this->values = s.values;
 }
 
 //------------------------------------------------
 // modifier methods:
 
 template <class T>
-stack<T>& stack<T>::operator = (const adaptor<T>& adp)
+stack<T>& stack<T>::operator = (const stack<T>& s)
 {
-	this->values = adp.values;
+	this->values = s.values;
 }
 
 //------------------------------------------------
@@ -103,9 +103,9 @@ void stack<T>::pop()
 // constant methods:
 
 template <class T>
-bool stack<T>::operator == (const adaptor<T>& adp) const
+bool stack<T>::operator == (const stack<T>& s) const
 {
-	return this->values == adp.values;
+	return this->values == s.values;
 }
 
 template <class T>

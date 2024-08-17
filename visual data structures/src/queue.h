@@ -1,23 +1,23 @@
 #pragma once
-#include "list.h"
+#include "linked_list.h"
 #include "adaptor.h"
 
 template <class T>
 class queue : public adaptor<T>
 {
 	// data members:
-	list<T> values;
+	linked_list<T> values;
 public:
 	// constructors:
 	~queue() = default;
 	queue();
 	queue(std::initializer_list<T>& val);
 	queue(T* val, const size_t& val_size);
-	queue(const adaptor<T>& adp);
-	queue(const adaptor<T>&& adp);
+	queue(const queue<T>& q);
+	queue(const queue<T>&& q);
 
 	// modifier methods:
-	queue<T>& operator = (const adaptor<T>& adp);
+	queue<T>& operator = (const queue<T>& q);
 	
 	// specific methods:
 	T	 front() const;
@@ -26,7 +26,7 @@ public:
 	void pop();
 
 	// constant methods:
-	bool operator == (const adaptor<T>& adp) const;
+	bool operator == (const queue<T>& q) const;
 	size_t getn() const;
 	bool  empty() const;
 };
@@ -35,7 +35,7 @@ public:
 // constructors:
 
 template <class T>
-queue<T>::queue() : values() {};
+queue<T>::queue() : values() {}
 
 template <class T>
 queue<T>::queue(std::initializer_list<T>& val) : values() 
@@ -55,24 +55,19 @@ queue<T>::queue(T* val, const size_t& val_size) : values()
 }
 
 template <class T>
-queue<T>::queue(const adaptor<T>& adp)
-{
-	this->values = adp.values;
-}
+queue<T>::queue(const queue<T>& q) : values(q.values) {}
+
 
 template <class T>
-queue<T>::queue(const adaptor<T>&& adp)
-{
-	this->values = adp.values;
-}
+queue<T>::queue(const queue<T>&& q) : values(q.values) {}
 
 //------------------------------------------------
 // modifier methods:
 
 template <class T>
-queue<T>& queue<T>::operator = (const adaptor<T>& adp)
+queue<T>& queue<T>::operator = (const queue<T>& q)
 {
-	this->values = adp.values;
+	this->values = q.values;
 }
 
 //------------------------------------------------
@@ -81,19 +76,19 @@ queue<T>& queue<T>::operator = (const adaptor<T>& adp)
 template <class T>
 T queue<T>::front() const
 {
-	return values.frst;
+	return values.frst->get();
 }
 
 template <class T>
 T queue<T>::back() const
 {
-	return values.last;
+	return values.last->get();
 }
 
 template <class T>
-void queue<T>::push(const T& val)
+void queue<T>::push(const T& value)
 {
-	values.atypical_insert(val, 0);
+	values.atypical_insert(value, 0);
 }
 
 template <class T>
@@ -106,15 +101,15 @@ void queue<T>::pop()
 // constant methods:
 
 template <class T>
-bool queue<T>::operator == (const adaptor<T>& adp) const
+bool queue<T>::operator == (const queue<T>& q) const
 {
-	return this->values == adp.values;
+	return this->values == q.values;
 }
 
 template <class T>
 size_t queue<T>::getn() const
 {
-	return values.n;
+	return values.getn();
 }
 
 template <class T>

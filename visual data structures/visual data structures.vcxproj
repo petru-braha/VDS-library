@@ -109,7 +109,6 @@
     <ClInclude Include="include\adaptor.h" />
     <ClInclude Include="include\bst.h" />
     <ClInclude Include="include\collection.h" />
-    <ClInclude Include="include\list.h" />
     <ClInclude Include="include\trial_test_values.h" />
     <ClInclude Include="src\array.h" />
     <ClInclude Include="include\array_sorting.h" />
@@ -132,6 +131,7 @@
     <ClInclude Include="src\stack.h" />
     <ClInclude Include="include\convoluted.h" />
     <ClInclude Include="include\tree.h" />
+    <ClInclude Include="test\adaptor_tests.h" />
     <ClInclude Include="test\array_tests.h" />
     <ClInclude Include="test\avl_tests.h" />
     <ClInclude Include="test\glfw_tests.h" />

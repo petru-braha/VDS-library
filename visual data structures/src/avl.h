@@ -5,7 +5,7 @@
 #include <ostream>
 
 template <class T = int>
-class avl : public tree<T, node_avlt<T>>, bst<T, node_avlt>
+class avl : public tree<T, node_avlt<T>>, bst<T, node_avlt<T>>
 {
 	// typedefs:
 	typedef const T& type;

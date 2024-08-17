@@ -48,21 +48,21 @@ TEST_F(array_evaluation_p, sort_method)
 
 TEST_F(array_evaluation_p, insert_method)
 {
-    float values[] = { 10.5f, 10.6f, 10.4f, 10.8f, 10.7f };
-    numbers.insert(values[0], 0);
-    numbers.insert(values[1], 1);
-    numbers.insert(values[2], 0);
-    numbers.insert(values[3], numbers.getl() + 1);
-    numbers.insert(values[4], 3);
+    numbers.insert(insertions[0], 0);
+    numbers.insert(insertions[1], 1);
+    numbers.insert(insertions[2], 0);
+    numbers.insert(insertions[3], numbers.getl() + 1);
+    numbers.insert(insertions[4], 3);
 
     // array has fixed size
     EXPECT_EXIT(numbers.insert(100.0f, 0), testing::ExitedWithCode(ERROR_CODE), "no more memory");
 
-    EXPECT_EQ(numbers[0], values[2]);
-    EXPECT_EQ(numbers[1], values[0]);
-    EXPECT_EQ(numbers[2], values[1]);
-    EXPECT_EQ(numbers[3], values[4]);
-    EXPECT_EQ(numbers[numbers.getl()], values[3]);
+    EXPECT_EQ(numbers[0], insertions[2]);
+    EXPECT_EQ(numbers[1], insertions[0]);
+    EXPECT_EQ(numbers[2], insertions[1]);
+    EXPECT_EQ(numbers[3], insertions[4]);
+    EXPECT_EQ(numbers[numbers.getl()], insertions[3]);
+    numbers.prnt();
 }
 
 TEST_F(array_evaluation_p, remove_method)

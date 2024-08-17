@@ -3,9 +3,14 @@
 #define classic_size 10
 #define maximum_size 15 // allowing for testing to insert five more elements
 
+// for initialization:
 typedef const std::initializer_list<float> initializer;
 initializer list_numbers				= { -1, 1.01f, 1, UCHAR_MAX, USHRT_MAX, LONG_MIN, -1.01f, -0.99f, 0.99f, 1.01f };
 const float block_numbers[maximum_size] = { -1, 1.01f, 1, UCHAR_MAX, USHRT_MAX, LONG_MIN, -1.01f, -0.99f, 0.99f, 1.01f };
+
+// for insertion:
+const float insertions[5] = { 10.5f, 10.6f, 10.4f, 10.8f, 10.7f }; // index: 0 1 0 end 3 
+initializer final_numbers = { 10.4f, 10.5f, 10.6f, 10.7f, -1, 1.01f, 1, UCHAR_MAX, USHRT_MAX, LONG_MIN, -1.01f, -0.99f, 0.99f, 1.01f, 10.8f };
 
 //------------------------------------------------
 // convoluted type:

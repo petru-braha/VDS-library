@@ -12,7 +12,7 @@
 
 3. insert and delete should not do the search!!! it is based on pointers!
 
-//-----------------------------------------------------------------------------------------
+//------------------------------------------------
 
 ## I. The initial ideas:
 
@@ -56,6 +56,8 @@
 - trivial_tree is the most general tree that can be build; it can be considered a playground for a developer. the arity is variable, it might be complete or not
 	- binary tree only if no arity is written in the constructor
 
+//------------------------------------------------
+
 ## II. Minute-questions:
 
 0. open-close principle was the hardest to achieve
@@ -88,18 +90,16 @@
 
 0. for each - the order of execution of the operators: "!=", "*", "++".
 
-## III. To do:
-1. add "compare", clear, predecessor, successor, minimum, maximum methods to all the data structures + other supported queries, testing
-2. decide how we'll we use GFLW == int main() 
+//------------------------------------------------
 
 ## IV. To review:
-3. linked_list
-4. adaptor
+0. array
+1. linked_list
 5. stack
 6. queue
-7. nodes
-8. tree
 9. avl
 0. rbt
 1. maxheap
 2. minheap
+3. graph
+4. hash_table

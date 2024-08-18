@@ -1,13 +1,14 @@
 #pragma once
 #include "bureaucracy.h"
 #include "node/node_list.h"
+#include "data_structure.h"
 #include <initializer_list>
 #include <ostream>
 
 #define head_node nullptr // to precisely manipulate the first node of the list
 
 template <class T = int>
-class linked_list
+class linked_list // : public data_structure<T>
 {
 	// typedefs:
 	typedef const T& type;
@@ -48,23 +49,23 @@ public:
 	linked_list(const linked_list<T>&& l) noexcept;
 
 	// modifier methods:
-	void clear();
 	linked_list<T>& operator = (const linked_list<T>& l);
 	linked_list<T>& operator = (const linked_list<T>&& l);
-	void setf(fct f);
+	linked_list<T>& clear();
+	linked_list<T>& set_f(fct f);
 
 	// specific methods:
 	void sort();
 	void atypical_insert(type value, szt index); // WARNING: atypical, time complexity O(n)
 	void atypical_remove(szt index); // WARNING: atypical, time complexity O(n)
 
-	void insert(const ptr& value, const node_list<T>* before_inserted = head_node); // traditional, time complexity O(1)
-	void remove(const node_list<T>* before_removed); // traditional, time complexity O(1)
+	linked_list<T>& insert(const ptr& value, const node_list<T>* before_inserted = head_node); // traditional, time complexity O(1)
+	linked_list<T>& remove(const node_list<T>* before_removed); // traditional, time complexity O(1)
 
 	// constant methods:
-	bool  operator == (lnkl l) const;
+	bool   operator == (lnkl l) const;
 	size_t get_n() const;
-	void* get_f() const;
+	void*  get_f() const;
 	bool   empty() const;
 	void   print() const;
 
@@ -84,9 +85,9 @@ public:
 	ptr_return successor(ptr& value) const;
 
 	// instance synergy:
-	linked_list<T>& linking(lnkl l);
-	linked_list<T>& ejectin(lnkl l);
-	linked_list<T>& crossng(lnkl l);
+	linked_list<T>& integrates(lnkl l);
+	linked_list<T>& eliminates(lnkl l);
+	linked_list<T>& intersects(lnkl l);
 
 	// friend functions:
 	template <class T> friend T* convert(const linked_list<T>& l);
@@ -298,7 +299,7 @@ typename linked_list<T>::iterator linked_list<T>::end() const
 // modifier methods:
 
 template <class T>
-void linked_list<T>::clear()
+linked_list<T>& linked_list<T>::clear()
 {
 	std::cout << "intra ";
 	ptr it = head;
@@ -312,6 +313,7 @@ void linked_list<T>::clear()
 	}
 	std::cout << '\n';
 	head = tail = nullptr;
+	return *this;
 }
 
 template <class T>
@@ -363,9 +365,10 @@ linked_list<T>& linked_list<T>::operator = (const linked_list<T>&& l)
 }
 
 template <class T>
-void linked_list<T>::setf(fct f)
+linked_list<T>& linked_list<T>::set_f(fct f)
 {
 	this->compare = f;
+	return *this;
 }
 
 //------------------------------------------------
@@ -440,7 +443,7 @@ void linked_list<T>::atypical_remove(szt index)
 }
 
 template <class T>
-void linked_list<T>::insert(const ptr& value, const node_list<T>* before_inserted)
+linked_list<T>& linked_list<T>::insert(const ptr& value, const node_list<T>* before_inserted)
 {
 	n++;
 	ptr actual = new node_list<float>(value->get()); // if value has successors
@@ -456,7 +459,7 @@ void linked_list<T>::insert(const ptr& value, const node_list<T>* before_inserte
 
 		actual->successor[0] = head; // not empty => insert as a first node
 		head = actual;
-		return;
+		return *this;
 	}
 
 	// case head
@@ -464,14 +467,14 @@ void linked_list<T>::insert(const ptr& value, const node_list<T>* before_inserte
 	{
 		actual->successor[0] = head->successor[0];
 		head->successor[0] = actual;
-		return;
+		return *this;
 	}
 
 	// case tail
 	if (before_inserted == tail)
 	{
 		tail = tail->successor[0] = actual;
-		return;
+		return *this;
 	}
 
 	// case mid
@@ -479,10 +482,11 @@ void linked_list<T>::insert(const ptr& value, const node_list<T>* before_inserte
 
 	node_list<T>* bfr_insert = const_cast<node_list<T>*>(before_inserted);
 	bfr_insert->successor[0] = actual;
+	return *this;
 }
 
 template <class T>
-void linked_list<T>::remove(const node_list<T>* before_removed)
+linked_list<T>& linked_list<T>::remove(const node_list<T>* before_removed)
 {
 	if (empty())
 		fatal_error("no more memory");
@@ -494,7 +498,7 @@ void linked_list<T>::remove(const node_list<T>* before_removed)
 		ptr it = head;
 		head = head->successor[0];
 		delete it;
-		return;
+		return *this;
 	}
 	
 	// case tail 
@@ -503,7 +507,7 @@ void linked_list<T>::remove(const node_list<T>* before_removed)
 		delete tail;
 		tail = const_cast<node_list<T>*>(before_removed);
 		tail->successor[0] = nullptr;
-		return;
+		return *this;
 	}
 
 	// case mid
@@ -512,7 +516,7 @@ void linked_list<T>::remove(const node_list<T>* before_removed)
 	node_list<T>* bfr_remove = const_cast<node_list<T>*>(before_removed);
 	bfr_remove->successor[0] = it->successor[0];
 	delete it;
-	return;
+	return *this;
 }
 
 //------------------------------------------------

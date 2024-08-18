@@ -13,8 +13,6 @@ class array
 	typedef bool (*fct)(type, type);
 	typedef const size_t& szt;
 
-	typedef const array<T>& ary;
-
 	// data members:
 	size_t n;			// its purpose is just to allocate space
 	size_t index_last;	// gurantees that elements selected by user are initialised contiguously // index of the index_last concrete value
@@ -25,7 +23,7 @@ class array
 	{
 		T* value;
 	public:
-		iterator(const T& val);
+		iterator(T& val); // no const => avoid const cast
 
 		T		operator  * () const;
 		void	operator ++ ();
@@ -45,19 +43,29 @@ public:
 	array(const array<T>& arr);
 	array(const array<T>&& arr) noexcept;
 
-	// iterator methods:
-	iterator begin() const;
-	iterator end() const;
-
 	// modifier methods:
-	array<T>& operator = (ary arr);
-	void clear();
-	void setf(fct f);
+	array<T>& operator = (const array<T>& arr);
+	array<T>& operator = (const array<T>&& arr);
+	array<T>& clear();
+	array<T>& set_f(fct f);
 
 	// specific methods:
 	void sort(bit algorithm = quick_sort);
-	void insert(type value, szt index);
-	void remove(szt index);
+	array<T>& insert(type value, szt index);
+	array<T>& remove(szt index);
+
+	// constant methods:
+	bool   operator == (const array<T>& arr) const;
+	size_t get_n() const;
+	size_t get_l() const;
+	void*  get_f() const;
+	bool   empty() const;
+	void   print() const;
+	T get(szt index) const;
+
+	// iterator methods:
+	iterator begin() const;
+	iterator end() const;
 
 	// query operations:
 	size_t search(type value) const;
@@ -67,22 +75,13 @@ public:
 	size_t successor(szt index) const;
 	T& operator [] (szt index); // get / replace method, shift to the left until there is no more empty space
 
-	// constant methods:
-	bool operator == (ary arr) const;
-	void   prnt() const;
-	size_t getn() const;
-	size_t getl() const;
-	void*  getf() const;
-	bool  empty() const;
-	T get(szt index) const;
+	// instance synergy:
+	array<T>& integrates(const array<T>& arr);
+	array<T>& eliminates(const array<T>& arr);
+	array<T>& intersects(const array<T>& arr);
 
 	// friend functions:
 	template <class T> friend T* convert(const array<T>& arr);
-
-	template <class T> friend array<T> linking(const array<T>& one, const array<T>& two);
-	template <class T> friend array<T> ejectin(const array<T>& one, const array<T>& two);
-	template <class T> friend array<T> crossng(const array<T>& one, const array<T>& two);
-
 	template <class T> friend std::ostream& operator << (std::ostream& out, const array<T>& arr);
 };
 
@@ -153,8 +152,8 @@ array<T>::array(const T* val, szt val_size, szt n)
 template <class T>
 array<T>::array(const array<T>& arr)
 {
-	this->n = arr.getn();
-	this->index_last = ERROR_CODE;
+	this->n = arr.get_n();
+	this->index_last = SZT_ERROR;
 	values = new T[n]{};
 
 	size_t index = 0;
@@ -165,8 +164,8 @@ array<T>::array(const array<T>& arr)
 template <class T>
 array<T>::array(const array<T>&& arr) noexcept
 {
-	this->n = arr.getn();
-	this->index_last = ERROR_CODE;
+	this->n = arr.get_n();
+	this->index_last = SZT_ERROR;
 	values = new T[n]{};
 
 	size_t index = 0;
@@ -178,7 +177,7 @@ array<T>::array(const array<T>&& arr) noexcept
 // iterator methods:
 
 template <class T>
-array<T>::iterator::iterator(const T& val)
+array<T>::iterator::iterator(T& val)
 {
 	this->value = &val;
 }
@@ -217,10 +216,10 @@ typename array<T>::iterator array<T>::end() const
 // modifier methods:
 
 template <class T>
-array<T>& array<T>::operator = (ary arr)
+array<T>& array<T>::operator = (const array<T>& arr)
 {
 	this->n = arr.n;
-	this->index_last = ERROR_CODE;
+	this->index_last = SZT_ERROR;
 	delete[]this->values;
 	this->values = new T[n]{};
 	for (auto i : arr)
@@ -229,18 +228,32 @@ array<T>& array<T>::operator = (ary arr)
 }
 
 template <class T>
-void array<T>::clear()
+array<T>& array<T>::operator = (const array<T>&& arr)
+{
+	this->n = arr.n;
+	this->index_last = SZT_ERROR;
+	delete[]this->values;
+	this->values = new T[n]{};
+	for (auto i : arr)
+		this->values[++this->index_last] = i;
+	return *this;
+}
+
+template <class T>
+array<T>& array<T>::clear()
 {
 	FOR(index_last)
 		values[i] = NULL;
 	values[index_last + 1] = NULL;
 	index_last = SZT_ERROR;
+	return *this;
 }
 
 template <class T>
-void array<T>::setf(fct f)
+array<T>& array<T>::set_f(fct f)
 {
 	this->compare = f;
+	return *this;
 }
 
 //------------------------------------------------
@@ -250,7 +263,7 @@ template <class T>
 void array<T>::sort(bit algorithm)
 {
 	array_sorting<T>* sort_job = array_sorting<T>::get_instance();
-	sort_job->setf(this->compare);
+	sort_job->set_f(this->compare);
 
 	switch (algorithm)
 	{
@@ -278,7 +291,7 @@ void array<T>::sort(bit algorithm)
 }
 
 template <class T>
-void array<T>::insert(type value, szt index)
+array<T>& array<T>::insert(type value, szt index)
 {
 	if (index > index_last + 1 || index < 0)
 		hard_error("bad index");
@@ -290,17 +303,19 @@ void array<T>::insert(type value, szt index)
 	for (size_t i = index_last; i > index; i--) // shift right
 		values[i] = values[i - 1];
 	values[index] = value;
+	return *this;
 }
 
 template <class T>
-void array<T>::remove(szt index)
+array<T>& array<T>::remove(szt index)
 {
 	if (empty())
-		return;
+		return *this;
 	if (index >= n)
 		hard_error("bad index");
 	if (index <= index_last)
 		shift_left(index);
+	return *this;
 }
 
 //------------------------------------------------
@@ -312,7 +327,7 @@ size_t array<T>::search(type value) const
 	FOR(index_last + 1)
 		if (values[i] == value)
 			return i;
-	return ERROR_CODE;
+	return SZT_ERROR;
 }
 
 template <class T>
@@ -349,11 +364,11 @@ size_t array<T>::predcessr(szt index) const
 	if (index > index_last)
 		hard_error("wrong parameters");
 
-	size_t index_predecessor = ERROR_CODE;
+	size_t index_predecessor = SZT_ERROR;
 	FOR(index_last + 1)
 		if (compare(values[index], values[i]))
 		{
-			if (index_predecessor == ERROR_CODE)
+			if (index_predecessor == SZT_ERROR)
 				index_predecessor = i;
 			else if (compare(values[i], values[index_predecessor]))
 				index_predecessor = i;
@@ -370,11 +385,11 @@ size_t array<T>::successor(szt index) const
 	if (index > index_last)
 		hard_error("wrong parameters");
 
-	size_t index_successor = ERROR_CODE;
+	size_t index_successor = SZT_ERROR;
 	FOR(index_last + 1)
 		if (compare(values[i], values[index]))
 		{
-			if (index_successor == ERROR_CODE)
+			if (index_successor == SZT_ERROR)
 				index_successor = i;
 			else if (compare(values[index_successor], values[i]))
 				index_successor = i;
@@ -403,7 +418,7 @@ T& array<T>::operator [] (szt index)
 // constant methods:
 
 template <class T>
-bool array<T>::operator == (ary arr) const
+bool array<T>::operator == (const array<T>& arr) const
 {
 	if (this->n != arr.n)
 		return false;
@@ -416,13 +431,13 @@ bool array<T>::operator == (ary arr) const
 }
 
 template <class T>
-size_t array<T>::getn() const
+size_t array<T>::get_n() const
 {
 	return n;
 }
 
 template <class T>
-size_t array<T>::getl() const
+size_t array<T>::get_l() const
 {
 	if (empty())
 		hard_error("no data");
@@ -430,14 +445,14 @@ size_t array<T>::getl() const
 }
 
 template <class T>
-void* array<T>::getf() const
+void* array<T>::get_f() const
 {
 	return (void*)this->compare;
 }
 
 
 template <class T>
-void  array<T>::prnt() const
+void  array<T>::print() const
 {
 	FOR(index_last + 1)
 		std::cout << values[i] << ' ';
@@ -459,32 +474,32 @@ T array<T>::get(szt index) const
 }
 
 //------------------------------------------------
-// friend functions:
+// instance synergy:
 
 template <class T>
-T* convert(const array<T>& arr)
-{
-	T* ptr = new T[arr.index_last + 1];
-	FOR(arr.index_last + 1)
-		ptr[i] = arr[i];
-	return ptr;
-}
+array<T>& array<T>::integrates(const array<T>& arr);
 
 template <class T>
+array<T>& array<T>::eliminates(const array<T>& arr);
+
+template <class T>
+array<T>& array<T>::intersects(const array<T>& arr);
+
+/*template <class T>
 array<T> linking(const array<T>& one, const array<T>& two)
 {
-	if (one.getn() > SZT_ERROR / 2 && two.getn() > SZT_ERROR / 2)
+	if (one.get_n() > SZT_ERROR / 2 && two.get_n() > SZT_ERROR / 2)
 		hard_error("no more memory");
-	size_t new_n = one.getn() + two.getn();
+	size_t new_n = one.get_n() + two.get_n();
 	array<T> new_array(new_n);
-	
+
 	size_t index = 0;
 	for (auto value : one)
 	{
 		new_array.insert(value, index);
 		index++;
 	}
-	
+
 	for (auto value : two)
 	{
 		new_array.insert(value, index);
@@ -499,21 +514,21 @@ array<T> ejectin(const array<T>& one, const array<T>& two)
 {
 	array<T> new_array(one);
 	for (auto value : two)
-		FOR(new_array.getl() + 1)
-			if (new_array.get(i) == value)
-				new_array.remove(i);
+		FOR(new_array.get_l() + 1)
+		if (new_array.get(i) == value)
+			new_array.remove(i);
 	return new_array;
 }
 
 template <class T>
 array<T> crossng(const array<T>& one, const array<T>& two) // O(n*m), n = |one|, m = |two|. can be done in O(n + m) with a hash table
 {
-	array<T> new_array(one.getn() + two.getn());
+	array<T> new_array(one.get_n() + two.get_n());
 	size_t index = 0;
-	if (one.getl() < two.getl())
+	if (one.get_l() < two.get_l())
 	{
 		for (auto key : two)
-			if (one.search(key) != ERROR_CODE)
+			if (one.search(key) != SZT_ERROR)
 			{
 				new_array.insert(key, index);
 				index++;
@@ -523,7 +538,7 @@ array<T> crossng(const array<T>& one, const array<T>& two) // O(n*m), n = |one|,
 	{
 		for (auto key : one)
 		{
-			if (two.search(key) != ERROR_CODE)
+			if (two.search(key) != SZT_ERROR)
 			{
 				new_array.insert(key, index);
 				index++;
@@ -532,6 +547,19 @@ array<T> crossng(const array<T>& one, const array<T>& two) // O(n*m), n = |one|,
 	}
 
 	return new_array;
+}
+*/
+
+//------------------------------------------------
+// friend functions:
+
+template <class T>
+T* convert(const array<T>& arr)
+{
+	T* ptr = new T[arr.index_last + 1];
+	FOR(arr.index_last + 1)
+		ptr[i] = arr[i];
+	return ptr;
 }
 
 template <class T>

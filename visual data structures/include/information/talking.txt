@@ -4,7 +4,7 @@
 |:-----------:|:-----------:|:-------------------:|
 | shift_left  |	fatal_error | "nothing to shift"  |
 | constructor |	fatal_error | "wrong parameters"  |
-|             |             |			          |
+|             |             |		          |
 | insert      |	hard_error  | "bad index"         |
 | insert      |	fatal_error | "no more memory"    |
 | remove      |	hard_error  | "bad index"         |

@@ -18,33 +18,34 @@ class array_sorting // behavioral singleton
 	// typedefs:
 	typedef const T& type;
 	typedef bool (*fct)(type, type);
-	
+
 	// auxiliar utility:
 	fct  compare = [](type x, type y)->bool { return x > y; };
-	
-	void   swap(T*& arr, szt one, szt two);
-	// one, two == arrays 
+
+	void   swap(T*& arr, szt one, szt two); // one, two == arrays 
 	void   merge(T*& arr, size_t one_index_left, size_t one_index_rght, size_t two_index_left, size_t two_index_rght);
 	void   heapify(T*& arr, szt n, szt index);
-	//qsort
+	
+	// for quick_sort:
 	T      median_three(type one, type two, type three);
 	size_t partition(T*& arr, szt left, szt rght);
 
 	// constructors:
 	static array_sorting<T>* instance;
-	array_sorting() {}
+	array_sorting() = default;
+
 public:
 	static array_sorting<T>* get_instance();
 
 	// specific methods:
-	void setf(fct f);
+	void set_f(fct f);
 	void bubbs(T*& arr, szt n);
 	void seles(T*& arr, szt n);
 	void insrs(T*& arr, szt n);
 
 	void mrges(T*& arr, szt left, szt rght);
 	void heaps(T*& arr, szt n);
-	void qucks(T*& arr, szt left, szt rght); 
+	void qucks(T*& arr, szt left, szt rght);
 };
 
 
@@ -77,7 +78,7 @@ array_sorting<T>* array_sorting<T>::get_instance()
 // specific methods:
 
 template <class T>
-void array_sorting<T>::setf(fct f)
+void array_sorting<T>::set_f(fct f)
 {
 	this->compare = f;
 }

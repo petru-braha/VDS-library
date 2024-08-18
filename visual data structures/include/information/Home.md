@@ -45,13 +45,27 @@ protected:
 	* auxiliar utility (e. g. left_rotation, extra data members, comparing method)
 	
 public:
-	- constructors 
-	- iterator methods (e. g. begin, end)
-	- specific methods (e. g. insert, remove)
-	- query operations (e. g. minimum, maximum)
-	- constant methods (e. g. get, print)
-	- friend functions (e. g. operator <<)
+	- constructors
+		- default
+		- memory
+		- copy, move
 
+	- modifier methods
+		- operator =
+		- clear
+		- setf
+
+	- specific methods
+		* sort
+		- insert
+		- remove 
+
+	- constant methods 
+	- iterator methods 
+	- query operations 
+	- instance synergy
+	- friend functions 
+	
 * comments:
 - implementation of class methods
 ```

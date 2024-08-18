@@ -57,7 +57,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)\visual data structures\src;$(SolutionDir)\visual data structures\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\visual data structures\include\interface;$(SolutionDir)\visual data structures\src;$(SolutionDir)\visual data structures\include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>26495</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -92,7 +92,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)\visual data structures\src;$(SolutionDir)\visual data structures\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\visual data structures\include\interface;$(SolutionDir)\visual data structures\src;$(SolutionDir)\visual data structures\include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>26495</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -106,10 +106,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\adaptor.h" />
-    <ClInclude Include="include\bst.h" />
+    <ClInclude Include="include\interface\adaptor.h" />
+    <ClInclude Include="include\interface\bst.h" />
     <ClInclude Include="include\collection.h" />
-    <ClInclude Include="include\data_structure.h" />
+    <ClInclude Include="include\interface\data_structure.h" />
     <ClInclude Include="include\trial_test_values.h" />
     <ClInclude Include="src\array.h" />
     <ClInclude Include="include\array_sorting.h" />
@@ -131,7 +131,7 @@
     <ClInclude Include="src\red_black_tree.h" />
     <ClInclude Include="src\stack.h" />
     <ClInclude Include="include\convoluted.h" />
-    <ClInclude Include="include\tree.h" />
+    <ClInclude Include="include\interface\tree.h" />
     <ClInclude Include="test\adaptor_tests.h" />
     <ClInclude Include="test\array_tests.h" />
     <ClInclude Include="test\avl_tests.h" />

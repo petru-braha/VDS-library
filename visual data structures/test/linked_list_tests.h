@@ -110,8 +110,19 @@ TEST(linked_list_p, friend_functions)
     linked_list<> secnd(frnd_values2);
     linked_list<> temp;
     
-    temp = linking(first, secnd);
+    std::cout << "\nflag\n\n";
+    secnd.prnt();
+    first.prnt();
     temp.prnt();
+    std::cout << secnd.getn() << ' ' << first.getn() << ' ' << temp.getn() << ' ';
+
+    temp = linking(first, secnd);
+    
+    std::cout << "\nflag\n\n";
+    secnd.prnt();
+    first.prnt();
+    temp.prnt();
+    std::cout << secnd.getn() << ' ' << first.getn() << ' ' << temp.getn() << ' ';
     /*
     temp = ejectin(first, secnd);
     temp.prnt();
@@ -124,11 +135,32 @@ TEST(linked_list_p, friend_functions)
 //------------------------------------------------
 // next class:
 
+class linked_list_evaluation_c : public testing::Test
+{
+protected:
+    linked_list<convoluted> objects;
+
+    void TearDown();
+    linked_list_evaluation_c();
+};
+
 
 //------------------------------------------------
 // constructors:
 
+void linked_list_evaluation_c::TearDown() {}
+
+linked_list_evaluation_c::linked_list_evaluation_c() : objects(list_objects, classic_size) {}
+
 //------------------------------------------------
 // tests:
 
-// TO DO: convoluted: sort query
+TEST_F(linked_list_evaluation_c, sort_method)
+{
+
+}
+
+TEST_F(linked_list_evaluation_c, query_operations)
+{
+
+}

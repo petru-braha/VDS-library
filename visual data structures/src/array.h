@@ -25,7 +25,7 @@ class array
 	{
 		T* value;
 	public:
-		iterator(T& val);
+		iterator(const T& val);
 
 		T		operator  * () const;
 		void	operator ++ ();
@@ -35,6 +35,7 @@ class array
 	// auxiliar utility:
 	fct  compare = [](type x, type y)->bool { return x > y; };
 	void shift_left(szt left_position);
+
 public:
 	// constructors:
 	~array();
@@ -156,8 +157,9 @@ array<T>::array(const array<T>& arr)
 	this->index_last = ERROR_CODE;
 	values = new T[n]{};
 
+	size_t index = 0;
 	for (auto i : arr)
-		this->values[++index_last] = i;
+		this->values[index++] = i;
 }
 
 template <class T>
@@ -167,15 +169,16 @@ array<T>::array(const array<T>&& arr) noexcept
 	this->index_last = ERROR_CODE;
 	values = new T[n]{};
 
+	size_t index = 0;
 	for (auto i : arr)
-		this->values[++this->index_last] = i;
+		this->values[index] = i;
 }
 
 //------------------------------------------------
 // iterator methods:
 
 template <class T>
-array<T>::iterator::iterator(T& val)
+array<T>::iterator::iterator(const T& val)
 {
 	this->value = &val;
 }

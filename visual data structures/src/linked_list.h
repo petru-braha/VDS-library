@@ -37,6 +37,7 @@ class linked_list
 	fct compare = [](type x, type y)->bool { return x > y; };
 	auto partition(ptr& head, ptr& tail);
 	ptr quick_sort(ptr& head, ptr& tail);
+
 public:
 	// constructors:
 	~linked_list();
@@ -44,24 +45,36 @@ public:
 	linked_list(const std::initializer_list<T>& val);
 	linked_list(const T* val, const size_t& val_size);
 	linked_list(const linked_list<T>& l);
-	linked_list(const linked_list<T>&& l);
-
-	// iterator methods:
-	iterator begin() const;
-	iterator end() const;
+	linked_list(const linked_list<T>&& l) noexcept;
 
 	// modifier methods:
 	void clear();
-	linked_list<T>& operator = (lnkl l);
+	linked_list<T>& operator = (const linked_list<T>& l);
+	linked_list<T>& operator = (const linked_list<T>&& l);
 	void setf(fct f);
 
 	// specific methods:
-	void sort();	
+	void sort();
 	void atypical_insert(type value, szt index); // WARNING: atypical, time complexity O(n)
 	void atypical_remove(szt index); // WARNING: atypical, time complexity O(n)
 
 	void insert(const ptr& value, const node_list<T>* before_inserted = head_node); // traditional, time complexity O(1)
 	void remove(const node_list<T>* before_removed); // traditional, time complexity O(1)
+
+	// constant methods:
+	bool  operator == (lnkl l) const;
+	size_t get_n() const;
+	void* get_f() const;
+	bool   empty() const;
+	void   print() const;
+
+	ptr_return get_node(szt index) const;
+	ptr_return get_head() const;
+	ptr_return get_tail() const;
+
+	// iterator methods:
+	iterator begin() const;
+	iterator end() const;
 
 	// query operations:
 	ptr_return search(type value) const;
@@ -70,24 +83,13 @@ public:
 	ptr_return predcessr(ptr& value) const;
 	ptr_return successor(ptr& value) const;
 
-	// constant methods:
-	bool  operator == (lnkl l) const;
-	size_t getn() const;
-	void*  getf() const;
-	
-	void   prnt() const;
-	bool  empty() const;
-	ptr_return get_node(szt index) const;
-	ptr_return get_head() const;
-	ptr_return get_tail() const;
+	// instance synergy:
+	linked_list<T>& linking(lnkl l);
+	linked_list<T>& ejectin(lnkl l);
+	linked_list<T>& crossng(lnkl l);
 
 	// friend functions:
 	template <class T> friend T* convert(const linked_list<T>& l);
-
-	template <class T> friend linked_list<T> linking(const linked_list<T>& one, const linked_list<T>& two);
-	template <class T> friend linked_list<T> ejectin(const linked_list<T>& one, const linked_list<T>& two);
-	template <class T> friend linked_list<T> crossng(const linked_list<T>& one, const linked_list<T>& two);
-
 	template <class T> friend std::ostream& operator << (std::ostream& out, const linked_list<T>& l);
 	template <class T> friend void* collection_ptr(const linked_list<T>& l); // just for the collection!
 };
@@ -235,7 +237,7 @@ linked_list<T>::linked_list(const linked_list<T>& l) : n(0), head(nullptr), tail
 }
 
 template <class T>
-linked_list<T>::linked_list(const linked_list<T>&& l) : n(0), head(nullptr), tail(nullptr)
+linked_list<T>::linked_list(const linked_list<T>&& l) noexcept : n(0), head(nullptr), tail(nullptr)
 {
 	this->head = new node_list<T>(*l.begin());
 
@@ -298,19 +300,46 @@ typename linked_list<T>::iterator linked_list<T>::end() const
 template <class T>
 void linked_list<T>::clear()
 {
+	std::cout << "intra ";
 	ptr it = head;
 	while (it)
 	{
+		std::cout << it->get() << ' ';
+		head = it;
 		it = it->successor[0];
 		delete head;
-		head = it;
 		n--;
 	}
+	std::cout << '\n';
 	head = tail = nullptr;
 }
 
 template <class T>
-linked_list<T>& linked_list<T>::operator = (lnkl l)
+linked_list<T>& linked_list<T>::operator = (const linked_list<T>& l)
+{
+	clear();
+	this->head = new node_list<T>(*l.begin());
+
+	node_list<T>* it = head;
+	bool first_element = true;
+	for (auto i : l)
+	{
+		if (first_element == false)
+		{
+			it->successor[0] = new node_list<T>(i);
+			it = it->successor[0];
+		}
+
+		first_element = false;
+	}
+
+	this->tail = it;
+	this->n = l.getn();
+	return *this;
+}
+
+template <class T>
+linked_list<T>& linked_list<T>::operator = (const linked_list<T>&& l)
 {
 	clear();
 	this->head = new node_list<T>(*l.begin());
@@ -578,29 +607,29 @@ bool linked_list<T>::operator == (lnkl l) const
 }
 
 template <class T>
-size_t linked_list<T>::getn() const
+size_t linked_list<T>::get_n() const
 {
 	return n;
 }
 
 template <class T>
-void* linked_list<T>::getf() const
+void* linked_list<T>::get_f() const
 {
 	return this->compare;
-}
-
-template <class T>
-void linked_list<T>::prnt() const
-{
-	for (ptr it = head; it; it = it->successor[0])
-		std::cout << it->get() << ' ';
-	std::cout << '\n';
 }
 
 template <class T>
 bool linked_list<T>::empty() const
 {
 	return n == 0;
+}
+
+template <class T>
+void linked_list<T>::print() const
+{
+	for (ptr it = head; it; it = it->successor[0])
+		std::cout << it->get() << ' ';
+	std::cout << '\n';
 }
 
 template <class T>
@@ -627,6 +656,18 @@ const node_list<T>* linked_list<T>::get_tail() const
 }
 
 //------------------------------------------------
+// instance synergy:
+
+template <class T>
+linked_list<T>& linked_list<T>::linking(lnkl l);
+
+template <class T>
+linked_list<T>& linked_list<T>::ejectin(lnkl l);
+
+template <class T>
+linked_list<T>& linked_list<T>::linking(lnkl l);
+
+//------------------------------------------------
 // friend functions:
 
 template <class T>
@@ -643,9 +684,9 @@ template <class T>
 linked_list<T> linking(const linked_list<T>& one, const linked_list<T>& two)
 {
 	linked_list<T> new_list(one);
-	new_list.tail->successor[0] = two.head;
-	new_list.n += two.n;
-	new_list.tail = two.tail;
+	//new_list.tail->successor[0] = two.head;
+	//new_list.n += two.n;
+	//new_list.tail = two.tail;
 	return new_list;
 }
 

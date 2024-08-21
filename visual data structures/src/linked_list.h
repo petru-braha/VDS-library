@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include "bureaucracy.h"
 #include "node/node_list.h"
 #include "data_structure.h"
@@ -750,3 +750,4 @@ void* collection_ptr(const linked_list<T>& l)
 {
 	return (void*)head;
 }
+*/

@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include "convoluted.h"
 #include "linked_list.h"
 #include "trial_test_values.h"
@@ -123,13 +123,13 @@ TEST(linked_list_p, friend_functions)
     first.prnt();
     temp.prnt();
     std::cout << secnd.getn() << ' ' << first.getn() << ' ' << temp.getn() << ' ';
-    /*
+    
     temp = ejectin(first, secnd);
     temp.prnt();
 
     temp = crossng(first, secnd);
     temp.prnt();
-    */
+    
 }
 
 //------------------------------------------------
@@ -164,3 +164,4 @@ TEST_F(linked_list_evaluation_c, query_operations)
 {
 
 }
+*/

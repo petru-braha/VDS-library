@@ -1,12 +1,13 @@
 #pragma once
 #include "bureaucracy.h"
 #include "array_sorting.h"
+#include "data_structure.h"
 #include <initializer_list>
 
 #define default_array_size 100
 
 template <class T = int>
-class array
+class array : public data_structure<T>
 {
 	// typedefs:
 	typedef const T& type;
@@ -44,8 +45,7 @@ public:
 	array(const array<T>&& arr) noexcept;
 
 	// modifier methods:
-	array<T>& operator = (const array<T>& arr);
-	array<T>& operator = (const array<T>&& arr);
+	array<T>& operator = (const data_structure<T>& arr);
 	array<T>& clear();
 	array<T>& set_f(fct f);
 
@@ -55,7 +55,7 @@ public:
 	array<T>& remove(szt index);
 
 	// constant methods:
-	bool   operator == (const array<T>& arr) const;
+	bool   operator == (const data_structure<T>& arr) const;
 	size_t get_n() const;
 	size_t get_l() const;
 	void*  get_f() const;
@@ -76,9 +76,9 @@ public:
 	T& operator [] (szt index); // get / replace method, shift to the left until there is no more empty space
 
 	// instance synergy:
-	array<T>& integrates(const array<T>& arr);
-	array<T>& eliminates(const array<T>& arr);
-	array<T>& intersects(const array<T>& arr);
+	array<T>& integrates(const data_structure<T>& arr);
+	array<T>& eliminates(const data_structure<T>& arr);
+	array<T>& intersects(const data_structure<T>& arr);
 
 	// friend functions:
 	template <class T> friend T* convert(const array<T>& arr);
@@ -174,63 +174,13 @@ array<T>::array(const array<T>&& arr) noexcept
 }
 
 //------------------------------------------------
-// iterator methods:
-
-template <class T>
-array<T>::iterator::iterator(T& val)
-{
-	this->value = &val;
-}
-
-template <class T>
-T array<T>::iterator::operator * () const
-{
-	return *value;
-}
-
-template <class T>
-void array<T>::iterator::operator ++ ()
-{
-	value++;
-}
-
-template <class T>
-bool array<T>::iterator::operator != (const iterator& two) const
-{
-	return value != two.value;
-}
-
-template <class T>
-typename array<T>::iterator array<T>::begin() const
-{
-	return iterator(values[0]);
-}
-
-template <class T>
-typename array<T>::iterator array<T>::end() const
-{
-	return iterator(values[index_last + 1]);
-}
-
-//------------------------------------------------
 // modifier methods:
 
 template <class T>
-array<T>& array<T>::operator = (const array<T>& arr)
+array<T>& array<T>::operator = (const data_structure<T>& arr)
 {
-	this->n = arr.n;
-	this->index_last = SZT_ERROR;
-	delete[]this->values;
-	this->values = new T[n]{};
-	for (auto i : arr)
-		this->values[++this->index_last] = i;
-	return *this;
-}
-
-template <class T>
-array<T>& array<T>::operator = (const array<T>&& arr)
-{
-	this->n = arr.n;
+	static_assert(typeid(*this) == typeid(arr))
+		this->n = arr.n;
 	this->index_last = SZT_ERROR;
 	delete[]this->values;
 	this->values = new T[n]{};
@@ -316,6 +266,105 @@ array<T>& array<T>::remove(szt index)
 	if (index <= index_last)
 		shift_left(index);
 	return *this;
+}
+
+//------------------------------------------------
+// constant methods:
+
+template <class T>
+bool array<T>::operator == (const data_structure<T>& arr) const
+{
+	static_assert(typeid(*this) == typeid(arr));
+	if (this->n != arr.n)
+		return false;
+	if (this->index_last != arr.index_last)
+		return false;
+	FOR(index_last + 1)
+		if (values[i] != arr[i])
+			return false;
+	return true;
+}
+
+template <class T>
+size_t array<T>::get_n() const
+{
+	return n;
+}
+
+template <class T>
+size_t array<T>::get_l() const
+{
+	if (empty())
+		hard_error("no data");
+	return index_last;
+}
+
+template <class T>
+void* array<T>::get_f() const
+{
+	return (void*)this->compare;
+}
+
+
+template <class T>
+void  array<T>::print() const
+{
+	FOR(index_last + 1)
+		std::cout << values[i] << ' ';
+	std::cout << '\n';
+}
+
+template <class T>
+bool array<T>::empty() const
+{
+	return (values[0] == NULL && SZT_ERROR == index_last);
+}
+
+template <class T>
+T array<T>::get(szt index) const
+{
+	if (index > index_last)
+		hard_error("bad index");
+	return values[index];
+}
+
+//------------------------------------------------
+// iterator methods:
+
+template <class T>
+array<T>::iterator::iterator(T& val)
+{
+	this->value = &val;
+}
+
+template <class T>
+T array<T>::iterator::operator * () const
+{
+	return *value;
+}
+
+template <class T>
+void array<T>::iterator::operator ++ ()
+{
+	value++;
+}
+
+template <class T>
+bool array<T>::iterator::operator != (const iterator& two) const
+{
+	return value != two.value;
+}
+
+template <class T>
+typename array<T>::iterator array<T>::begin() const
+{
+	return iterator(values[0]);
+}
+
+template <class T>
+typename array<T>::iterator array<T>::end() const
+{
+	return iterator(values[index_last + 1]);
 }
 
 //------------------------------------------------
@@ -415,115 +464,51 @@ T& array<T>::operator [] (szt index)
 };
 
 //------------------------------------------------
-// constant methods:
-
-template <class T>
-bool array<T>::operator == (const array<T>& arr) const
-{
-	if (this->n != arr.n)
-		return false;
-	if (this->index_last != arr.index_last)
-		return false;
-	FOR(index_last + 1)
-		if (values[i] != arr[i])
-			return false;
-	return true;
-}
-
-template <class T>
-size_t array<T>::get_n() const
-{
-	return n;
-}
-
-template <class T>
-size_t array<T>::get_l() const
-{
-	if (empty())
-		hard_error("no data");
-	return index_last;
-}
-
-template <class T>
-void* array<T>::get_f() const
-{
-	return (void*)this->compare;
-}
-
-
-template <class T>
-void  array<T>::print() const
-{
-	FOR(index_last + 1)
-		std::cout << values[i] << ' ';
-	std::cout << '\n';
-}
-
-template <class T>
-bool array<T>::empty() const
-{
-	return (values[0] == NULL && SZT_ERROR == index_last);
-}
-
-template <class T>
-T array<T>::get(szt index) const
-{
-	if (index > index_last)
-		hard_error("bad index");
-	return values[index];
-}
-
-//------------------------------------------------
 // instance synergy:
 
 template <class T>
-array<T>& array<T>::integrates(const array<T>& arr);
-
-template <class T>
-array<T>& array<T>::eliminates(const array<T>& arr);
-
-template <class T>
-array<T>& array<T>::intersects(const array<T>& arr);
-
-/*template <class T>
-array<T> linking(const array<T>& one, const array<T>& two)
+array<T>& array<T>::integrates(const data_structure<T>& arr)
 {
-	if (one.get_n() > SZT_ERROR / 2 && two.get_n() > SZT_ERROR / 2)
+	static_assert(typeid(*this) = typeid(arr));
+	if (this->get_n() > SZT_ERROR / 2 && arr.get_n() > SZT_ERROR / 2)
 		hard_error("no more memory");
-	size_t new_n = one.get_n() + two.get_n();
-	array<T> new_array(new_n);
-
+	this->n += arr.get_n();
+	
+	T* new_values = new T[this->n]{};
 	size_t index = 0;
-	for (auto value : one)
+	FOR(this->index_last + 1)
 	{
-		new_array.insert(value, index);
+		new_values[index] = this->values[index];
 		index++;
 	}
 
-	for (auto value : two)
+	FOR(arr.get_l() + 1)
 	{
-		new_array.insert(value, index);
+		new_values[index] = arr.get(index);
 		index++;
 	}
 
-	return new_array;
+	delete[]values;
+	values = new_values;
+	return *this;
 }
 
 template <class T>
-array<T> ejectin(const array<T>& one, const array<T>& two)
+array<T>& array<T>::eliminates(const data_structure<T>& arr)
 {
-	array<T> new_array(one);
-	for (auto value : two)
-		FOR(new_array.get_l() + 1)
-		if (new_array.get(i) == value)
-			new_array.remove(i);
-	return new_array;
+	static_assert(typeid(*this) = typeid(arr));
+	for (auto value : arr)
+		FOR(this->get_l() + 1)
+			if (this->get(i) == value)
+				this->remove(i);
+	return *this;
 }
 
 template <class T>
-array<T> crossng(const array<T>& one, const array<T>& two) // O(n*m), n = |one|, m = |two|. can be done in O(n + m) with a hash table
+array<T>& array<T>::intersects(const data_structure<T>& arr) // O(n*m), n = |one|, m = |two|. can be done in O(n + m) with a hash table
 {
-	array<T> new_array(one.get_n() + two.get_n());
+	this->n += arr.get_n();
+
 	size_t index = 0;
 	if (one.get_l() < two.get_l())
 	{
@@ -546,9 +531,8 @@ array<T> crossng(const array<T>& one, const array<T>& two) // O(n*m), n = |one|,
 		}
 	}
 
-	return new_array;
+	return *this;
 }
-*/
 
 //------------------------------------------------
 // friend functions:

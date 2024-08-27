@@ -1,6 +1,0 @@
-﻿  test.cpp
-A:\portfolio\active\data structures\visual data structures\src\array.h(48,56): error C2610: 'array<T> &array<T>::operator =(const data_structure<T> &)': is not a special member function or comparison operator which can be defaulted
-A:\portfolio\active\data structures\visual data structures\src\array.h(182,1): error C2447: '{': missing function header (old-style formal list?)
-A:\portfolio\active\data structures\visual data structures\test\array_tests.h(21,13): error C2280: 'array<float> &array<float>::operator =(const array<float> &)': attempting to reference a deleted function
-A:\portfolio\active\data structures\visual data structures\test\array_tests.h(142,12): error C2280: 'array<convoluted> &array<convoluted>::operator =(const array<convoluted> &)': attempting to reference a deleted function
-A:\portfolio\active\data structures\visual data structures\test\array_tests.h(149,12): error C2280: 'array<convoluted> &array<convoluted>::operator =(const array<convoluted> &)': attempting to reference a deleted function

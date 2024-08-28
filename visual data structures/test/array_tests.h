@@ -1,4 +1,4 @@
-/*#pragma once
+#pragma once
 #include "convoluted.h"
 #include "trial_test_values.h"
 #include "array.h"
@@ -92,17 +92,19 @@ TEST(array_p, friend_functions)
     array<> first = { 1, 2, 3, 4, 5 };
     array<> secnd = { 5, 6, 7, 8, 9 };
     array<> temp;
-
-    temp = linking(first, secnd);
+    
+    temp = first;
+    temp.integrates(secnd);
     EXPECT_EQ(temp.get_n(), 200) << "n\n";
     EXPECT_EQ(temp.get_l(), 9) << "l\n";
     EXPECT_EQ(temp[4], temp[5]);
 
-    temp = ejectin(first, secnd);
+    temp = first;
+    temp.eliminates(secnd);
     EXPECT_EQ(temp.get_l(), 3);
 
-    temp = crossng(first, secnd);
-    EXPECT_EQ(temp.get_n(), 200);
+    temp = first;
+    temp.intersects(secnd);
     EXPECT_EQ(temp.get_l(), 0);
 }
 
@@ -158,7 +160,6 @@ TEST_F(array_evaluation_c, sort_method)
 
 TEST_F(array_evaluation_c, query_operations)
 {
-
     objects.set_f(compare_numbr);
     EXPECT_EQ(objects.minimum(), 6);
     EXPECT_EQ(objects.maximum(), 0);
@@ -166,4 +167,4 @@ TEST_F(array_evaluation_c, query_operations)
     objects.set_f(compare_addss);
     EXPECT_EQ(objects.predcessr(8), 5);
     EXPECT_EQ(objects.successor(9), 1);
-}*/
+}

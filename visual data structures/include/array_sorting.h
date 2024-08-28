@@ -15,19 +15,17 @@ enum sorting_algoritms
 template <class T = int>
 class array_sorting // behavioral singleton
 {
-	// typedefs:
-	typedef const T& type;
-	typedef bool (*fct)(type, type);
+	structure_typedefs;
 
 	// auxiliar utility:
-	fct  compare = [](type x, type y)->bool { return x > y; };
+	fct  compare = [](t x, t y)->bool { return x > y; };
 
 	void   swap(T*& arr, szt one, szt two); // one, two == arrays 
 	void   merge(T*& arr, size_t one_index_left, size_t one_index_rght, size_t two_index_left, size_t two_index_rght);
 	void   heapify(T*& arr, szt n, szt index);
-	
+
 	// for quick_sort:
-	T      median_three(type one, type two, type three);
+	T      median_three(t one, t two, t three);
 	size_t partition(T*& arr, szt left, szt rght);
 
 	// constructors:
@@ -215,7 +213,7 @@ void array_sorting<T>::heaps(T*& arr, szt n)
 // quick_sort: 
 
 template <class T>
-T array_sorting<T>::median_three(type one, type two, type three)
+T array_sorting<T>::median_three(t one, t two, t three)
 {
 	if (compare(one, two))
 	{

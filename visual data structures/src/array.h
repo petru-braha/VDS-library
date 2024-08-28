@@ -1,74 +1,57 @@
 #pragma once
 #include "bureaucracy.h"
+
+#include "class_methods/abstract class methods.h/modifier_methods.h"
+#include "class_methods/array_methods/array_specific.h"
+#include "class_methods/array_methods/array_constant.h"
+#include "class_methods/array_methods/array_queries.h"
+#include "class_methods/abstract class methods.h/instance_synergy.h"
+#include "class_methods/abstract class methods.h/iterator_methods.h"
+
+#include "iterators/array_iterator.h"
+
 #include "array_sorting.h"
 #include "data_structure.h"
 #include <initializer_list>
 
-#define default_array_size 100
-
 template <class T = int>
-class array : public data_structure<T>
+class array : public data_structure<modifier_methods<T, array<T>>, array_specific<T>, 
+				array_constant<T, array<T>>, array_queries<T>, 
+				instance_synergy<array<T>>, iterator_methods<array_iterator<T>>>
 {
-	// typedefs:
-	typedef const T& type;
-	typedef bool (*fct)(type, type);
-	typedef const size_t& szt;
-
-	// data members:
-	size_t n;			// its purpose is just to allocate space
-	size_t index_last;	// gurantees that elements selected by user are initialised contiguously // index of the index_last concrete value
-	T* values;
-
-	// iterator concept:
-	class iterator
-	{
-		T* value;
-	public:
-		iterator(T& val); // no const => avoid const cast
-
-		T		operator  * () const;
-		void	operator ++ ();
-		bool	operator != (const iterator& two) const;
-	};
-
-	// auxiliar utility:
-	fct  compare = [](type x, type y)->bool { return x > y; };
-	void shift_left(szt left_position);
+	structure_typedefs;
 
 public:
 	// constructors:
 	~array();
 	array(szt n = default_array_size);
-	array(const std::initializer_list<T>& val, szt n = default_array_size);
-	array(const T* val, szt val_size, szt n = default_array_size);
+	array(const std::initializer_list<T>& data, szt n = default_array_size);
+	array(const T* data, szt data_n, szt n = default_array_size);
 	array(const array<T>& arr);
 	array(const array<T>&& arr) noexcept;
 
 	// modifier methods:
-	array<T>& operator = (const data_structure<T>& arr);
+	array<T>& operator = (const array<T>& arr);
 	array<T>& clear();
 	array<T>& set_f(fct f);
 
 	// specific methods:
 	void sort(bit algorithm = quick_sort);
-	array<T>& insert(type value, szt index);
+	array<T>& insert(t value, szt index);
 	array<T>& remove(szt index);
 
 	// constant methods:
-	bool   operator == (const data_structure<T>& arr) const;
+	bool   operator == (const array<T>& arr) const;
 	size_t get_n() const;
 	size_t get_l() const;
 	void*  get_f() const;
 	bool   empty() const;
 	void   print() const;
 	T get(szt index) const;
-
-	// iterator methods:
-	iterator begin() const;
-	iterator end() const;
+	bool full() const;
 
 	// query operations:
-	size_t search(type value) const;
+	size_t search(t value) const;
 	size_t minimum() const;
 	size_t maximum() const;
 	size_t predcessr(szt index) const;
@@ -76,31 +59,36 @@ public:
 	T& operator [] (szt index); // get / replace method, shift to the left until there is no more empty space
 
 	// instance synergy:
-	array<T>& integrates(const data_structure<T>& arr);
-	array<T>& eliminates(const data_structure<T>& arr);
-	array<T>& intersects(const data_structure<T>& arr);
+	array<T>& integrates(const array<T>& arr);
+	array<T>& eliminates(const array<T>& arr);
+	array<T>& intersects(const array<T>& arr);
+
+	// iterator methods:
+	array_iterator<T> begin() const;
+	array_iterator<T> end() const;
 
 	// friend functions:
 	template <class T> friend T* convert(const array<T>& arr);
 	template <class T> friend std::ostream& operator << (std::ostream& out, const array<T>& arr);
+
+private:
+	// data members:
+	static const size_t default_array_size;
+	size_t n;			// its purpose is just to allocate space
+	size_t index_last;	// gurantees that elements selected by user are initialised contiguously // index of the index_last concrete value
+	T* values;
+
+	// auxiliar utility:
+	fct  compare;
+	void shift_left(szt left_position);
 };
 
-// comments:
-// array[index_last] == the last value stored
-// allows repeating values
-
-//------------------------------------------------
-// auxiliar utility:
-
-template <class T>
-void array<T>::shift_left(szt left_position)
-{
-	if (empty())
-		fatal_error("nothing to shift");
-	for (size_t i = left_position; i < index_last; i++)
-		values[i] = values[i + 1];
-	values[index_last--] = NULL;
-}
+/* comments:
+	values[0 ... index_last] == 'set values' 
+	values[index_last + 1 ... n - 1] == 'non-set values'
+	array[index_last] == the last value stored
+	allows repeating values
+*/
 
 //------------------------------------------------
 // constructors:
@@ -114,87 +102,99 @@ array<T>::~array()
 template <class T>
 array<T>::array(szt n)
 {
+	if (n * sizeof(T) > INT_MAX)
+		fatal_error("too much data on stack");
+	if (n == 0)
+		fatal_error("size of the array can not be 0");
+	
 	this->n = n;
 	index_last = SZT_ERROR;
-	values = new T[n]{}; // the initializer brachets will initialise everything with NULL
+	values = new T[n]{};
+
+	compare = [](t x, t y)->bool { return x > y; };
 }
 
 template <class T>
-array<T>::array(const std::initializer_list<T>& val, szt n)
+array<T>::array(const std::initializer_list<T>& data, szt n) : array<T>(n)
 {
-	if (val.size() > n)
-		fatal_error("wrong parameters");
-	this->n = n;
-	index_last = val.size() - 1;
-	values = new T[n]{};
-
-	size_t index = 0;
-	for (auto key = val.begin(); key != val.end(); key++)
+	if (data.size() > n)
 	{
-		values[index] = *key;
-		index++;
+		delete[]values;
+		fatal_error("wrong parameters");
+	}
+
+	for (auto key : data)
+	{
+		index_last++;
+		values[index_last] = key;
 	}
 }
 
 template <class T>
-array<T>::array(const T* val, szt val_size, szt n)
+array<T>::array(const T* data, szt data_n, szt n) : array<T>(n)
 {
-	if (val_size > n)
+	if (data_n > n)
+	{
+		delete[]values;
 		fatal_error("wrong parameters");
-	this->n = n;
-	values = new T[n]{};
-
-	for (index_last = 0; index_last < val_size; index_last++)
-		values[index_last] = val[index_last];
+	}
+	
+	for (index_last = 0; index_last < data_n; index_last++)
+		values[index_last] = data[index_last];
 	index_last--;
 }
 
 template <class T>
-array<T>::array(const array<T>& arr)
+array<T>::array(const array<T>& arr) : array<T>(arr.n)
 {
-	this->n = arr.get_n();
-	this->index_last = SZT_ERROR;
-	values = new T[n]{};
-
-	size_t index = 0;
 	for (auto i : arr)
-		this->values[index++] = i;
+	{
+		index_last++;
+		this->values[index_last] = i;
+	}
 }
 
 template <class T>
-array<T>::array(const array<T>&& arr) noexcept
+array<T>::array(const array<T>&& arr) noexcept : array<T>(arr.n)
 {
-	this->n = arr.get_n();
-	this->index_last = SZT_ERROR;
-	values = new T[n]{};
-
-	size_t index = 0;
 	for (auto i : arr)
-		this->values[index] = i;
+	{
+		index_last++;
+		this->values[index_last] = i;
+	}
 }
 
 //------------------------------------------------
 // modifier methods:
 
 template <class T>
-array<T>& array<T>::operator = (const data_structure<T>& arr)
+array<T>& array<T>::operator = (const array<T>& arr)
 {
-	static_assert(typeid(*this) == typeid(arr))
-		this->n = arr.n;
-	this->index_last = SZT_ERROR;
+	this->n = arr.n;
+	this->index_last = arr.index_last;
 	delete[]this->values;
-	this->values = new T[n]{};
+	this->values = new T[arr.n]{};
+	
+	size_t index = 0;
 	for (auto i : arr)
-		this->values[++this->index_last] = i;
+	{
+		this->values[index] = i;
+		index++;
+	}
+
+	this->compare = arr.compare;
 	return *this;
 }
 
 template <class T>
 array<T>& array<T>::clear()
 {
+	if (empty())
+		return *this;
+
 	FOR(index_last)
 		values[i] = NULL;
-	values[index_last + 1] = NULL;
+	values[index_last] = NULL;
 	index_last = SZT_ERROR;
 	return *this;
 }
@@ -241,14 +241,24 @@ void array<T>::sort(bit algorithm)
 }
 
 template <class T>
-array<T>& array<T>::insert(type value, szt index)
+array<T>& array<T>::insert(t value, szt index)
 {
-	if (index > index_last + 1 || index < 0)
-		hard_error("bad index");
+	if (empty())
+	{
+		values[0] = value;
+		index_last++;
+		return *this;
+	}
 
-	if (index_last + 1 >= n)
+	if (full())
+	{
+		delete[]values;
 		fatal_error("no more memory");
-
+	}
+	
+	if (index > index_last + 1)
+		hard_error("bad index");
+	
 	index_last++;
 	for (size_t i = index_last; i > index; i--) // shift right
 		values[i] = values[i - 1];
@@ -261,8 +271,10 @@ array<T>& array<T>::remove(szt index)
 {
 	if (empty())
 		return *this;
+
 	if (index >= n)
 		hard_error("bad index");
+	// no punishment for indexing a non-set value?
 	if (index <= index_last)
 		shift_left(index);
 	return *this;
@@ -272,15 +284,18 @@ array<T>& array<T>::remove(szt index)
 // constant methods:
 
 template <class T>
-bool array<T>::operator == (const data_structure<T>& arr) const
+bool array<T>::operator == (const array<T>& arr) const
 {
-	static_assert(typeid(*this) == typeid(arr));
 	if (this->n != arr.n)
 		return false;
 	if (this->index_last != arr.index_last)
 		return false;
+
+	if (this->empty() && arr.empty())
+		return true;
+
 	FOR(index_last + 1)
-		if (values[i] != arr[i])
+		if (values[i] != arr.get(i))
 			return false;
 	return true;
 }
@@ -302,13 +317,16 @@ size_t array<T>::get_l() const
 template <class T>
 void* array<T>::get_f() const
 {
-	return (void*)this->compare;
+	return (void*)compare;
 }
 
 
 template <class T>
-void  array<T>::print() const
+void array<T>::print() const
 {
+	if (empty())
+		return;
+
 	FOR(index_last + 1)
 		std::cout << values[i] << ' ';
 	std::cout << '\n';
@@ -323,56 +341,29 @@ bool array<T>::empty() const
 template <class T>
 T array<T>::get(szt index) const
 {
+	if (empty())
+		hard_error("no data");
+
 	if (index > index_last)
 		hard_error("bad index");
 	return values[index];
 }
 
-//------------------------------------------------
-// iterator methods:
-
 template <class T>
-array<T>::iterator::iterator(T& val)
+bool array<T>::full() const
 {
-	this->value = &val;
-}
-
-template <class T>
-T array<T>::iterator::operator * () const
-{
-	return *value;
-}
-
-template <class T>
-void array<T>::iterator::operator ++ ()
-{
-	value++;
-}
-
-template <class T>
-bool array<T>::iterator::operator != (const iterator& two) const
-{
-	return value != two.value;
-}
-
-template <class T>
-typename array<T>::iterator array<T>::begin() const
-{
-	return iterator(values[0]);
-}
-
-template <class T>
-typename array<T>::iterator array<T>::end() const
-{
-	return iterator(values[index_last + 1]);
+	return index_last + 1 == n;
 }
 
 //------------------------------------------------
 // query operations:
 
 template <class T>
-size_t array<T>::search(type value) const
+size_t array<T>::search(t value) const
 {
+	if (empty())
+		hard_error("no data");
+	
 	FOR(index_last + 1)
 		if (values[i] == value)
 			return i;
@@ -382,7 +373,7 @@ size_t array<T>::search(type value) const
 template <class T>
 size_t array<T>::minimum() const
 {
-	if (this->empty())
+	if (empty())
 		hard_error("no data");
 
 	size_t index_minimum = NULL;
@@ -395,7 +386,7 @@ size_t array<T>::minimum() const
 template <class T>
 size_t array<T>::maximum() const
 {
-	if (this->empty())
+	if (empty())
 		hard_error("no data");
 
 	size_t index_maximum = NULL;
@@ -408,10 +399,10 @@ size_t array<T>::maximum() const
 template <class T>
 size_t array<T>::predcessr(szt index) const
 {
-	if (this->empty())
+	if (empty())
 		hard_error("no data");
 	if (index > index_last)
-		hard_error("wrong parameters");
+		hard_error("bad index");
 
 	size_t index_predecessor = SZT_ERROR;
 	FOR(index_last + 1)
@@ -429,10 +420,10 @@ size_t array<T>::predcessr(szt index) const
 template <class T>
 size_t array<T>::successor(szt index) const
 {
-	if (this->empty())
+	if (empty())
 		hard_error("no data");
 	if (index > index_last)
-		hard_error("wrong parameters");
+		hard_error("bad index");
 
 	size_t index_successor = SZT_ERROR;
 	FOR(index_last + 1)
@@ -450,16 +441,13 @@ size_t array<T>::successor(szt index) const
 template <class T>
 T& array<T>::operator [] (szt index)
 {
+	if (empty())
+		hard_error("no data");
 	if (index >= n)
 		hard_error("bad index");
-	if (index > index_last + 1)
-		hard_error("unallocated space"); // the user has to use insert, for adding a new value, not this operator
-	if (index == index_last + 1)
-	{
-		index_last++;
-		return values[index];
-	}
-
+	if (index > index_last)
+		hard_error("non-set value, use insert method"); // the user has to use insert, for adding a new value, not this operator
+	
 	return values[index];
 };
 
@@ -467,71 +455,93 @@ T& array<T>::operator [] (szt index)
 // instance synergy:
 
 template <class T>
-array<T>& array<T>::integrates(const data_structure<T>& arr)
+array<T>& array<T>::integrates(const array<T>& arr)
 {
-	static_assert(typeid(*this) = typeid(arr));
-	if (this->get_n() > SZT_ERROR / 2 && arr.get_n() > SZT_ERROR / 2)
-		hard_error("no more memory");
-	this->n += arr.get_n();
+	if ((this->n + arr.n) * sizeof(T) > INT_MAX)
+		hard_error("too much data on stack");
 	
+	this->n += arr.n;
 	T* new_values = new T[this->n]{};
+	
 	size_t index = 0;
-	FOR(this->index_last + 1)
-	{
+	for(; index < this->index_last + 1; index++)
 		new_values[index] = this->values[index];
-		index++;
-	}
-
-	FOR(arr.get_l() + 1)
+	
+	FOR(arr.index_last + 1)
 	{
-		new_values[index] = arr.get(index);
+		new_values[index] = arr.get(i);
 		index++;
 	}
 
-	delete[]values;
-	values = new_values;
+	delete[]this->values;
+	this->index_last += (arr.index_last + 1);
+	this->values = new_values;
 	return *this;
 }
 
 template <class T>
-array<T>& array<T>::eliminates(const data_structure<T>& arr)
+array<T>& array<T>::eliminates(const array<T>& arr)
 {
-	static_assert(typeid(*this) = typeid(arr));
+	if (this->empty())
+		return *this;
+
 	for (auto value : arr)
 		FOR(this->get_l() + 1)
-			if (this->get(i) == value)
-				this->remove(i);
+		if (this->get(i) == value)
+			this->remove(i);
 	return *this;
 }
 
 template <class T>
-array<T>& array<T>::intersects(const data_structure<T>& arr) // O(n*m), n = |one|, m = |two|. can be done in O(n + m) with a hash table
+array<T>& array<T>::intersects(const array<T>& arr) // O(n*m), n = |one|, m = |two|. can be done in O(n + m) with a hash table
 {
-	this->n += arr.get_n();
-
 	size_t index = 0;
-	if (one.get_l() < two.get_l())
+	size_t new_n = this->n > arr.n ? this->n : arr.n;
+	T* new_values = new T[new_n]{};
+
+	if (this->empty() || arr.empty())
 	{
-		for (auto key : two)
-			if (one.search(key) != SZT_ERROR)
-			{
-				new_array.insert(key, index);
-				index++;
-			}
+		this->clear();
+		return *this;
+	}
+
+	if (this->get_l() < arr.get_l())
+	{
+		for (auto key : arr)
+			if (this->search(key) != SZT_ERROR)
+				new_values[index++] = key;
 	}
 	else
 	{
-		for (auto key : one)
-		{
-			if (two.search(key) != SZT_ERROR)
-			{
-				new_array.insert(key, index);
-				index++;
-			}
-		}
+		for (auto key : *this)
+			if (arr.search(key) != SZT_ERROR)
+				new_values[index++] = key;
 	}
 
+	delete[]this->values;
+	this->values = new_values;
+	this->index_last = index - 1;
+
 	return *this;
+}
+
+//------------------------------------------------
+// iterator methods:
+
+template <class T>
+array_iterator<T> array<T>::begin() const
+{
+	if (empty())
+		hard_error("no data");
+	return values[0];
+}
+
+template <class T>
+array_iterator<T> array<T>::end() const
+{
+	if (empty())
+		hard_error("no data"); 
+	return values[index_last + 1];
 }
 
 //------------------------------------------------
@@ -540,6 +550,9 @@ array<T>& array<T>::intersects(const data_structure<T>& arr) // O(n*m), n = |one
 template <class T>
 T* convert(const array<T>& arr)
 {
+	if (arr.empty())
+		return nullptr;
+
 	T* ptr = new T[arr.index_last + 1];
 	FOR(arr.index_last + 1)
 		ptr[i] = arr[i];
@@ -549,8 +562,28 @@ T* convert(const array<T>& arr)
 template <class T>
 std::ostream& operator << (std::ostream& out, const array<T>& arr)
 {
+	if (arr.empty())
+		return out;
+
 	for (auto i : arr)
 		out << i << ' ';
 	out << '\n';
 	return out;
+}
+
+//------------------------------------------------
+// auxiliar utility:
+
+template <class T>
+const size_t array<T>::default_array_size = 100;
+
+template <class T>
+void array<T>::shift_left(szt left_position)
+{
+	if (empty())
+		fatal_error("nothing to shift");
+
+	for (size_t i = left_position; i < index_last; i++)
+		values[i] = values[i + 1];
+	values[index_last--] = NULL;
 }

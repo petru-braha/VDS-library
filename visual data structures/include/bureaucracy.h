@@ -16,7 +16,8 @@ std::ofstream log_file("stderr log.txt");
 
 #define FOR(n) for(size_t i = 0; i < n; i++)
 
-typedef const size_t& szt;
 typedef signed char bit;
-typedef const char* text;
-typedef signed long long loong;
+
+#define structure_typedefs typedef const size_t& szt;\
+	typedef const T& t;\
+	typedef bool (*fct)(t, t);

@@ -1,11 +1,12 @@
 #include "pch.h"
+#include "bureaucracy.h"
+
 #include <iostream>
 #include <GLFW/glfw3.h>
 
 #include "array_tests.h"
 //#include "linked_list_tests.h"
 //#include "avl_tests.h"
-
 
 int main(int argc, char** argv)
 {
@@ -14,6 +15,7 @@ int main(int argc, char** argv)
 	::testing::InitGoogleTest(&argc, argv);
 	//::testing::GTEST_FLAG(filter) = strcat(argv[1], "*");
 	//::testing::GTEST_FLAG(filter) = "linked_list*";
+	::testing::GTEST_FLAG(filter) = "array*";
 
 	int exit_status = RUN_ALL_TESTS();
 

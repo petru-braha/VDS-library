@@ -106,11 +106,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\class_methods\abstract class methods.h\absolute_nullity.h" />
+    <ClInclude Include="include\class_methods\abstract class methods.h\constant_methods.h" />
+    <ClInclude Include="include\class_methods\abstract class methods.h\instance_synergy.h" />
+    <ClInclude Include="include\class_methods\abstract class methods.h\iterator_methods.h" />
+    <ClInclude Include="include\class_methods\abstract class methods.h\modifier_methods.h" />
+    <ClInclude Include="include\class_methods\abstract class methods.h\query_operations.h" />
+    <ClInclude Include="include\class_methods\abstract class methods.h\specific_methods.h" />
+    <ClInclude Include="include\class_methods\array_methods\array_constant.h" />
+    <ClInclude Include="include\class_methods\array_methods\array_queries.h" />
+    <ClInclude Include="include\class_methods\array_methods\array_specific.h" />
+    <ClInclude Include="include\data_structure.h" />
     <ClInclude Include="include\interface\adaptor.h" />
     <ClInclude Include="include\interface\bst.h" />
     <ClInclude Include="include\collection.h" />
-    <ClInclude Include="include\interface\data_structure.h" />
     <ClInclude Include="include\interface\experiment.h" />
+    <ClInclude Include="include\iterators\array_iterator.h" />
+    <ClInclude Include="include\iterators\basic_iterator.h" />
     <ClInclude Include="include\trial_test_values.h" />
     <ClInclude Include="src\array.h" />
     <ClInclude Include="include\array_sorting.h" />

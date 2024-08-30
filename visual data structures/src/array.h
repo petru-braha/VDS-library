@@ -19,6 +19,7 @@ class array : public data_structure<modifier_methods<T, array<T>>, array_specifi
 				array_constant<T, array<T>>, array_queries<T>, 
 				instance_synergy<array<T>>, iterator_methods<array_iterator<T>>>
 {
+	// typedefs:
 	structure_typedefs;
 
 public:

@@ -1,69 +1,53 @@
-/*#pragma once
+#pragma once
 #include "bureaucracy.h"
+
+#include "class_methods/abstract class methods.h/modifier_methods.h"
+#include "class_methods/linked_list_methods/linked_list_specific.h"
+#include "class_methods/linked_list_methods/linked_list_constant.h"
+#include "class_methods/linked_list_methods/linked_list_queries.h"
+#include "class_methods/abstract class methods.h/instance_synergy.h"
+#include "class_methods/abstract class methods.h/iterator_methods.h"
+
+#include "iterators/linked_list_iterator.h"
+
 #include "node/node_list.h"
 #include "data_structure.h"
 #include <initializer_list>
-#include <ostream>
-
-#define head_node nullptr // to precisely manipulate the first node of the list
 
 template <class T = int>
-class linked_list // : public data_structure<T>
+class linked_list : public data_structure <modifier_methods<T, linked_list<T>>, linked_list_specific<T, node_list<T>>,
+	linked_list_constant<T, linked_list<T>, node_list<T>>, linked_list_queries<T, node_list<T>>,
+	instance_synergy<linked_list<T>>, iterator_methods<linked_list_iterator<T>>>
 {
 	// typedefs:
-	typedef const T& type;
-	typedef bool (*fct)(type, type);
-	typedef const linked_list<T>& lnkl;
-
+	structure_typedefs;
 	typedef node_list<T>* ptr;
 	typedef const node_list<T>* ptr_return;
-
-	// data members:
-	node_list<T>* head, * tail;
-	size_t n;
-
-	// iterator concept:
-	class iterator
-	{
-		node_list<T>* value;
-	public:
-		iterator(node_list<T>* val);
-
-		T    operator  * () const;
-		void operator ++ ();
-		bool operator != (const iterator& two) const;
-	};
-
-	// auxiliar utility:
-	fct compare = [](type x, type y)->bool { return x > y; };
-	auto partition(ptr& head, ptr& tail);
-	ptr quick_sort(ptr& head, ptr& tail);
 
 public:
 	// constructors:
 	~linked_list();
 	linked_list();
-	linked_list(const std::initializer_list<T>& val);
-	linked_list(const T* val, const size_t& val_size);
+	linked_list(const std::initializer_list<T>& data);
+	linked_list(const T* data, szt data_size);
 	linked_list(const linked_list<T>& l);
 	linked_list(const linked_list<T>&& l) noexcept;
 
 	// modifier methods:
 	linked_list<T>& operator = (const linked_list<T>& l);
-	linked_list<T>& operator = (const linked_list<T>&& l);
 	linked_list<T>& clear();
 	linked_list<T>& set_f(fct f);
 
 	// specific methods:
-	void sort();
-	void atypical_insert(type value, szt index); // WARNING: atypical, time complexity O(n)
-	void atypical_remove(szt index); // WARNING: atypical, time complexity O(n)
+	linked_list<T>& sort();
+	linked_list<T>& insert(const node_list<T>*& value, const node_list<T>*& before_inserted = head_node); // traditional, time complexity O(1)
+	linked_list<T>& remove(const node_list<T>*& before_removed); // traditional, time complexity O(1)
 
-	linked_list<T>& insert(const ptr& value, const node_list<T>* before_inserted = head_node); // traditional, time complexity O(1)
-	linked_list<T>& remove(const node_list<T>* before_removed); // traditional, time complexity O(1)
+	linked_list<T>& atypical_insert(t value, szt index); // WARNING: atypical, time complexity O(n)
+	linked_list<T>& atypical_remove(szt index); // WARNING: atypical, time complexity O(n)
 
 	// constant methods:
-	bool   operator == (lnkl l) const;
+	bool   operator == (const linked_list<T>& l) const;
 	size_t get_n() const;
 	void*  get_f() const;
 	bool   empty() const;
@@ -73,99 +57,48 @@ public:
 	ptr_return get_head() const;
 	ptr_return get_tail() const;
 
-	// iterator methods:
-	iterator begin() const;
-	iterator end() const;
-
 	// query operations:
-	ptr_return search(type value) const;
+	ptr_return search(t value) const;
 	ptr_return mimimum() const;
 	ptr_return maximum() const;
-	ptr_return predcessr(ptr& value) const;
-	ptr_return successor(ptr& value) const;
+	ptr_return predcessr(const node_list<T>*& value) const;
+	ptr_return successor(const node_list<T>*& value) const;
 
 	// instance synergy:
-	linked_list<T>& integrates(lnkl l);
-	linked_list<T>& eliminates(lnkl l);
-	linked_list<T>& intersects(lnkl l);
+	linked_list<T>& integrates(const linked_list<T>& l);
+	linked_list<T>& eliminates(const linked_list<T>& l);
+	linked_list<T>& intersects(const linked_list<T>& l);
+
+	// iterator methods:
+	linked_list_iterator<T> begin() const;
+	linked_list_iterator<T> end() const;
 
 	// friend functions:
 	template <class T> friend T* convert(const linked_list<T>& l);
 	template <class T> friend std::ostream& operator << (std::ostream& out, const linked_list<T>& l);
 	template <class T> friend void* collection_ptr(const linked_list<T>& l); // just for the collection!
+
+private:
+	// data members:
+	static const node_list<T>* head_node;
+	node_list<T>* head;
+	node_list<T>* tail;
+	size_t n;
+
+	// auxiliar utility:
+	fct compare;
+	auto partition(node_list<T>*& head, node_list<T>*& tail);
+	node_list<T>* quick_sort(node_list<T>*& head, node_list<T>*& tail);
 };
 
-// comments:
-// BEST practice: use only the object / only the node pointers
-// for insert and remove methods, the head-case actually means the second node
-// PAY ATTENTION - SYNTAX: "BEFORE_INSERTED", "BEFORE_REMOVED"
-// how to sort: merge_sort and quick_sort_Lomuto_scheme
-// allows repeating values
-
-//------------------------------------------------
-// auxiliar utility:
-
-template <class T>
-auto linked_list<T>::partition(ptr& h, ptr& t) // divides the list into two pieces
-{
-	// the suffix '_s' == smaller
-	ptr head_s = nullptr, tail_s = nullptr, it = h;
-	ptr pivot = t, previous = nullptr;
-	while (it != pivot)
-	{
-		if (!(compare(it->get(), pivot->get()))) // it <= pivot
-		{
-			if (nullptr == head_s)
-				head_s = it;
-			previous = it;
-			it = it->successor[0];
-		}
-		else
-		{
-			if (previous)
-				previous->successor[0] = it->successor[0];
-
-			ptr temp = it->successor[0];
-
-			it->successor[0] = nullptr;
-			tail->successor[0] = it;
-			tail = it;
-
-			it = temp;
-		}
-	}
-
-	if (nullptr == head_s) // everything was greater than pivot
-		head_s = pivot;
-	tail_s = t;
-
-	struct result{ ptr pv, hd, tl; };
-	return result{ pivot, head_s, tail_s };
-}
-
-template <class T>
-node_list<T>* linked_list<T>::quick_sort(ptr& h, ptr& t) // returns new head of a list
-{
-	if (nullptr == h || h == t)
-		return h;
-	auto [pivot, head_s, tail_s] = partition(h, t);
-	
-	if (head_s != pivot) // pivot wasn't the smallest
-	{
-		ptr temp = head_s;
-		while (temp->successor[0] != pivot)
-			temp = temp->successor[0];
-		temp->successor[0] = nullptr;
-
-		head_s = quick_sort(head_s, temp);
-		
-		temp = tail_s;
-		temp->successor[0] = pivot;
-	}
-
-	pivot->successor[0] = quick_sort(pivot->successor[0], tail_s); // they say it is tail_s
-	return head_s;
-}
+/* comments:
+	- BEST practice: use only the object / only the node pointers
+	- PAY ATTENTION - SYNTAX: "BEFORE_INSERTED", "BEFORE_REMOVED"
+	- for insert and remove methods, the head-case actually means the second node
+	- how to sort: merge_sort and quick_sort_Lomuto_scheme
+	- get methods allows reading data, and modifying data of a node, but does not allow to change successor pointer
+	- allows repeating values 
+*/
 
 //------------------------------------------------
 // constructors:
@@ -177,37 +110,38 @@ linked_list<T>::~linked_list()
 }
 
 template <class T>
-linked_list<T>::linked_list() : n(0), head(nullptr), tail(nullptr) {}
+linked_list<T>::linked_list() : head(nullptr), tail(nullptr), 
+	n(0), compare([](t x, t y)->bool { return x > y; }) {}
 
 template <class T>
-linked_list<T>::linked_list(const std::initializer_list<T>& val) : n(0), head(nullptr), tail(nullptr)
+linked_list<T>::linked_list(const std::initializer_list<T>& data) : linked_list<T>()
 {
-	this->head = new node_list<T>(*(val.begin()));
+	this->head = new node_list<T>(*(data.begin()));
 
 	node_list<T>* it = head;
-	for (auto i = (val.begin() + 1); i < (val.end()); i++)
+	for (auto i = (data.begin() + 1); i < (data.end()); i++)
 	{
 		it->successor[0] = new node_list<T>(*i);
 		it = it->successor[0];
 	}
 
 	this->tail = it;
-	this->n = val.size();
+	this->n = data.size();
 }
 
 template <class T>
-linked_list<T>::linked_list(const T* val, const size_t& val_size) : n(0), head(nullptr), tail(nullptr)
+linked_list<T>::linked_list(const T* data, szt data_size) : linked_list<T>()
 {
-	this->head = new node_list<T>(*val);
-	val++;
+	this->head = new node_list<T>(*data);
+	data++;
 	node_list<T>* it = head;
 
 	size_t i = 1;
-	while (i < val_size)
+	while (i < data_size)
 	{
-		it->successor[0] = new node_list<T>(*val);
+		it->successor[0] = new node_list<T>(*data);
 		it = it->successor[0];
-		val++;
+		data++;
 		i++;
 	}
 
@@ -216,7 +150,7 @@ linked_list<T>::linked_list(const T* val, const size_t& val_size) : n(0), head(n
 }
 
 template <class T>
-linked_list<T>::linked_list(const linked_list<T>& l) : n(0), head(nullptr), tail(nullptr)
+linked_list<T>::linked_list(const linked_list<T>& l) : linked_list<T>()
 {
 	this->head = new node_list<T>(*l.begin());
 
@@ -238,7 +172,7 @@ linked_list<T>::linked_list(const linked_list<T>& l) : n(0), head(nullptr), tail
 }
 
 template <class T>
-linked_list<T>::linked_list(const linked_list<T>&& l) noexcept : n(0), head(nullptr), tail(nullptr)
+linked_list<T>::linked_list(const linked_list<T>&& l) noexcept : linked_list<T>()
 {
 	this->head = new node_list<T>(*l.begin());
 
@@ -257,42 +191,6 @@ linked_list<T>::linked_list(const linked_list<T>&& l) noexcept : n(0), head(null
 
 	this->tail = it;
 	this->n = l.getn();
-}
-
-//------------------------------------------------
-// iterator methods:
-
-template <class T>
-linked_list<T>::iterator::iterator(node_list<T>* val) : value(val) {};
-
-template <class T>
-T linked_list<T>::iterator::operator * () const
-{
-	return value->get();
-}
-
-template <class T>
-void linked_list<T>::iterator::operator ++ ()
-{
-	value = value->successor[0];
-}
-
-template <class T>
-bool linked_list<T>::iterator::operator != (const iterator& two) const
-{
-	return value != two.value;
-}
-
-template <class T>
-typename linked_list<T>::iterator linked_list<T>::begin() const
-{
-	return iterator(head);
-}
-
-template <class T>
-typename linked_list<T>::iterator linked_list<T>::end() const
-{
-	return iterator(tail->successor[0]); // nullptr
 }
 
 //------------------------------------------------
@@ -301,17 +199,15 @@ typename linked_list<T>::iterator linked_list<T>::end() const
 template <class T>
 linked_list<T>& linked_list<T>::clear()
 {
-	std::cout << "intra ";
 	ptr it = head;
 	while (it)
 	{
-		std::cout << it->get() << ' ';
 		head = it;
 		it = it->successor[0];
 		delete head;
 		n--;
 	}
-	std::cout << '\n';
+
 	head = tail = nullptr;
 	return *this;
 }
@@ -336,31 +232,7 @@ linked_list<T>& linked_list<T>::operator = (const linked_list<T>& l)
 	}
 
 	this->tail = it;
-	this->n = l.getn();
-	return *this;
-}
-
-template <class T>
-linked_list<T>& linked_list<T>::operator = (const linked_list<T>&& l)
-{
-	clear();
-	this->head = new node_list<T>(*l.begin());
-
-	node_list<T>* it = head;
-	bool first_element = true;
-	for (auto i : l)
-	{
-		if (first_element == false)
-		{
-			it->successor[0] = new node_list<T>(i);
-			it = it->successor[0];
-		}
-
-		first_element = false;
-	}
-
-	this->tail = it;
-	this->n = l.getn();
+	this->n = l.n;
 	return *this;
 }
 
@@ -375,78 +247,17 @@ linked_list<T>& linked_list<T>::set_f(fct f)
 // specific methods:
 
 template <class T>
-void linked_list<T>::sort()
+linked_list<T>& linked_list<T>::sort()
 {
 	quick_sort(head, tail);
+	return *this;
 }
 
 template <class T>
-void linked_list<T>::atypical_insert(type value, szt index)
-{
-	// optimisation:
-	if (index == n)
-	{
-		tail->successor[0] = new node_list<T>(value);
-		tail = tail->successor[0];
-		n++;
-		return;
-	}
-
-	if (index == 0)
-	{
-		node_list<T>* it = new node_list<T>(value);
-		it->successor[0] = head;
-		head = it;
-		n++;
-		return;
-	}
-
-	node_list<T>* it = head;
-	for (size_t i = 0; i + 1 < index; i++)
-		it = it->successor[0];
-	if (it == nullptr)
-		hard_error("bad index");
-
-	node_list<T>* nxt = it->successor[0];
-	it->successor[0] = new node_list<T>(value);
-	it = it->successor[0];
-	it->successor[0] = nxt;
-	n++;
-}
-
-template <class T>
-void linked_list<T>::atypical_remove(szt index)
-{
-	if (index >= n || index < 0)
-	{
-		eazy_error("bad index");
-		return;
-	}
-
-	// deleting the first element
-	if (index == 0)
-	{
-		node_list<T>* it = head;
-		head = head->successor[0];
-		delete it;
-		n--;
-		return;
-	}
-
-	node_list<T>* it = head;
-	for (size_t i = 0; i + 1 < index; i++)
-		it = it->successor[0];
-	node_list<T>* nxt = it->successor[0];
-	it->successor[0] = nxt->successor[0];
-	delete nxt;
-	n--;
-}
-
-template <class T>
-linked_list<T>& linked_list<T>::insert(const ptr& value, const node_list<T>* before_inserted)
+linked_list<T>& linked_list<T>::insert(const node_list<T>*& value, const node_list<T>*& before_inserted)
 {
 	n++;
-	ptr actual = new node_list<float>(value->get()); // if value has successors
+	ptr actual = new node_list<T>(value->get()); // if value has successors
 
 	// case head_node
 	if (before_inserted == head_node)
@@ -454,7 +265,7 @@ linked_list<T>& linked_list<T>::insert(const ptr& value, const node_list<T>* bef
 		if (empty())
 		{
 			head = tail = actual;
-			return;
+			return *this;
 		}
 
 		actual->successor[0] = head; // not empty => insert as a first node
@@ -486,10 +297,11 @@ linked_list<T>& linked_list<T>::insert(const ptr& value, const node_list<T>* bef
 }
 
 template <class T>
-linked_list<T>& linked_list<T>::remove(const node_list<T>* before_removed)
+linked_list<T>& linked_list<T>::remove(const node_list<T>*& before_removed)
 {
 	if (empty())
-		fatal_error("no more memory");
+		return *this;
+	
 	n--;
 
 	// case head_node
@@ -500,7 +312,7 @@ linked_list<T>& linked_list<T>::remove(const node_list<T>* before_removed)
 		delete it;
 		return *this;
 	}
-	
+
 	// case tail 
 	if (before_removed->successor[0] == tail)
 	{
@@ -512,91 +324,84 @@ linked_list<T>& linked_list<T>::remove(const node_list<T>* before_removed)
 
 	// case mid
 	ptr it = before_removed->successor[0];
-	
+
 	node_list<T>* bfr_remove = const_cast<node_list<T>*>(before_removed);
 	bfr_remove->successor[0] = it->successor[0];
 	delete it;
 	return *this;
 }
 
-//------------------------------------------------
-// query operations:
-
 template <class T>
-const node_list<T>* linked_list<T>::search(type value) const
+linked_list<T>& linked_list<T>::atypical_insert(t value, szt index)
 {
-	auto it = head;
-	FOR(n)
+	// optimisation:
+	if (index == n)
 	{
-		if (it->get() == value)
-			return it;
+		tail->successor[0] = new node_list<T>(value);
+		tail = tail->successor[0];
+		n++;	
+		return *this;
+	}
+
+	if (index == 0)
+	{
+		node_list<T>* it = new node_list<T>(value);
+		it->successor[0] = head;
+		head = it;
+		n++;
+		return *this;
+
+	}
+
+	node_list<T>* it = head;
+	for (size_t i = 0; i + 1 < index; i++)
 		it = it->successor[0];
-	}
-	
-	return nullptr;
+	if (it == nullptr)
+		hard_error("bad index");
+
+	node_list<T>* nxt = it->successor[0];
+	it->successor[0] = new node_list<T>(value);
+	it = it->successor[0];
+	it->successor[0] = nxt;
+	n++;
+	return *this;
 }
 
 template <class T>
-const node_list<T>* linked_list<T>::mimimum() const
+linked_list<T>& linked_list<T>::atypical_remove(szt index)
 {
-	ptr minimum = head;
-	for (ptr it = head; it; it = it->successor[0])
-		if (compare(minimum->get(), it->get()))
-			minimum = it;
-	return minimum;
-}
-
-template <class T>
-const node_list<T>* linked_list<T>::maximum() const
-{
-	ptr maximum = head;
-	for (ptr it = head; it; it = it->successor[0])
-		if (compare(it->get(), maximum->get()))
-			maximum = it;
-	return maximum;
-}
-
-template <class T>
-const node_list<T>* linked_list<T>::predcessr(ptr& value) const
-{
-	ptr node = nullptr;
-	for (ptr it = head; it; it = it->successor[0])
+	if (index >= n || index < 0)
 	{
-		if (compare(value->get(), it->get())) // it < value
-		{
-			if (node == nullptr)
-				node = it;
-			if (comapre(it->get(), node->get()))
-				node = it;
-		}
+		eazy_error("bad index");
+		return;
 	}
 
-	return node;
-}
+	// deleting the first element
+	if (index == 0)
+	{
+		node_list<T>* it = head;
+		head = head->successor[0];
+		delete it;
+		n--;
+		return;
+	}
 
-template <class T>
-const node_list<T>* linked_list<T>::successor(ptr& value) const
-{
-	ptr node = nullptr;
-	for (ptr it = head; it; it = it->successor[0])
-		if (compare(it->get(), value->get())) // it > value
-		{
-			if (node == nullptr)
-				node = it;
-			if (comapre(node->get(), it->get()))
-				node = it;
-		}
-
-	return node;
+	node_list<T>* it = head;
+	for (size_t i = 0; i + 1 < index; i++)
+		it = it->successor[0];
+	node_list<T>* nxt = it->successor[0];
+	it->successor[0] = nxt->successor[0];
+	delete nxt;
+	n--;
 }
 
 //------------------------------------------------
 // constant methods:
 
 template <class T>
-bool linked_list<T>::operator == (lnkl l) const
+bool linked_list<T>::operator == (const linked_list<T>& l) const
 {
-	if (this->n != l.n || this->head->get())
+	if (this->n != l.n)
 		return false;
 
 	node_list<T>* it = head;
@@ -660,16 +465,102 @@ const node_list<T>* linked_list<T>::get_tail() const
 }
 
 //------------------------------------------------
+// query operations:
+
+template <class T>
+const node_list<T>* linked_list<T>::search(t value) const
+{
+	auto it = head;
+	FOR(n)
+	{
+		if (it->get() == value)
+			return it;
+		it = it->successor[0];
+	}
+
+	return nullptr;
+}
+
+template <class T>
+const node_list<T>* linked_list<T>::mimimum() const
+{
+	ptr minimum = head;
+	for (ptr it = head; it; it = it->successor[0])
+		if (compare(minimum->get(), it->get()))
+			minimum = it;
+	return minimum;
+}
+
+template <class T>
+const node_list<T>* linked_list<T>::maximum() const
+{
+	ptr maximum = head;
+	for (ptr it = head; it; it = it->successor[0])
+		if (compare(it->get(), maximum->get()))
+			maximum = it;
+	return maximum;
+}
+
+template <class T>
+const node_list<T>* linked_list<T>::predcessr(const node_list<T>*& value) const
+{
+	ptr node = nullptr;
+	for (ptr it = head; it; it = it->successor[0])
+	{
+		if (compare(value->get(), it->get())) // it < value
+		{
+			if (nullptr == node)
+				node = it;
+			if (compare(it->get(), node->get()))
+				node = it;
+		}
+	}
+
+	return node;
+}
+
+template <class T>
+const node_list<T>* linked_list<T>::successor(const node_list<T>*& value) const
+{
+	ptr node = nullptr;
+	for (ptr it = head; it; it = it->successor[0])
+		if (compare(it->get(), value->get())) // it > value
+		{
+			if (node == nullptr)
+				node = it;
+			if (compare(node->get(), it->get()))
+				node = it;
+		}
+
+	return node;
+}
+
+//------------------------------------------------
 // instance synergy:
 
 template <class T>
-linked_list<T>& linked_list<T>::linking(lnkl l);
+linked_list<T>& linked_list<T>::integrates(const linked_list<T>& l);
 
 template <class T>
-linked_list<T>& linked_list<T>::ejectin(lnkl l);
+linked_list<T>& linked_list<T>::eliminates(const linked_list<T>& l);
 
 template <class T>
-linked_list<T>& linked_list<T>::linking(lnkl l);
+linked_list<T>& linked_list<T>::intersects(const linked_list<T>& l);
+
+//------------------------------------------------
+// iterator methods:
+
+template <class T>
+linked_list_iterator<T> linked_list<T>::begin() const
+{
+	return head;
+}
+
+template <class T>
+linked_list_iterator<T> linked_list<T>::end() const
+{
+	return tail->successor[0]; // nullptr
+}
 
 //------------------------------------------------
 // friend functions:
@@ -682,53 +573,6 @@ T* convert(const linked_list<T>& l)
 	for (auto i : l)
 		ptr[index++] = i;
 	return ptr;
-}
-
-template <class T>
-linked_list<T> linking(const linked_list<T>& one, const linked_list<T>& two)
-{
-	linked_list<T> new_list(one);
-	//new_list.tail->successor[0] = two.head;
-	//new_list.n += two.n;
-	//new_list.tail = two.tail;
-	return new_list;
-}
-
-template <class T>
-linked_list<T> ejectin(const linked_list<T>& one, const linked_list<T>& two)
-{
-	linked_list<T> new_list(one);
-
-	for (node_list<T>* it_two = two.head; it_two; it_two = it_two->successor[0])
-		for (node_list<T>* it = new_list.head; it; it = it->successor[0])
-		{
-			// patch
-			while (new_list.head->get() == it_two->get())
-			{
-				new_list.remove(head_node);
-				it = new_list.head;
-			}
-
-			if (it->successor[0]->get() == it_two->get())
-				new_list.remove(it);
-		}
-
-	return new_list;
-}
-
-template <class T>
-linked_list<T> crossng(const linked_list<T>& one, const linked_list<T>& two)
-{
-	linked_list<T> new_list;
-
-	for (node_list<T>* it_two = two.head; it_two; it_two = it_two->successor[0])
-		for (node_list<T>* it = one.head; it; it = it->successor[0])
-		{
-			if (it->get() == it_two->get())
-				new_list.insert(it);
-		}
-
-	return new_list;
 }
 
 template <class T>
@@ -750,4 +594,71 @@ void* collection_ptr(const linked_list<T>& l)
 {
 	return (void*)head;
 }
-*/
+
+//------------------------------------------------
+// auxiliar utility:
+
+template <class T>
+const node_list<T>* linked_list<T>::head_node = nullptr;
+
+template <class T>
+auto linked_list<T>::partition(node_list<T>*& head, node_list<T>*& tail) // divides the list into two pieces
+{
+	// the suffix '_s' == smaller
+	ptr head_s = nullptr, tail_s = nullptr, it = h;
+	ptr pivot = t, previous = nullptr;
+	while (it != pivot)
+	{
+		if (!(compare(it->get(), pivot->get()))) // it <= pivot
+		{
+			if (nullptr == head_s)
+				head_s = it;
+			previous = it;
+			it = it->successor[0];
+		}
+		else
+		{
+			if (previous)
+				previous->successor[0] = it->successor[0];
+
+			ptr temp = it->successor[0];
+
+			it->successor[0] = nullptr;
+			tail->successor[0] = it;
+			tail = it;
+
+			it = temp;
+		}
+	}
+
+	if (nullptr == head_s) // everything was greater than pivot
+		head_s = pivot;
+	tail_s = t;
+
+	struct result { ptr pv, hd, tl; };
+	return result{ pivot, head_s, tail_s };
+}
+
+template <class T>
+node_list<T>* linked_list<T>::quick_sort(node_list<T>*& head, node_list<T>*& tail) // returns new head of a list
+{
+	if (nullptr == h || h == t)
+		return h;
+	auto [pivot, head_s, tail_s] = partition(h, t);
+
+	if (head_s != pivot) // pivot wasn't the smallest
+	{
+		ptr temp = head_s;
+		while (temp->successor[0] != pivot)
+			temp = temp->successor[0];
+		temp->successor[0] = nullptr;
+
+		head_s = quick_sort(head_s, temp);
+
+		temp = tail_s;
+		temp->successor[0] = pivot;
+	}
+
+	pivot->successor[0] = quick_sort(pivot->successor[0], tail_s); // they say it is tail_s
+	return head_s;
+}

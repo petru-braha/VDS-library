@@ -116,6 +116,9 @@
     <ClInclude Include="include\class_methods\array_methods\array_constant.h" />
     <ClInclude Include="include\class_methods\array_methods\array_queries.h" />
     <ClInclude Include="include\class_methods\array_methods\array_specific.h" />
+    <ClInclude Include="include\class_methods\linked_list_methods\linked_list_constant.h" />
+    <ClInclude Include="include\class_methods\linked_list_methods\linked_list_queries.h" />
+    <ClInclude Include="include\class_methods\linked_list_methods\linked_list_specific.h" />
     <ClInclude Include="include\data_structure.h" />
     <ClInclude Include="include\interface\adaptor.h" />
     <ClInclude Include="include\interface\bst.h" />
@@ -123,6 +126,7 @@
     <ClInclude Include="include\interface\experiment.h" />
     <ClInclude Include="include\iterators\array_iterator.h" />
     <ClInclude Include="include\iterators\basic_iterator.h" />
+    <ClInclude Include="include\iterators\linked_list_iterator.h" />
     <ClInclude Include="include\trial_test_values.h" />
     <ClInclude Include="src\array.h" />
     <ClInclude Include="include\array_sorting.h" />

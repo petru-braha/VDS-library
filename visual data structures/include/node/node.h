@@ -7,7 +7,7 @@ template <class T, typename node_type, size_t arity>
 class node
 {
 	// data members:
-	T data;
+	mutable T data;
 public:
 	// auxiliar utility:
 	node_type* successor[arity];
@@ -17,7 +17,7 @@ public:
 	node(const T& value);
 
 	// specific methods:
-	void set(const T& value);
+	void set(const T& value) const;
 
 	// constant methods:
 	T&		get() const;
@@ -42,7 +42,7 @@ node<T, node_type, arity>::node(const T& value)
 // specific methods:
 
 template <class T, typename node_type, size_t arity>
-void node<T, node_type, arity>::set(const T& value)
+void node<T, node_type, arity>::set(const T& value) const
 {
 	data = value;
 }

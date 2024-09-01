@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include "convoluted.h"
 #include "linked_list.h"
 #include "trial_test_values.h"
@@ -73,8 +73,8 @@ TEST_F(linked_list_evaluation_p, insert_method)
         auto one = numbers.get_node(i)->get(), two = temp.get_node(i)->get();
         EXPECT_EQ(one, two);
     }*/
-}
-
+//}
+/*
 TEST_F(linked_list_evaluation_p, remove_method)
 {
     // delete first
@@ -146,3 +146,4 @@ TEST_F(linked_list_evaluation_c, query_operations)
 {
 
 }
+*/

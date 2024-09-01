@@ -80,7 +80,7 @@ public:
 
 private:
 	// data members:
-	static const node_list<T>* head_node;
+	static const node_list<T>* const head_node;
 	node_list<T>* head;
 	node_list<T>* tail;
 	size_t n;
@@ -553,7 +553,7 @@ linked_list<T>& linked_list<T>::intersects(const linked_list<T>& l);
 template <class T>
 linked_list_iterator<T> linked_list<T>::begin() const
 {
-	return head;
+	return const_cast<node_list<T>*>(head);
 }
 
 template <class T>
@@ -599,7 +599,7 @@ void* collection_ptr(const linked_list<T>& l)
 // auxiliar utility:
 
 template <class T>
-const node_list<T>* linked_list<T>::head_node = nullptr;
+const node_list<T>* const linked_list<T>::head_node = nullptr;
 
 template <class T>
 auto linked_list<T>::partition(node_list<T>*& head, node_list<T>*& tail) // divides the list into two pieces

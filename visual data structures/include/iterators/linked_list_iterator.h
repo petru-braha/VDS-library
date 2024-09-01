@@ -30,7 +30,7 @@ linked_list_iterator<T>::linked_list_iterator(node_list<T>*& value) : value(valu
 template <class T>
 T linked_list_iterator<T>::operator *() const
 {
-	return *value;
+	return value->get();
 }
 
 template <class T>

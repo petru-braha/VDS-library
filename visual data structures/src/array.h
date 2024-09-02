@@ -14,10 +14,17 @@
 #include "data_structure.h"
 #include <initializer_list>
 
+/* comments:
+	- values[0 ... index_last] == 'set values'
+	- values[index_last + 1 ... n - 1] == 'non-set values'
+	- array[index_last] == the last value stored
+	- allows repeating values
+*/
+
 template <class T = int>
 class array : public data_structure<modifier_methods<T, array<T>>, array_specific<T>, 
-				array_constant<T, array<T>>, array_queries<T>, 
-				instance_synergy<array<T>>, iterator_methods<array_iterator<T>>>
+	array_constant<T, array<T>>, array_queries<T>, 
+	instance_synergy<array<T>>, iterator_methods<array_iterator<T>>>
 {
 	// typedefs:
 	structure_typedefs;
@@ -74,7 +81,6 @@ public:
 
 private:
 	// data members:
-	static const size_t default_array_size;
 	size_t n;			// its purpose is just to allocate space
 	size_t index_last;	// gurantees that elements selected by user are initialised contiguously // index of the index_last concrete value
 	T* values;
@@ -82,14 +88,10 @@ private:
 	// auxiliar utility:
 	fct  compare;
 	void shift_left(szt left_position);
-};
 
-/* comments:
-	values[0 ... index_last] == 'set values' 
-	values[index_last + 1 ... n - 1] == 'non-set values'
-	array[index_last] == the last value stored
-	allows repeating values
-*/
+public:	
+	static const size_t default_array_size;
+};
 
 //------------------------------------------------
 // constructors:
@@ -176,10 +178,10 @@ array<T>& array<T>::operator = (const array<T>& arr)
 	delete[]this->values;
 	this->values = new T[arr.n]{};
 	
-	size_t index = 0;
-	for (auto i : arr)
+	
+	for (size_t index = 0; index < arr.n; index++)
 	{
-		this->values[index] = i;
+		this->values[index] = arr.get(index);
 		index++;
 	}
 
@@ -465,8 +467,11 @@ array<T>& array<T>::integrates(const array<T>& arr)
 	T* new_values = new T[this->n]{};
 	
 	size_t index = 0;
-	for(; index < this->index_last + 1; index++)
-		new_values[index] = this->values[index];
+	FOR(this->index_last + 1)
+	{
+		new_values[index] = this->values[i];
+		index++;
+	}
 	
 	FOR(arr.index_last + 1)
 	{
@@ -576,9 +581,6 @@ std::ostream& operator << (std::ostream& out, const array<T>& arr)
 // auxiliar utility:
 
 template <class T>
-const size_t array<T>::default_array_size = 100;
-
-template <class T>
 void array<T>::shift_left(szt left_position)
 {
 	if (empty())
@@ -588,3 +590,6 @@ void array<T>::shift_left(szt left_position)
 		values[i] = values[i + 1];
 	values[index_last--] = NULL;
 }
+
+template <class T>
+const size_t array<T>::default_array_size = 100;

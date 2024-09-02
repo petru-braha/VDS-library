@@ -9,6 +9,6 @@ public:
 	virtual void pop() = 0;
 
 	// constant methods:
-	virtual size_t getn() const = 0;
-	virtual bool  empty() const = 0;
+	virtual size_t get_n() const = 0;
+	virtual bool   empty() const = 0;
 };

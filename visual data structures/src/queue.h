@@ -1,18 +1,17 @@
 #pragma once
 #include "linked_list.h"
 #include "adaptor.h"
+#include <initializer_list>
 
-template <class T>
+template <class T = int>
 class queue : public adaptor<T>
-{
-	// data members:
-	linked_list<T> values;
+{	
 public:
 	// constructors:
 	~queue() = default;
 	queue();
-	queue(std::initializer_list<T>& val);
-	queue(T* val, const size_t& val_size);
+	queue(std::initializer_list<T>& data);
+	queue(const T* data, const size_t& data_size);
 	queue(const queue<T>& q);
 	queue(const queue<T>&& q);
 
@@ -20,15 +19,19 @@ public:
 	queue<T>& operator = (const queue<T>& q);
 	
 	// specific methods:
-	T	 front() const;
-	T	 back() const;
-	void push(const T& val);
+	void push(const T& value);
 	void pop();
 
 	// constant methods:
+	T	 front() const;
+	T	 back() const;
 	bool operator == (const queue<T>& q) const;
-	size_t getn() const;
-	bool  empty() const;
+	size_t get_n() const;
+	bool   empty() const;
+
+private:
+	// data members:
+	linked_list<T> values;
 };
 
 //------------------------------------------------
@@ -38,25 +41,13 @@ template <class T>
 queue<T>::queue() : values() {}
 
 template <class T>
-queue<T>::queue(std::initializer_list<T>& val) : values() 
-{
-	for (auto key : val)
-		push(key);
-};
+queue<T>::queue(std::initializer_list<T>& data) : values(data) {}
 
 template <class T>
-queue<T>::queue(T* val, const size_t& val_size) : values() 
-{
-	FOR(val_size)
-	{
-		push(*val);
-		val++;
-	}
-}
+queue<T>::queue(const T* data, const size_t& data_size) : values(data, data_size) {}
 
 template <class T>
 queue<T>::queue(const queue<T>& q) : values(q.values) {}
-
 
 template <class T>
 queue<T>::queue(const queue<T>&& q) : values(q.values) {}
@@ -74,31 +65,38 @@ queue<T>& queue<T>::operator = (const queue<T>& q)
 // specific methods:
 
 template <class T>
-T queue<T>::front() const
-{
-	return values.frst->get();
-}
-
-template <class T>
-T queue<T>::back() const
-{
-	return values.last->get();
-}
-
-template <class T>
 void queue<T>::push(const T& value)
 {
-	values.atypical_insert(value, 0);
+	auto ptr = new node_list<T>(value);
+	//auto c_tail = values.get_tail();
+	//auto tail = const_cast<node_list<T>>
+	values.insert(ptr, values.get_tail());
 }
 
 template <class T>
 void queue<T>::pop()
 {
-	values.atypical_remove(0);
+	values.remove(linked_list<T>::head_node);
 }
 
 //------------------------------------------------
 // constant methods:
+
+template <class T>
+T queue<T>::front() const
+{
+	if (empty())
+		hard_error("no data");
+	return values.get_head()->get();
+}
+
+template <class T>
+T queue<T>::back() const
+{
+	if (empty())
+		hard_error("no data");
+	return values.get_tail()->get();
+}
 
 template <class T>
 bool queue<T>::operator == (const queue<T>& q) const
@@ -107,9 +105,9 @@ bool queue<T>::operator == (const queue<T>& q) const
 }
 
 template <class T>
-size_t queue<T>::getn() const
+size_t queue<T>::get_n() const
 {
-	return values.getn();
+	return values.get_n();
 }
 
 template <class T>

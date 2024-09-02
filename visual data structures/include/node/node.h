@@ -8,6 +8,7 @@ class node
 {
 	// data members:
 	mutable T data;
+
 public:
 	// auxiliar utility:
 	node_type* successor[arity];

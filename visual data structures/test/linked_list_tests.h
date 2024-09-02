@@ -25,7 +25,7 @@ linked_list_evaluation_p::linked_list_evaluation_p() : numbers(list_numbers), he
 
 TEST_F(linked_list_evaluation_p, constructors)
 {
-    auto extra = numbers;
+    linked_list<float> extra = numbers;
     EXPECT_EQ(numbers, extra);
     extra = decltype(numbers)(list_numbers);
     EXPECT_EQ(numbers, extra);

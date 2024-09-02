@@ -14,6 +14,15 @@
 #include "data_structure.h"
 #include <initializer_list>
 
+/* comments:
+	- BEST practice: use only the object / only the node pointers
+	- PAY ATTENTION - SYNTAX: "BEFORE_INSERTED", "BEFORE_REMOVED"
+	- for insert and remove methods, the head-case actually means the second node
+	- how to sort: merge_sort and quick_sort_Lomuto_scheme
+	- get methods allows reading data, and modifying data of a node, but does not allow to change successor pointer
+	- allows repeating values
+*/
+
 template <class T = int>
 class linked_list : public data_structure <modifier_methods<T, linked_list<T>>, linked_list_specific<T, node_list<T>>,
 	linked_list_constant<T, linked_list<T>, node_list<T>>, linked_list_queries<T, node_list<T>>,
@@ -80,7 +89,6 @@ public:
 
 private:
 	// data members:
-	static node_list<T>* const head_node;
 	node_list<T>* head;
 	node_list<T>* tail;
 	size_t n;
@@ -89,16 +97,10 @@ private:
 	fct compare;
 	auto partition(node_list<T>*& head_b, node_list<T>*& tail_b);
 	node_list<T>* quick_sort(node_list<T>*& head_b, node_list<T>*& tail_b);
-};
 
-/* comments:
-	- BEST practice: use only the object / only the node pointers
-	- PAY ATTENTION - SYNTAX: "BEFORE_INSERTED", "BEFORE_REMOVED"
-	- for insert and remove methods, the head-case actually means the second node
-	- how to sort: merge_sort and quick_sort_Lomuto_scheme
-	- get methods allows reading data, and modifying data of a node, but does not allow to change successor pointer
-	- allows repeating values 
-*/
+public:
+	static node_list<T>* const head_node;
+};
 
 //------------------------------------------------
 // constructors:
@@ -645,9 +647,6 @@ void* collection_ptr(const linked_list<T>& l)
 // auxiliar utility:
 
 template <class T>
-node_list<T>* const linked_list<T>::head_node = nullptr;
-
-template <class T>
 auto linked_list<T>::partition(node_list<T>*& head_b, node_list<T>*& tail_b) // divides the list into two pieces
 {
 	// the suffix '_s' == smaller
@@ -708,3 +707,6 @@ node_list<T>* linked_list<T>::quick_sort(node_list<T>*& head_b, node_list<T>*& t
 	pivot->successor[0] = quick_sort(pivot->successor[0], tail_s); // they say it is tail_s
 	return head_s;
 }
+
+template <class T>
+node_list<T>* const linked_list<T>::head_node = nullptr;

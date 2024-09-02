@@ -39,3 +39,8 @@ getl now throws if it is empty
 TO DO:
 - operator != is not the same with !( operator == )
 - equality method
+- stack
+- queue
+- avl iterator
+- array warnings
+- yoda creater

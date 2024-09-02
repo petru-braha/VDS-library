@@ -16,13 +16,26 @@ protected:
 //------------------------------------------------
 // constructors:
 
-array_evaluation_p::array_evaluation_p() : numbers(list_numbers, maximum_size)
-{
-    numbers = array<float>(array<float>(block_numbers, classic_size, maximum_size));
-};
+array_evaluation_p::array_evaluation_p() : numbers(list_numbers, maximum_size) {}
 
 //------------------------------------------------
 // tests:
+
+TEST_F(array_evaluation_p, constructors)
+{
+    auto extra = numbers;
+    EXPECT_EQ(numbers, extra);
+    extra = decltype(numbers)(list_numbers, maximum_size);
+    EXPECT_EQ(numbers, extra);
+    extra = array<float>(array<float>(array<float>(block_numbers, classic_size, maximum_size)));
+
+    size_t extra_index = 0;
+    for (auto value : numbers)
+    {
+        EXPECT_EQ(value, extra.get(extra_index));
+        extra_index++;
+    }
+}
 
 TEST_F(array_evaluation_p, clear_method)
 {

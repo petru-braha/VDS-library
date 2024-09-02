@@ -17,9 +17,8 @@ int main(int argc, char** argv)
 	::testing::GTEST_FLAG(filter) = "linked_list*";
 
 	int exit_status = RUN_ALL_TESTS();
-
-	// launch into execution the visual process, the third cpp 
 	
+	// launch into execution the visual process, the third cpp 
 	log_file.clear();
 	log_file.close();
 	return exit_status;

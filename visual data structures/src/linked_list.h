@@ -40,8 +40,8 @@ public:
 
 	// specific methods:
 	linked_list<T>& sort();
-	linked_list<T>& insert(const node_list<T>*& value, const node_list<T>*& before_inserted = head_node); // traditional, time complexity O(1)
-	linked_list<T>& remove(const node_list<T>*& before_removed); // traditional, time complexity O(1)
+	linked_list<T>& insert(const node_list<T>* const value, node_list<T>* const before_inserted = head_node); // traditional, time complexity O(1)
+	linked_list<T>& remove(node_list<T>* const before_removed); // traditional, time complexity O(1)
 
 	linked_list<T>& atypical_insert(t value, szt index); // WARNING: atypical, time complexity O(n)
 	linked_list<T>& atypical_remove(szt index); // WARNING: atypical, time complexity O(n)
@@ -80,15 +80,15 @@ public:
 
 private:
 	// data members:
-	static const node_list<T>* const head_node;
+	static node_list<T>* const head_node;
 	node_list<T>* head;
 	node_list<T>* tail;
 	size_t n;
 
 	// auxiliar utility:
 	fct compare;
-	auto partition(node_list<T>*& head, node_list<T>*& tail);
-	node_list<T>* quick_sort(node_list<T>*& head, node_list<T>*& tail);
+	auto partition(node_list<T>*& head_b, node_list<T>*& tail_b);
+	node_list<T>* quick_sort(node_list<T>*& head_b, node_list<T>*& tail_b);
 };
 
 /* comments:
@@ -168,7 +168,7 @@ linked_list<T>::linked_list(const linked_list<T>& l) : linked_list<T>()
 	}
 
 	this->tail = it;
-	this->n = l.getn();
+	this->n = l.n;
 }
 
 template <class T>
@@ -254,7 +254,7 @@ linked_list<T>& linked_list<T>::sort()
 }
 
 template <class T>
-linked_list<T>& linked_list<T>::insert(const node_list<T>*& value, const node_list<T>*& before_inserted)
+linked_list<T>& linked_list<T>::insert(const node_list<T>* const value, node_list<T>* const before_inserted)
 {
 	n++;
 	ptr actual = new node_list<T>(value->get()); // if value has successors
@@ -297,7 +297,7 @@ linked_list<T>& linked_list<T>::insert(const node_list<T>*& value, const node_li
 }
 
 template <class T>
-linked_list<T>& linked_list<T>::remove(const node_list<T>*& before_removed)
+linked_list<T>& linked_list<T>::remove(node_list<T>* const before_removed)
 {
 	if (empty())
 		return *this;
@@ -539,13 +539,59 @@ const node_list<T>* linked_list<T>::successor(const node_list<T>*& value) const
 // instance synergy:
 
 template <class T>
-linked_list<T>& linked_list<T>::integrates(const linked_list<T>& l);
+linked_list<T>& linked_list<T>::integrates(const linked_list<T>& l) 
+{
+	this->n += l.n;
+	this->tail->successor[0] = l.head;
+	this->tail = l.tail;
+	return *this;
+}
 
 template <class T>
-linked_list<T>& linked_list<T>::eliminates(const linked_list<T>& l);
+linked_list<T>& linked_list<T>::eliminates(const linked_list<T>& l) 
+{
+	for (node_list<T>* it_two = l.head; it_two; it_two = it_two->successor[0])
+		for (node_list<T>* it = this->head; it; it = it->successor[0])
+		{
+			while (this->head->get() == it_two->get())
+			{
+				this->remove(head_node);
+				it = this->head;
+			}
+
+			if (it->successor[0]->get() == it_two->get())
+				this->remove(it);
+		}
+
+	return *this;
+}
+
+
 
 template <class T>
-linked_list<T>& linked_list<T>::intersects(const linked_list<T>& l);
+linked_list<T>& linked_list<T>::intersects(const linked_list<T>& l) 
+{
+	ptr new_head = nullptr, new_tail = nullptr, new_it = nullptr;
+	size_t new_n = 0;
+
+	for (ptr it_two = l.head; it_two; it_two = it_two->successor[0])
+		for (ptr it = this->head; it; it = it->successor[0])
+		{
+			if (it->get() == it_two->get())
+			{
+				new_it = new node_list<T>(it->get());
+				new_head = 0 == new_n ? new_it : new_head;
+				new_tail = new_it;
+				new_n++;
+			}
+		}
+
+	this->clear();
+	this->head = new_head;
+	this->tail = new_tail;
+	this->n = new_n;
+	return *this;
+}
 
 //------------------------------------------------
 // iterator methods:
@@ -599,14 +645,14 @@ void* collection_ptr(const linked_list<T>& l)
 // auxiliar utility:
 
 template <class T>
-const node_list<T>* const linked_list<T>::head_node = nullptr;
+node_list<T>* const linked_list<T>::head_node = nullptr;
 
 template <class T>
-auto linked_list<T>::partition(node_list<T>*& head, node_list<T>*& tail) // divides the list into two pieces
+auto linked_list<T>::partition(node_list<T>*& head_b, node_list<T>*& tail_b) // divides the list into two pieces
 {
 	// the suffix '_s' == smaller
-	ptr head_s = nullptr, tail_s = nullptr, it = h;
-	ptr pivot = t, previous = nullptr;
+	ptr head_s = nullptr, tail_s = nullptr, it = head_b;
+	ptr pivot = tail_b, previous = nullptr;
 	while (it != pivot)
 	{
 		if (!(compare(it->get(), pivot->get()))) // it <= pivot
@@ -633,18 +679,18 @@ auto linked_list<T>::partition(node_list<T>*& head, node_list<T>*& tail) // divi
 
 	if (nullptr == head_s) // everything was greater than pivot
 		head_s = pivot;
-	tail_s = t;
+	tail_s = tail_b;
 
 	struct result { ptr pv, hd, tl; };
 	return result{ pivot, head_s, tail_s };
 }
 
 template <class T>
-node_list<T>* linked_list<T>::quick_sort(node_list<T>*& head, node_list<T>*& tail) // returns new head of a list
+node_list<T>* linked_list<T>::quick_sort(node_list<T>*& head_b, node_list<T>*& tail_b) // returns new head of a list
 {
-	if (nullptr == h || h == t)
-		return h;
-	auto [pivot, head_s, tail_s] = partition(h, t);
+	if (nullptr == head_b || head_b == tail_b)
+		return head_b;
+	auto [pivot, head_s, tail_s] = partition(head_b, tail_b);
 
 	if (head_s != pivot) // pivot wasn't the smallest
 	{

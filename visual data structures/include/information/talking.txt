@@ -25,7 +25,17 @@ getl now throws if it is empty
 - returning reference to allow obj.method.method
 - i can not allow modifying structures outside of themselves => return constant indexes/nodes
 
-- q : should the advanced data structures depend on developer-designed basic structures? - well no
+- q&a : should the advanced data structures depend on developer-designed basic structures? - no
 	- slow 
 	- to much functionality
 	- solution: define smaller 
+
+- q&a : data_structure<T> or data_structure<t> as a parameter, where t == typedef const T& t; ? 
+	- data_structure<t> won't work, no casts will be done
+	- solution: use data_structure<T>
+
+- q&a : & const does not exist
+
+TO DO:
+- operator != is not the same with !( operator == )
+- equality method

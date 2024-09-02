@@ -1,4 +1,4 @@
-/*#pragma once
+#pragma once
 #include "convoluted.h"
 #include "linked_list.h"
 #include "trial_test_values.h"
@@ -18,13 +18,26 @@ protected:
 //------------------------------------------------
 // constructors:
 
-linked_list_evaluation_p::linked_list_evaluation_p() : numbers(list_numbers), head_node(nullptr)
-{
-    numbers = linked_list<float>(linked_list<float>(block_numbers, classic_size));
-};
+linked_list_evaluation_p::linked_list_evaluation_p() : numbers(list_numbers), head_node(nullptr) {}
 
 //------------------------------------------------
 // tests:
+
+TEST_F(linked_list_evaluation_p, constructors)
+{
+    auto extra = numbers;
+    EXPECT_EQ(numbers, extra);
+    extra = decltype(numbers)(list_numbers);
+    EXPECT_EQ(numbers, extra);
+    extra = linked_list<float>(linked_list<float>(linked_list<float>(block_numbers, classic_size)));
+    
+    size_t extra_index = 0;
+    for (auto value : numbers)
+    {
+        EXPECT_EQ(value, extra.get_node(extra_index)->get());
+        extra_index++;
+    }
+}
 
 TEST_F(linked_list_evaluation_p, clear_method)
 {
@@ -38,7 +51,8 @@ TEST_F(linked_list_evaluation_p, clear_method)
 TEST_F(linked_list_evaluation_p, sort_method)
 {
     EXPECT_NO_THROW(numbers.sort());
-    const node_list<float>* it = numbers.get_head(), * nxt = nullptr;
+    const node_list<float>* it = numbers.get_head();
+    
     for (auto nxt = it->successor[0]; nxt; nxt = nxt->successor[0])
     {
         EXPECT_LE(it->get(), nxt->get());
@@ -73,7 +87,7 @@ TEST_F(linked_list_evaluation_p, insert_method)
         auto one = numbers.get_node(i)->get(), two = temp.get_node(i)->get();
         EXPECT_EQ(one, two);
     }*/
-//}
+}
 /*
 TEST_F(linked_list_evaluation_p, remove_method)
 {

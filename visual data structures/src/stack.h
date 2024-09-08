@@ -10,7 +10,7 @@ public:
 	// constructors:
 	~stack() = default;
 	stack();
-	stack(std::initializer_list<T>& data);
+	stack(const std::initializer_list<T>& data);
 	stack(const T* data, const size_t& data_size);
 	stack(const stack<T>& s);
 	stack(const stack<T>&& s);
@@ -40,7 +40,7 @@ template <class T>
 stack<T>::stack() : values() {};
 
 template <class T>
-stack<T>::stack(std::initializer_list<T>& data) : values(data) {}
+stack<T>::stack(const std::initializer_list<T>& data) : values(data) {}
 
 template <class T>
 stack<T>::stack(const T* data, const size_t& data_size) : values(data, data_size) {}

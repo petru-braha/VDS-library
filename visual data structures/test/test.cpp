@@ -15,7 +15,7 @@ int main(int argc, char** argv)
         //fatal_error("the driver takes one argument");
     ::testing::InitGoogleTest(&argc, argv);
     //::testing::GTEST_FLAG(filter) = strcat(argv[1], "*");
-    ::testing::GTEST_FLAG(filter) = "adapt*queue*";
+    ::testing::GTEST_FLAG(filter) = "avl*";
 
     int exit_status = RUN_ALL_TESTS();
 

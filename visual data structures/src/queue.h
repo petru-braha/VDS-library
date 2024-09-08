@@ -10,7 +10,7 @@ public:
 	// constructors:
 	~queue() = default;
 	queue();
-	queue(std::initializer_list<T>& data);
+	queue(const std::initializer_list<T>& data);
 	queue(const T* data, const size_t& data_size);
 	queue(const queue<T>& q);
 	queue(const queue<T>&& q);
@@ -41,7 +41,7 @@ template <class T>
 queue<T>::queue() : values() {}
 
 template <class T>
-queue<T>::queue(std::initializer_list<T>& data) : values(data) {}
+queue<T>::queue(const std::initializer_list<T>& data) : values(data) {}
 
 template <class T>
 queue<T>::queue(const T* data, const size_t& data_size) : values(data, data_size) {}
@@ -68,14 +68,16 @@ template <class T>
 void queue<T>::push(const T& value)
 {
 	auto ptr = new node_list<T>(value);
-	//auto c_tail = values.get_tail();
-	//auto tail = const_cast<node_list<T>>
-	values.insert(ptr, values.get_tail());
+	auto c_tail = values.get_tail();
+	auto tail = const_cast<node_list<T>*>(c_tail);
+	values.insert(ptr, tail);
 }
 
 template <class T>
 void queue<T>::pop()
 {
+	if(empty())
+		hard_error("no data");
 	values.remove(linked_list<T>::head_node);
 }
 

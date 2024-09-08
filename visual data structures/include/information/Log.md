@@ -93,13 +93,9 @@
 //------------------------------------------------
 
 ## IV. To review:
-0. array
-1. linked_list
-5. stack
-6. queue
-9. avl
-0. rbt
-1. maxheap
-2. minheap
-3. graph
-4. hash_table
+0. avl
+1. rbt
+2. maxheap
+3. minheap
+4. graph
+5. hash_table

@@ -118,6 +118,7 @@
     <ClInclude Include="include\class_methods\array_methods\array_specific.h" />
     <ClInclude Include="include\class_methods\avl_methods\avl_constant.h" />
     <ClInclude Include="include\class_methods\avl_methods\avl_queries.h" />
+    <ClInclude Include="include\class_methods\avl_methods\avl_specific.h" />
     <ClInclude Include="include\class_methods\linked_list_methods\linked_list_constant.h" />
     <ClInclude Include="include\class_methods\linked_list_methods\linked_list_queries.h" />
     <ClInclude Include="include\class_methods\linked_list_methods\linked_list_specific.h" />

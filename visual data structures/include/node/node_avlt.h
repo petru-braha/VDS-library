@@ -16,6 +16,7 @@ public:
 	
 	// constant methods:
 	size_t get_height() const;
+	int balance_factor() const;
 };
 
 //------------------------------------------------
@@ -43,4 +44,12 @@ template <class T>
 size_t node_avlt<T>::get_height() const
 {
 	return height;
+}
+
+template <class T>
+int node_avlt<T>::balance_factor() const
+{
+	int val1 = successor[left_child] ? successor[left_child]->get_height() : 0;
+	int val2 = successor[rght_child] ? successor[rght_child]->get_height() : 0;
+	return val1 - val2;
 }

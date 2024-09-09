@@ -5,8 +5,8 @@ class adaptor
 {
 public:
 	// specific methods:
-	virtual void push(const T& value) = 0;
-	virtual void pop() = 0;
+	virtual adaptor<T>& push(const T& value) = 0;
+	virtual adaptor<T>& pop() = 0;
 
 	// constant methods:
 	virtual size_t get_n() const = 0;

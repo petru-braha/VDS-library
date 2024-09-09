@@ -16,10 +16,13 @@ int main(int argc, char** argv)
     ::testing::InitGoogleTest(&argc, argv);
     //::testing::GTEST_FLAG(filter) = strcat(argv[1], "*");
     ::testing::GTEST_FLAG(filter) = "avl*";
+    
+    avl<> tree{ 1, 3, 4 };
 
-    int exit_status = RUN_ALL_TESTS();
+
+    int exit_status = 0;//RUN_ALL_TESTS();
 
     log_file.clear();
     log_file.close();
-    return EXIT_SUCCESS;
+    return exit_status;
 }

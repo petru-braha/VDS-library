@@ -19,8 +19,8 @@ public:
 	queue<T>& operator = (const queue<T>& q);
 	
 	// specific methods:
-	void push(const T& value);
-	void pop();
+	queue<T>& push(const T& value);
+	queue<T>& pop();
 
 	// constant methods:
 	T	 front() const;
@@ -65,20 +65,22 @@ queue<T>& queue<T>::operator = (const queue<T>& q)
 // specific methods:
 
 template <class T>
-void queue<T>::push(const T& value)
+queue<T>& queue<T>::push(const T& value)
 {
 	auto ptr = new node_list<T>(value);
 	auto c_tail = values.get_tail();
 	auto tail = const_cast<node_list<T>*>(c_tail);
 	values.insert(ptr, tail);
+	return *this;
 }
 
 template <class T>
-void queue<T>::pop()
+queue<T>& queue<T>::pop()
 {
 	if(empty())
 		hard_error("no data");
 	values.remove(linked_list<T>::head_node);
+	return *this;
 }
 
 //------------------------------------------------

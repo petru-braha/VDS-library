@@ -19,8 +19,8 @@ public:
 	stack<T>& operator = (const stack<T>& s);
 	
 	// specific methods:
-	void push(const T& value);
-	void pop();
+	stack<T>& push(const T& value);
+	stack<T>& pop();
 
 	// constant methods:
 	T    top() const;
@@ -64,18 +64,20 @@ stack<T>& stack<T>::operator = (const stack<T>& s)
 // specific methods:
 
 template <class T>
-void stack<T>::push(const T& value)
+stack<T>& stack<T>::push(const T& value)
 {
 	auto ptr = new node_list<T>(value);
 	values.insert(ptr, linked_list<T>::head_node);
+	return *this;
 }
 
 template <class T>
-void stack<T>::pop()
+stack<T>& stack<T>::pop()
 {
 	if (empty())
 		hard_error("no data");
 	values.remove(linked_list<T>::head_node);
+	return *this;
 }
 
 //------------------------------------------------

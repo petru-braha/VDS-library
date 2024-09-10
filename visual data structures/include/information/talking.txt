@@ -36,11 +36,3 @@ getl now throws if it is empty
 
 - q&a : & const does not exist
 
-TO DO:
-- operator != is not the same with !( operator == )
-- equality method
-- stack
-- queue
-- avl iterator
-- array warnings
-- yoda creater

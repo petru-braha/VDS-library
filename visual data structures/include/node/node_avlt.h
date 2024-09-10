@@ -49,7 +49,7 @@ size_t node_avlt<T>::get_height() const
 template <class T>
 int node_avlt<T>::balance_factor() const
 {
-	int val1 = successor[left_child] ? successor[left_child]->get_height() : 0;
-	int val2 = successor[rght_child] ? successor[rght_child]->get_height() : 0;
+	int val1 = successor[left_child] ? (int)successor[left_child]->get_height() : 0;
+	int val2 = successor[rght_child] ? (int)successor[rght_child]->get_height() : 0;
 	return val1 - val2;
 }

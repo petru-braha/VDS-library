@@ -99,3 +99,6 @@
 3. minheap
 4. graph
 5. hash_table
+TO DO:
+- equality method
+- yoda creater

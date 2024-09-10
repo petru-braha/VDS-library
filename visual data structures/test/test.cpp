@@ -9,6 +9,8 @@
 #include "adaptor_tests.h"
 #include "avl_tests.h"
 
+void start_visual();
+
 int main(int argc, char** argv)
 {
     //if (argc != 2)
@@ -17,9 +19,8 @@ int main(int argc, char** argv)
     //::testing::GTEST_FLAG(filter) = strcat(argv[1], "*");
     ::testing::GTEST_FLAG(filter) = "avl*";
     
-    avl<> tree{ 1, 3, 4 };
-
-
+    start_visual();
+        
     int exit_status = 0;//RUN_ALL_TESTS();
 
     log_file.clear();

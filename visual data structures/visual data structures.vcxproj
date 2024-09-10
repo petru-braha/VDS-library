@@ -123,6 +123,7 @@
     <ClInclude Include="include\class_methods\linked_list_methods\linked_list_queries.h" />
     <ClInclude Include="include\class_methods\linked_list_methods\linked_list_specific.h" />
     <ClInclude Include="include\data_structure.h" />
+    <ClInclude Include="include\double_linked_list.h" />
     <ClInclude Include="include\interface\adaptor.h" />
     <ClInclude Include="include\interface\bst.h" />
     <ClInclude Include="include\collection.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="include\iterators\avl_iterator.h" />
     <ClInclude Include="include\iterators\basic_iterator.h" />
     <ClInclude Include="include\iterators\linked_list_iterator.h" />
+    <ClInclude Include="include\node\node_double_list.h" />
     <ClInclude Include="include\trial_test_values.h" />
     <ClInclude Include="src\array.h" />
     <ClInclude Include="include\array_sorting.h" />
@@ -158,6 +160,7 @@
     <ClInclude Include="test\linked_list_tests.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\driver code\visual source.cpp" />
     <ClCompile Include="test\test.cpp" />
     <ClCompile Include="test\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

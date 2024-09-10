@@ -26,7 +26,7 @@ template <class T>
 node_avlt<T>::~node_avlt() {}
 
 template <class T>
-node_avlt<T>::node_avlt(const T& value) : node<T, node_avlt<T>, 2>(value), height(0) {}
+node_avlt<T>::node_avlt(const T& value) : node<T, node_avlt<T>, 2>(value), height(1) {}
 
 //------------------------------------------------
 // specific methods:

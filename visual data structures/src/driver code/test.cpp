@@ -8,6 +8,7 @@
 #include "../../test/linked_list_tests.h"
 #include "../../test/adaptor_tests.h"
 #include "../../test/avl_tests.h"
+#include "../../test/maxheap_tests.h"
 
 void start_visual();
 
@@ -19,11 +20,12 @@ int main(int argc, char** argv)
     //::testing::GTEST_FLAG(filter) = strcat(argv[1], "*");
     ::testing::GTEST_FLAG(filter) = "avl*";
     
-    start_visual();
-        
-    int exit_status = 0;//RUN_ALL_TESTS();
-
+    int exit_status = RUN_ALL_TESTS();
+    
     log_file.clear();
     log_file.close();
-    return exit_status;
+    
+    //start_visual();
+
+    //return exit_status;
 }

@@ -135,7 +135,8 @@ void array_sorting<T>::insrs(T*& arr, szt n)
 template <class T>
 void array_sorting<T>::merge(T*& arr, size_t one_index_left, size_t one_index_rght, size_t two_index_left, size_t two_index_rght)
 {
-	size_t index_temp = 0, n_temp = 1 + two_index_rght - one_index_left;
+	size_t index_temp = 0, n_temp = 1 + two_index_rght - two_index_left;
+	n_temp += (1 + one_index_rght - one_index_left);
 	T* temp_array = new T[n_temp]{};
 
 	while (one_index_left < one_index_rght && two_index_left < two_index_rght)

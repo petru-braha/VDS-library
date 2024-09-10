@@ -4,17 +4,19 @@
 
 #define default_heap_size 100
 
+/* comments:
+	- bfs traversal
+	- parent(index) == floor( (index - 1) / 2 )
+	- height()      == floor( log2(n) )
+	- property()    == it is never broken
+*/
+
 template <class T = int>
 class maxheap
 {
 	// typedefs:
 	typedef const T& type;
 	typedef bool (*fct)(type, type);
-
-	// data members:
-	size_t n;
-	size_t last;
-	T* values;
 
 	// iterator concept:
 	class iterator
@@ -28,10 +30,6 @@ class maxheap
 		bool	operator !=(const iterator& two) const;
 	};
 
-	// auxiliar utility:
-	fct  compare;
-	void heapify(const size_t& nnn, const size_t& index); // we need f here
-	void arrange();
 public:
 	// constructors:
 	~maxheap();
@@ -41,17 +39,16 @@ public:
 	maxheap(const maxheap<T>& h);
 	maxheap(const maxheap<T>&& h);
 
-	// iterator methods:
-	iterator begin() const;
-	iterator end() const;
-
-	// specific methods:
+	// modifier methods:
 	maxheap<T>& operator = (const maxheap<T>& h);
+	maxheap<T>& clear();
+	maxheap<T>& set_f(fct f);
+	
+	// specific methods:
 	void replce(const size_t& index, const T& value);
 	void insert(const T& value);
 	void extrct();
-	bool search(const T& value) const;
-
+	
 	// constant methods:
 	bool operator == (const maxheap<T>& h) const;
 	size_t getn() const;
@@ -59,16 +56,28 @@ public:
 	void   prnt() const;
 	bool  empty() const;
 
+	// query operations:
+	bool search(const T& value) const;
+
+	// iterator methods:
+	iterator begin() const;
+	iterator end() const;
+
 	// friend functions:
 	friend T* convert(const maxheap<T>& h);
 	friend std::ostream& operator << (std::ostream& out, const maxheap<T>& h);
-};
 
-// comments:
-// bfs traversal
-// parent(index) == floor( (index - 1) / 2 )
-// height()      == floor( log2(n) )
-// property()    == it is never broken
+private:
+	// data members:
+	size_t n;
+	size_t last;
+	T* values;
+
+	// auxiliar utility:
+	fct  compare;
+	void heapify(const size_t& nnn, const size_t& index); // we need f here
+	void arrange();
+};
 
 //------------------------------------------------
 // auxiliar utility:

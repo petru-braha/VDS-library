@@ -17,17 +17,18 @@
 #include <initializer_list>
 
 /* comments:
+	- comparison functions => NODES!
 	- iterator operation's order: 
 		1. operator !=
 		2. operator *
 		3. operator ++
 		- if not fixable, wrong order will throw an exception
-	- does not accept repeating values
 	- sorting in liner time + linear enqueue VS O(n*lg n) constructing
 	- a node can be
 		- parent  - height h
-		- leaf    - height 0
+		- leaf    - height 1
 		- nullptr - height 0
+	- does not accept repeating values
 */
 
 template <class T = int>
@@ -94,15 +95,16 @@ private:
 	size_t n;
 
 	// auxiliar utility:
-	static const size_t LEFT;
-	static const size_t RGHT;
-
 	fct compare;
 	ptr left_rotation(node_avlt<T>* const node);
 	ptr rght_rotation(node_avlt<T>* const node);
 
 	ptr insert_call(const node_avlt<T>* const value, node_avlt<T>*& parent);
 	ptr remove_call(const node_avlt<T>* const value, node_avlt<T>*& parent);
+
+public:
+	static const size_t LEFT;
+	static const size_t RGHT;
 };
 
 //------------------------------------------------
@@ -127,8 +129,8 @@ avl<T>::avl(const std::initializer_list<T>& data) : avl<T>()
 {
 	for (auto value : data)
 	{
-		ptr new_node = new node_avlt<T>(value);
-		insert(new_node);
+		node_avlt<T> new_node(value);
+		insert(&new_node);
 	}
 }
 
@@ -200,8 +202,8 @@ avl<T>& avl<T>::set_f(fct f)
 template <class T>
 avl<T>& avl<T>::insert(const node_avlt<T>* const value)
 {
-	insert_call(value, root);
-	n++;
+	if(value)
+		root = insert_call(value, root);
 	return *this;
 }
 
@@ -253,7 +255,7 @@ void* avl<T>::get_f() const
 template <class T>
 bool avl<T>::empty() const
 {
-	return nullptr == root;
+	return (nullptr == root && 0 == n);
 }
 
 template <class T>
@@ -285,6 +287,8 @@ const node_avlt<T>* avl<T>::get_r() const
 template <class T>
 size_t avl<T>::height(const node_avlt<T>* const parent) const
 {
+	if (nullptr == parent)
+		return 0;
 	return parent->get_height();
 }
 
@@ -472,7 +476,7 @@ template <class T>
 const size_t avl<T>::LEFT = 0;
 
 template <class T>
-const size_t avl<T>::RGHT = 0;
+const size_t avl<T>::RGHT = 1;
 
 template <class T>
 node_avlt<T>* avl<T>::left_rotation(node_avlt<T>* const node)
@@ -481,13 +485,13 @@ node_avlt<T>* avl<T>::left_rotation(node_avlt<T>* const node)
 	node->successor[rght_child] = it->successor[left_child];
 	it->successor[left_child] = node;
 
-	size_t h1 = node->successor[left_child]->get_height();
-	size_t h2 = node->successor[rght_child]->get_height() + 1;
-	node->set_height(h1 > h2 ? h1 : h2);
+	size_t h1 = height(node->successor[left_child]);
+	size_t h2 = height(node->successor[rght_child]);
+	node->set_height(1 + (h1 > h2 ? h1 : h2));
 
-	h1 = it->successor[left_child]->get_height();
-	h2 = it->successor[rght_child]->get_height() + 1;
-	it->set_height(h1 > h2 ? h1 : h2);
+	h1 = height(it->successor[left_child]);
+	h2 = height(it->successor[rght_child]);
+	it->set_height(1 + (h1 > h2 ? h1 : h2));
 	return it;
 }
 
@@ -497,14 +501,14 @@ node_avlt<T>* avl<T>::rght_rotation(node_avlt<T>* const node)
 	ptr it = node->successor[left_child];
 	node->successor[left_child] = it->successor[rght_child];
 	it->successor[rght_child] = node;
+	
+	size_t h1 = height(node->successor[left_child]);
+	size_t h2 = height(node->successor[rght_child]);
+	node->set_height(1 + (h1 > h2 ? h1 : h2));
 
-	size_t h1 = node->successor[left_child]->get_height();
-	size_t h2 = node->successor[rght_child]->get_height() + 1;
-	node->set_height(h1 > h2 ? h1 : h2);
-
-	h1 = it->successor[left_child]->get_height();
-	h2 = it->successor[rght_child]->get_height() + 1;
-	it->set_height(h1 > h2 ? h1 : h2);
+	h1 = height(it->successor[left_child]);
+	h2 = height(it->successor[rght_child]);
+	it->set_height(1 + (h1 > h2 ? h1 : h2));
 	return it;
 }
 
@@ -516,39 +520,42 @@ node_avlt<T>* avl<T>::insert_call(const node_avlt<T>* const value, node_avlt<T>*
 {
 	// base case
 	if (nullptr == parent)
-		return parent = new node_avlt<T>(value->get());
+	{
+		n++;
+		return new node_avlt<T>(value->get());
+	}
 
 	if (value->get() == parent->get())
 		return parent;
 	
 	// recursive calls
 	if (compare(parent->get(), value->get()))
-		parent->successor[left_child] = insert_call(value, parent->successor[left_child]);
+		parent->successor[LEFT] = insert_call(value, parent->successor[LEFT]);
 	else
-		parent->successor[rght_child] = insert_call(value, parent->successor[rght_child]);
-	
+		parent->successor[RGHT] = insert_call(value, parent->successor[RGHT]);
+
 	// height
-	size_t h1 = parent->successor[LEFT] ? parent->successor[LEFT]->get_height() : 0;
-	size_t h2 = parent->successor[RGHT] ? parent->successor[RGHT]->get_height() : 0;
+	size_t h1 = height(parent->successor[LEFT]);
+	size_t h2 = height(parent->successor[RGHT]);
 	parent->set_height(1 + (h1 > h2 ? h1 : h2));
 
 	// rebalancing
-	size_t balance_factor = parent->balance_factor();
-	
-	if (balance_factor > 1 && compare(parent->successor[left_child]->get(), value->get()))
+	int balance_factor = parent->balance_factor();
+
+	if (balance_factor > 1 && compare(parent->successor[LEFT]->get(), value->get()))
 		return rght_rotation(parent);
-	if (balance_factor < -1 && compare(value->get(), parent->successor[rght_child]->get()))
+	if (balance_factor < -1 && compare(value->get(), parent->successor[RGHT]->get()))
 		return left_rotation(parent);
 
-	if (balance_factor > 1 && compare(value->get(), parent->successor[left_child]->get()))
+	if (balance_factor > 1 && compare(value->get(), parent->successor[LEFT]->get()))
 	{
-		parent->successor[left_child] = left_rotation(parent->successor[left_child]);
+		parent->successor[LEFT] = left_rotation(parent->successor[LEFT]);
 		return rght_rotation(parent);
 	}
 
-	if (balance_factor < -1 && compare(parent->successor[rght_child]->get(), value->get()))
+	if (balance_factor < -1 && compare(parent->successor[RGHT]->get(), value->get()))
 	{
-		parent->successor[rght_child] = rght_rotation(parent->successor[rght_child]);
+		parent->successor[RGHT] = rght_rotation(parent->successor[RGHT]);
 		return left_rotation(parent);
 	}
 

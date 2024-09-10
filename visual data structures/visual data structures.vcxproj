@@ -158,6 +158,7 @@
     <ClInclude Include="test\array_tests.h" />
     <ClInclude Include="test\avl_tests.h" />
     <ClInclude Include="test\linked_list_tests.h" />
+    <ClInclude Include="test\maxheap_tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\driver code\visual source.cpp" />

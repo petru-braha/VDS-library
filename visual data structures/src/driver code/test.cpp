@@ -4,10 +4,10 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-#include "array_tests.h"
-#include "linked_list_tests.h"
-#include "adaptor_tests.h"
-#include "avl_tests.h"
+#include "../../test/array_tests.h"
+#include "../../test/linked_list_tests.h"
+#include "../../test/adaptor_tests.h"
+#include "../../test/avl_tests.h"
 
 void start_visual();
 

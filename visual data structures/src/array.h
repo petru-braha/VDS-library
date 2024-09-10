@@ -469,6 +469,8 @@ array<T>& array<T>::integrates(const array<T>& arr)
 	size_t index = 0;
 	FOR(this->index_last + 1)
 	{
+		if (index >= this->n) // patch...
+			break;
 		new_values[index] = this->values[i];
 		index++;
 	}

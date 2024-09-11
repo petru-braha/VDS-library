@@ -15,11 +15,11 @@
 #include <initializer_list>
 
 /* comments:
-	- BEST practice: use only the object / only the node pointers
-	- PAY ATTENTION - SYNTAX: "BEFORE_INSERTED", "BEFORE_REMOVED"
-	- for insert and remove methods, the head-case actually means the second node
-	- how to sort: merge_sort and quick_sort_Lomuto_scheme
-	- get methods allows reading data, and modifying data of a node, but does not allow to change successor pointer
+	- BEST PRACTICE: use only the object / only the node pointers
+	- CHECK NULLPTR: before inserting and deleting!
+	- PAY ATTENTION: "BEFORE_INSERTED", "BEFORE_REMOVED"
+	
+	- used quick sort lomuto scheme (future alternative: merge sort)
 	- allows repeating values
 */
 
@@ -50,7 +50,7 @@ public:
 	// specific methods:
 	linked_list<T>& sort();
 	linked_list<T>& insert(const node_list<T>* const value, node_list<T>* const before_inserted = head_node); // traditional, time complexity O(1)
-	linked_list<T>& remove(node_list<T>* const before_removed); // traditional, time complexity O(1)
+	linked_list<T>& remove(node_list<T>* before_removed); // traditional, time complexity O(1)
 
 	linked_list<T>& atypical_insert(t value, szt index); // WARNING: atypical, time complexity O(n)
 	linked_list<T>& atypical_remove(szt index); // WARNING: atypical, time complexity O(n)
@@ -258,7 +258,6 @@ linked_list<T>& linked_list<T>::sort()
 template <class T>
 linked_list<T>& linked_list<T>::insert(const node_list<T>* const value, node_list<T>* const before_inserted)
 {
-	n++;
 	ptr actual = new node_list<T>(value->get()); // if value has successors
 
 	// case head_node
@@ -266,70 +265,55 @@ linked_list<T>& linked_list<T>::insert(const node_list<T>* const value, node_lis
 	{
 		if (empty())
 		{
+			n++;
 			head = tail = actual;
 			return *this;
 		}
 
+		n++;
 		actual->successor[0] = head; // not empty => insert as a first node
 		head = actual;
 		return *this;
 	}
 
-	// case head
-	if (before_inserted == head)
-	{
-		actual->successor[0] = head->successor[0];
-		head->successor[0] = actual;
-		return *this;
-	}
-
-	// case tail
-	if (before_inserted == tail)
-	{
-		tail = tail->successor[0] = actual;
-		return *this;
-	}
-
-	// case mid
+	// general case
+	n++;
 	actual->successor[0] = before_inserted->successor[0];
+	before_inserted->successor[0] = actual;
+	if (nullptr == actual->successor[0])
+		tail = actual;
 
-	node_list<T>* bfr_insert = const_cast<node_list<T>*>(before_inserted);
-	bfr_insert->successor[0] = actual;
 	return *this;
 }
 
 template <class T>
-linked_list<T>& linked_list<T>::remove(node_list<T>* const before_removed)
+linked_list<T>& linked_list<T>::remove(node_list<T>* before_removed)
 {
 	if (empty())
 		return *this;
 	
 	n--;
 
-	// case head_node
+	// case head
 	if (before_removed == head_node)
 	{
 		ptr it = head;
 		head = head->successor[0];
 		delete it;
-		return *this;
-	}
-
-	// case tail 
-	if (before_removed->successor[0] == tail)
-	{
-		delete tail;
-		tail = const_cast<node_list<T>*>(before_removed);
-		tail->successor[0] = nullptr;
+		if (nullptr == head)
+			tail = head;
 		return *this;
 	}
 
 	// case mid
 	ptr it = before_removed->successor[0];
-
-	node_list<T>* bfr_remove = const_cast<node_list<T>*>(before_removed);
-	bfr_remove->successor[0] = it->successor[0];
+	before_removed->successor[0] = it->successor[0];
 	delete it;
+
+	// case tail 
+	if (nullptr == before_removed->successor[0])
+		tail = before_removed;
+
 	return *this;
 }
 

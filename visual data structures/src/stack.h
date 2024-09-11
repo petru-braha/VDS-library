@@ -68,6 +68,8 @@ stack<T>& stack<T>::push(const T& value)
 {
 	auto ptr = new node_list<T>(value);
 	values.insert(ptr, linked_list<T>::head_node);
+	
+	delete ptr;
 	return *this;
 }
 

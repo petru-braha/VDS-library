@@ -26,9 +26,6 @@ TEST_F(avl_evaluation_p, constructors)
 	it = it->successor[left_child];
 	it = it->successor[rght_child];
 	//it = it->successor[left_child];
-	std::cout << it->get();
-	//std::cout << numbers.get_r()->get();
-	//std::cout << numbers.get_r()->successor[left_child]->get();
 
 	//node_avlt<float>* node1 = new node_avlt<float>(2);
 	//numbers.insert(node1);
@@ -38,7 +35,7 @@ TEST_F(avl_evaluation_p, constructors)
 	
 								1
 	    
-		-1.01									256
+		-1.01									255
 	
 
 	-2			-0.99					1.01			65535

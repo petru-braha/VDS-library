@@ -67,10 +67,10 @@ queue<T>& queue<T>::operator = (const queue<T>& q)
 template <class T>
 queue<T>& queue<T>::push(const T& value)
 {
-	auto ptr = new node_list<T>(value);
+	node_list<T> ptr(value);
 	auto c_tail = values.get_tail();
 	auto tail = const_cast<node_list<T>*>(c_tail);
-	values.insert(ptr, tail);
+	values.insert(&ptr, tail);
 	return *this;
 }
 

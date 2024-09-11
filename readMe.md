@@ -25,6 +25,5 @@
 
 ## Notes
 - please consult the wiki pages 
-- the focus of my study does not imply the development of containers and adaptors
+- !set-up: C++17 Standard, VS 2022 version 17.10.6 (the latest release crash my code), GLFW 3.4 
 - my documentation: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest and Cormen
-- current set-up: ISO C++17 Standard, VS 2022 version 17.10.4, GLFW 3.4 

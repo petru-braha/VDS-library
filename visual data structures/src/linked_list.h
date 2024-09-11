@@ -24,7 +24,7 @@
 */
 
 template <class T = int>
-class linked_list : public data_structure <modifier_methods<T, linked_list<T>>, linked_list_specific<T, node_list<T>>,
+class linked_list : public data_structure <modifier_methods<T, linked_list<T>>, linked_list_specific<node_list<T>>,
 	linked_list_constant<T, linked_list<T>, node_list<T>>, linked_list_queries<T, node_list<T>>,
 	instance_synergy<linked_list<T>>, iterator_methods<linked_list_iterator<T>>>
 {

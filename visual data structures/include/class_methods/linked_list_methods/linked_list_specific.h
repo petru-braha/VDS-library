@@ -1,7 +1,7 @@
 #pragma once
 #include "../abstract class methods.h/specific_methods.h"
 
-template <class T, typename node>
+template <typename node>
 class linked_list_specific : public specific_methods
 {
 public:

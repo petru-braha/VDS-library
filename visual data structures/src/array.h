@@ -177,15 +177,15 @@ array<T>& array<T>::operator = (const array<T>& arr)
 	this->index_last = arr.index_last;
 	delete[]this->values;
 	this->values = new T[arr.n]{};
-	
-	
-	for (size_t index = 0; index < arr.n; index++)
-	{
-		this->values[index] = arr.get(index);
-		index++;
-	}
 
 	this->compare = arr.compare;
+
+	if (arr.empty())
+		return *this;
+	
+	for (size_t index = 0; index <= arr.index_last; index++)
+		this->values[index] = arr.get(index);
+
 	return *this;
 }
 

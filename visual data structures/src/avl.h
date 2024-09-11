@@ -182,10 +182,10 @@ avl<T>& avl<T>::clear()
 			nodes.push(curent->successor[RGHT]);
 
 		delete curent;
-		curent = nullptr;
 	}
-
+		
 	n = 0;
+	root = nullptr;
 	return *this;
 }
 
@@ -210,8 +210,8 @@ avl<T>& avl<T>::insert(const node_avlt<T>* const value)
 template <class T>
 avl<T>& avl<T>::remove(const node_avlt<T>* const value)
 {
-	remove_call(value, root);
-	n--;
+	if(value)
+		root = remove_call(value, root);
 	return *this;
 }
 
@@ -566,61 +566,66 @@ template <class T>
 node_avlt<T>* avl<T>::remove_call(const node_avlt<T>* const value, node_avlt<T>*& parent)
 {
 	// base case
-	if (parent == nullptr)
+	if (nullptr == parent)
 		return parent;
 
-	ptr left = parent->successor[LEFT], rght = parent->successor[RGHT];
-	
 	// searching for the value
 	if (compare(parent->get(), value->get()))
-		left = remove_call(value, left);
+		parent->successor[LEFT] = remove_call(value, parent->successor[LEFT]);
 	else if (compare(value->get(), parent->get()))
-		rght = remove_call(value, rght);
-
+		parent->successor[RGHT] = remove_call(value, parent->successor[RGHT]);
+	
 	else // found the value
 	{
-		// no children
-		if (nullptr == left && nullptr == rght)
+		if (parent->successor[LEFT])
 		{
-			delete parent;
-			parent = nullptr;
-		}
-
-		// has both children
-		if (left)
-		{
-			if (rght)
+			if (parent->successor[RGHT]) // both
 			{
 				auto to_remove = successor(parent);
-				rght = remove_call(to_remove, rght);
+				std::cout << "DADA " << to_remove->get() << " DADAD";
+				parent->successor[RGHT] = 
+					remove_call(to_remove, parent->successor[RGHT]);
 			}
-
-			// has only left_child
-			else
+			else // only left
 			{
+				n--;
 				auto it = parent;
-				parent = left;
+				parent = parent->successor[LEFT];
 				delete it;
 			}
 		}
 
-		// has only rght_child
-		else if(rght)
+		else
 		{
-			auto it = parent;
-			parent = rght;
-			delete it;
+			if (parent->successor[RGHT]) // only right
+			{
+				n--;
+				auto it = parent;
+				parent = parent->successor[RGHT];
+				delete it;
+			}
+			else // no children
+			{
+				n--;
+				delete parent;
+				parent = nullptr;
+			}
 		}
 	}
 
 	if (nullptr == parent)
 		return nullptr;
-	size_t h1 = height(left), h2 = height(rght);
-	parent->set_height(1 + h1 > h2 ? h1 : h2);
+
+	// height
+	size_t h1 = height(parent->successor[LEFT]);
+	size_t h2 = height(parent->successor[RGHT]);
+	parent->set_height(1 + (h1 > h2 ? h1 : h2));
 
 	// rebalancing
-	size_t balance_factor = parent->balance_factor();
-	
+	int balance_factor = parent->balance_factor();
+	ptr left = parent->successor[LEFT];
+	ptr rght = parent->successor[RGHT];
+
 	if (balance_factor > 1 && left->balance_factor() >= 0)
 		return rght_rotation(parent);
 	if (balance_factor < -1 && rght->balance_factor() <= 0)

@@ -340,7 +340,7 @@ const node_avlt<T>* avl<T>::predcessr(const node_avlt<T>* value) const
 	while (it && compare(it->get(), value->get())) // until it points to a value smaller than value->get()
 		it = it->successor[left_child];
 	
-	while (it && it->successor[rght_child] && compare(value->get(), it->get()))
+	while (it && it->successor[rght_child])
 		it = it->successor[rght_child];
 
 	return it;
@@ -350,10 +350,10 @@ template <class T>
 const node_avlt<T>* avl<T>::successor(const node_avlt<T>* value) const
 {
 	ptr it = root;
-	while (it && compare(value->get(), it->get()))
+	while (it && (compare(value->get(), it->get()) || value->get() == it->get()))
 		it = it->successor[rght_child];
 
-	while (it && it->successor[left_child] && compare(it->get(), value->get()))
+	while (it && it->successor[left_child])
 		it = it->successor[left_child];
 
 	return it;
@@ -582,7 +582,7 @@ node_avlt<T>* avl<T>::remove_call(const node_avlt<T>* const value, node_avlt<T>*
 			if (parent->successor[RGHT]) // both
 			{
 				auto to_remove = successor(parent);
-				std::cout << "DADA " << to_remove->get() << " DADAD";
+				parent->set(to_remove->get());
 				parent->successor[RGHT] = 
 					remove_call(to_remove, parent->successor[RGHT]);
 			}

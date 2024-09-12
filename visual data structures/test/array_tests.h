@@ -2,9 +2,8 @@
 #include "convoluted.h"
 #include "trial_test_values.h"
 #include "array.h"
-#include <cstring>
 
-class array_evaluation_p : public testing::Test
+class array_evaluation_p : public Test
 {
 protected:
     array<float> numbers;
@@ -124,7 +123,7 @@ TEST(array_p, friend_functions)
 //------------------------------------------------
 // next class:
 
-class array_evaluation_c : public testing::Test
+class array_evaluation_c : public Test
 {
 protected:
     array<convoluted> objects;

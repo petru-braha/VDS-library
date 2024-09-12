@@ -4,7 +4,7 @@
 #include "trial_test_values.h"
 #include <cstring>
 
-class linked_list_evaluation_p : public testing::Test
+class linked_list_evaluation_p : public Test
 {
 protected:
     typedef node_list<float> n;

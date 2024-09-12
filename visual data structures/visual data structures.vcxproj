@@ -154,6 +154,11 @@
     <ClInclude Include="src\stack.h" />
     <ClInclude Include="include\convoluted.h" />
     <ClInclude Include="include\interface\tree.h" />
+    <ClInclude Include="test\adaptor_tests.h" />
+    <ClInclude Include="test\array_tests.h" />
+    <ClInclude Include="test\avl_tests.h" />
+    <ClInclude Include="test\linked_list_tests.h" />
+    <ClInclude Include="test\maxheap_tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\driver code\test.cpp" />

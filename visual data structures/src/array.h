@@ -44,7 +44,7 @@ public:
 	array<T>& set_f(fct f);
 
 	// specific methods:
-	void sort(bit algorithm = quick_sort);
+	array<T>& sort(bit algorithm = quick_sort);
 	array<T>& insert(t value, szt index);
 	array<T>& remove(szt index);
 
@@ -213,7 +213,7 @@ array<T>& array<T>::set_f(fct f)
 // specific methods:
 
 template <class T>
-void array<T>::sort(bit algorithm)
+array<T>& array<T>::sort(bit algorithm)
 {
 	array_sorting<T>* sort_job = array_sorting<T>::get_instance();
 	sort_job->set_f(this->compare);
@@ -241,6 +241,8 @@ void array<T>::sort(bit algorithm)
 	default:
 		break;
 	}
+
+	return *this;
 }
 
 template <class T>

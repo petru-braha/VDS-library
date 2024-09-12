@@ -4,7 +4,6 @@
 template <class T>
 class array_queries : public query_operations
 {
-	// typedefs:
 	typedef const T& t;
 	typedef const size_t& szt;
 

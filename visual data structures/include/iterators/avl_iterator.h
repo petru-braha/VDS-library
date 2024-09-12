@@ -47,7 +47,7 @@ template <class T>
 bool avl_iterator<T>::operator != (const avl_iterator<T>& it) const
 {
 	comparison_op = true;
-	return (curent && !nodes.empty());
+	return (curent || !nodes.empty());
 }
 
 template <class T>
@@ -60,7 +60,7 @@ T avl_iterator<T>::operator * () const
 			hard_error("error - iterator: wrong order or operations");
 	}
 
-	comparison_op = false;
+	comparison_op = false; 
 	dereference_op = true;
 
 	while (curent)

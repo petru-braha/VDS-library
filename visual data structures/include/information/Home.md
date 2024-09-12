@@ -184,16 +184,4 @@ information about itself (it has control over itself). in case of problems (unal
 - hard error: linked_list<> numbers; /*empty list*/ std::cout << numbers.successor(1); 
 - fatal error: array<> numbers(1); numbers.insert(1); numbers.insert(1); // the second call generates a fatal handler
 
-4. list of defined exceptions:
-```
-types of errors		easy 	hard 	fatal
-1. unallocated space 		x	x
-2. no more memory		x	x
-3. empty			x	x
-4. empty - shift 		x	x
-5. wrong parameters		x	
-6. bad index 			x	
-7. bad node			x
-8. incompatible data    	x	x
-* the occurrence of any other exception, not defined here, is a mistake
-```
+4. a list of defined exceptions can be found in the list categories:

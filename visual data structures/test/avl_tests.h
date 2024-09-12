@@ -35,14 +35,15 @@ TEST_F(avl_evaluation_p, constructors)
 	it = it->successor[left_child];
 	EXPECT_EQ(it->get(), -1);
 
-	//avl<float> temp(block_numbers, classic_size);
+	avl<float> temp(block_numbers, classic_size);
 	//numbers = temp;
 	it = numbers.get_r();
-	it = numbers.search(it, -0.99);
+	it = numbers.search(it, -0.99f);
 	it = it->successor[left_child];
 	
 	EXPECT_EQ(it->get(), -1);
 	EXPECT_EQ(numbers.get_n(), 9);
+	ASSERT_TRUE(numbers == temp);
 }
 
 TEST_F(avl_evaluation_p, clear_method)
@@ -51,7 +52,7 @@ TEST_F(avl_evaluation_p, clear_method)
 
 	EXPECT_TRUE(numbers.empty());
 	EXPECT_EQ(nullptr, numbers.get_r());
-	EXPECT_EQ(0, numbers.get_n());
+	ASSERT_EQ(0, numbers.get_n());
 }
 
 TEST_F(avl_evaluation_p, insert_method)
@@ -123,11 +124,16 @@ TEST_F(avl_evaluation_p, remove_method)
 	EXPECT_EQ(it->successor[rght_child]->get(), UCHAR_MAX);
 }
 
+TEST_F(avl_evaluation_p, iterator)
+{
+	numbers.print();
+}
+
 /*
 // query operations:
-	// instance synergy:
-	// iterator methods:
-	// friend functions:
+// instance synergy:
+// iterator methods:
+// friend functions:
 
 
 //------------------------------------------------

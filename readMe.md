@@ -16,10 +16,10 @@
 1. linked list
 2. stack
 3. queue
-4. maxheap
-5. minheap
-6. AVL tree
-7. red black tree
+4. AVL tree
+5. red black tree
+6. maxheap
+7. minheap
 8. graph
 9. hash table
 

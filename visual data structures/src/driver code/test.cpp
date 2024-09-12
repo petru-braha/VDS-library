@@ -1,10 +1,12 @@
 #include "pch.h"
 #include <cstring>
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 using testing::InitGoogleTest;
 using testing::Test;
-
+#include <vector>
 #include "../../test/array_tests.h"
 #include "../../test/linked_list_tests.h"
 #include "../../test/adaptor_tests.h"
@@ -14,21 +16,24 @@ using testing::Test;
 //#include <GLFW/glfw3.h>
 //void start_visual();
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
-    //if (argc != 2)
-        //fatal_error("the driver takes one argument");
+    if (argc != 2)
+        fatal_error("the driver takes one argument.\n");
+    system("cls");
     
+    testing::GTEST_FLAG(filter) = argv[1];
+    //testing::GTEST_FLAG(filter) = "avl*";
+
     InitGoogleTest(&argc, argv);
-    //testing::GTEST_FLAG(filter) = strcat(argv[1], "*");
-    
-    testing::GTEST_FLAG(filter) = "avl*";
     int exit_status = RUN_ALL_TESTS();
     
     log_file.clear();
     log_file.close();
     
-    //start_visual();
+    using namespace std::this_thread;
+    sleep_for(std::chrono::seconds(4));
 
-    //return exit_status;
+    //start_visual();
+    return exit_status;
 }

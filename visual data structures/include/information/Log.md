@@ -1,20 +1,17 @@
-0. initial idea of testing:
-- to have an interface
+## I. To do:
+0. rbt
+2. maxheap
+3. minheap
+4. graph
+5. hash_table
 
-- https://stackoverflow.com/questions/12076072/how-to-run-specific-test-cases-in-googletest?
-- let the user test himself some values for an data structure
-- runs only one test suite ::testing::GTEST_FLAG(filter) = "*Counter*:*IsPrime*:*ListenersTest.DoesNotLeak*";//":-:*Counter*";
-
-1. standard for comparing functions: return true if the order of two elements have to be changed
-
-2. lists support all query operation
-2. divide linked list in an abstract class to support adaptors as well : list
-
-3. insert and delete should not do the search!!! it is based on pointers!
+- equality method
+- yoda creater
+- more error checking for structures, optimisation methods, proof - robustness of testing
 
 //------------------------------------------------
 
-## I. The initial ideas:
+## II. The initial ideas:
 
 0. [source of my idea](https://www.cs.usfca.edu/~galles/visualization/)
 - my plan is different - i want to visualise a data structure after calling one of its methods. basically, it prints the output in an intuitive way, but not the process itself.
@@ -58,47 +55,69 @@
 
 //------------------------------------------------
 
-## II. Minute-questions:
+## III. Minute questions:
 
-0. open-close principle was the hardest to achieve
+0. open-close principle is the hardest to achieve
 
 1. decision over the source code:
 - based on [this](https://www.learncpp.com/cpp-tutorial/class-templates-with-member-functions/) i moved the implementation of classes from C++ files to their header 
-- iterator class defined inside of the class that uses it
 
-1. discussion about what an abstract class should contain operator == and = should be implemented in the final class / instantiable classes
+2. discussion about what an abstract class should contain operator == and = should be implemented in the final class / instantiable classes
 
-2. `prnt` VS `operator <<`:
+3. `prnt` VS `operator <<`:
 - "prnt" - displays on standard output
 - "operator <<" - displays where the user tells it so
 
-3. friend functions
+4. friend functions
 - instantiable classes contains them
 - i will exclude (linking, intersection, ejection)
 
-4. maxheap does not inherit array - no matching methods
+5. maxheap does not inherit array - no matching methods
 
-5. template documentation
+6. template documentation
 - class template == template<class t> class number
 - template class == number<int>
 
-6. default constructor problem
-7. protected - private members
-8. including files problem
-9. iterator documentation
-0. forget about the initialisation test. using the fixture it is not relevant
+7. default constructor problem
+8. protected - private members
+9. including files problem
+0. iterator documentation
+1. forget about the initialisation test. using the fixture it is not relevant
 
-0. for each - the order of execution of the operators: "!=", "*", "++".
+2. for each - the order of execution of the operators: "!=", "*", "++".
 
-//------------------------------------------------
+0. initial idea of testing: let the user test himself some values for an data structure
 
-## IV. To review:
-0. avl
-1. rbt
-2. maxheap
-3. minheap
-4. graph
-5. hash_table
-TO DO:
-- equality method
-- yoda creater
+3. standard for comparing functions: return true if the order of two elements have to be changed
+
+
+4. should the advanced data structures depend on developer-designed basic structures? - no
+	- slow 
+	- to much functionality
+	- solution: define smaller 
+
+5. data_structure<T> or data_structure<t> as a parameter, where t == typedef const T& t; ? 
+	- data_structure<t> won't work, no casts will be done
+	- solution: use data_structure<T>
+
+6. & const does not exist
+
+7. to or not to copy a node?
+	- insert: user inserts node with existent children => mess with n
+	- instance synergy: 	
+	- operator =
+
+8. interfaces can not contain data members (nodes has their own implementation ideas)
+9. data structures should be 
+	- independent of the base type that it stores. there is just one part of the implementation that requires more analysis: ordering of the elements. the ordering problem is based on sorting and comparisons. the convoluted types should be tested when it comes to this problem, testing them with insertions is redundant;
+	- aggregate
+
+0. getl now throws if it is empty
+
+- modifier and specific methods, instance synergy will return reference
+- typedefs are used only for constant, iterator, query, synergy
+
+- returning reference to allow obj.method.method
+- i can not allow modifying structures outside of themselves => return constant indexes/nodes
+	
+- before iterator class defined inside of the class that uses it

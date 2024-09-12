@@ -199,22 +199,6 @@ linked_list<T>::linked_list(const linked_list<T>&& l) noexcept : linked_list<T>(
 // modifier methods:
 
 template <class T>
-linked_list<T>& linked_list<T>::clear()
-{
-	ptr it = head;
-	while (it)
-	{
-		head = it;
-		it = it->successor[0];
-		delete head;
-		n--;
-	}
-
-	head = tail = nullptr;
-	return *this;
-}
-
-template <class T>
 linked_list<T>& linked_list<T>::operator = (const linked_list<T>& l)
 {
 	clear();
@@ -235,6 +219,22 @@ linked_list<T>& linked_list<T>::operator = (const linked_list<T>& l)
 
 	this->tail = it;
 	this->n = l.n;
+	return *this;
+}
+
+template <class T>
+linked_list<T>& linked_list<T>::clear()
+{
+	ptr it = head;
+	while (it)
+	{
+		head = it;
+		it = it->successor[0];
+		delete head;
+		n--;
+	}
+
+	head = tail = nullptr;
 	return *this;
 }
 
@@ -527,9 +527,13 @@ const node_list<T>* linked_list<T>::successor(const node_list<T>*& value) const
 template <class T>
 linked_list<T>& linked_list<T>::integrates(const linked_list<T>& l) 
 {
-	this->n += l.n;
-	this->tail->successor[0] = l.head;
-	this->tail = l.tail;
+	for (auto value : l)
+	{
+		ptr it = new node_list<T>(value);
+		tail = this->tail->successor[0] = it;
+		this->n++;
+	}
+
 	return *this;
 }
 

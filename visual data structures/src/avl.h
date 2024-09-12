@@ -17,6 +17,7 @@
 #include <initializer_list>
 
 /* comments:
+	- n (tree traversal) + n (nr of nodes) * lg n (insert) 
 	- comparison functions => NODES!
 	- iterator operation's order: 
 		1. operator !=
@@ -135,7 +136,7 @@ avl<T>::avl(const std::initializer_list<T>& data) : avl<T>()
 }
 
 template <class T>
-avl<T>::avl(const T* data, szt data_size)
+avl<T>::avl(const T* data, szt data_size) : avl<T>()
 {
 	FOR(data_size)
 	{
@@ -144,12 +145,25 @@ avl<T>::avl(const T* data, szt data_size)
 	}
 }
 
-/*template <class T>
-avl<T>::avl(const avl<T>& tree);
+template <class T>
+avl<T>::avl(const avl<T>& tree) : avl<T>()
+{
+	for (auto value : *this)
+	{
+		ptr it = new node_avlt<T>(value);
+		insert(it);
+	}
+}
 
 template <class T>
-avl<T>::avl(const avl<T>&& tree);
-*/
+avl<T>::avl(const avl<T>&& tree) : avl<T>()
+{
+	for (auto value : *this)
+	{
+		ptr it = new node_avlt<T>(value);
+		insert(it);
+	}
+}
 
 //------------------------------------------------
 // modifier methods:
@@ -157,7 +171,13 @@ avl<T>::avl(const avl<T>&& tree);
 template <class T>
 avl<T>& avl<T>::operator = (const avl<T>& tree)
 {
-	////////////////////////////////////////////////////////////
+	clear();
+	for (auto value : tree)
+	{
+		ptr it = new node_avlt<T>(value);
+		insert(it);
+	}
+
 	return *this;
 }
 
@@ -202,8 +222,12 @@ avl<T>& avl<T>::set_f(fct f)
 template <class T>
 avl<T>& avl<T>::insert(const node_avlt<T>* const value)
 {
-	if(value)
-		root = insert_call(value, root);
+	if (value)
+	{
+		node_avlt<T> copy_value(value->get());
+		root = insert_call(&copy_value, root);
+	}
+
 	return *this;
 }
 
@@ -295,6 +319,9 @@ size_t avl<T>::height(const node_avlt<T>* const parent) const
 template <class T>
 const node_avlt<T>* avl<T>::search(const node_avlt<T>* parent, t value) const
 {
+	if (nullptr == parent || empty())
+		return nullptr;
+
 	ptr it = root;
 	while (it)
 	{
@@ -336,6 +363,9 @@ const node_avlt<T>* avl<T>::maximum() const
 template <class T>
 const node_avlt<T>* avl<T>::predcessr(const node_avlt<T>* value) const
 {
+	if (nullptr == value)
+		return nullptr;
+
 	ptr it = root;
 	while (it && compare(it->get(), value->get())) // until it points to a value smaller than value->get()
 		it = it->successor[left_child];
@@ -349,6 +379,9 @@ const node_avlt<T>* avl<T>::predcessr(const node_avlt<T>* value) const
 template <class T>
 const node_avlt<T>* avl<T>::successor(const node_avlt<T>* value) const
 {
+	if (nullptr == value)
+		return nullptr;
+	
 	ptr it = root;
 	while (it && (compare(value->get(), it->get()) || value->get() == it->get()))
 		it = it->successor[rght_child];
@@ -368,22 +401,10 @@ avl<T>& avl<T>::integrates(const avl<T>& tree)
 	if (this->compare != tree.compare)
 		hard_error("both objects impose the same comparison function");
 
-	ptr curent = tree.root;
-	queue<ptr> nodes;
-	nodes.push(curent);
-
-	while (!nodes.empty())
+	for(auto value : tree)
 	{
-		curent = nodes.front();
-		nodes.pop();
-
-		if (curent->successor[LEFT])
-			nodes.push(curent->successor[LEFT]);
-		if (curent->successor[RGHT])
-			nodes.push(curent->successor[RGHT]);
-
-		ptr copy = new node_avlt<T>(curent->get());
-		insert(copy);
+		node_avlt<T> it(value);
+		insert(&it);
 	}
 
 	return *this;
@@ -395,21 +416,10 @@ avl<T>& avl<T>::eliminates(const avl<T>& tree)
 	if (this->compare != tree.compare)
 		hard_error("both objects impose the same comparison function");
 
-	ptr curent = tree.root;
-	queue<ptr> nodes;
-	nodes.push(curent);
-
-	while (!nodes.empty())
+	for (auto value : tree)
 	{
-		curent = nodes.front();
-		nodes.pop();
-
-		if (curent->successor[LEFT])
-			nodes.push(curent->successor[LEFT]);
-		if (curent->successor[RGHT])
-			nodes.push(curent->successor[RGHT]);
-
-		remove(curent);
+		node_avlt<T> it(value);
+		remove(&it);
 	}
 
 	return *this;
@@ -420,7 +430,7 @@ avl<T>& avl<T>::intersects(const avl<T>& tree) // to rethink very inneficient
 {
 	if (this->compare != tree.compare)
 		hard_error("both objects impose the same comparison function");
-	////////////////////////////////////////////////////////////////////
+	
 	return *this;
 }
 

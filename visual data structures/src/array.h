@@ -215,28 +215,31 @@ array<T>& array<T>::set_f(fct f)
 template <class T>
 array<T>& array<T>::sort(bit algorithm)
 {
-	array_sorting<T>* sort_job = array_sorting<T>::get_instance();
-	sort_job->set_f(this->compare);
+	if (empty())
+		return *this;
+
+	array_sorting<T> sort_job = *array_sorting<T>::get_instance();
+	sort_job.set_f(this->compare);
 
 	switch (algorithm)
 	{
 	case bubble_sort:
-		sort_job->bubbs(values, index_last + 1);
+		sort_job.bubbs(values, index_last + 1);
 		break;
 	case selection_sort:
-		sort_job->seles(values, index_last + 1);
+		sort_job.seles(values, index_last + 1);
 		break;
 	case insertion_sort:
-		sort_job->insrs(values, index_last + 1);
+		sort_job.insrs(values, index_last + 1);
 		break;
 	case merge_sort:
-		sort_job->mrges(values, 0, index_last);
+		sort_job.mrges(values, 0, index_last);
 		break;
 	case heap_sort:
-		sort_job->heaps(values, index_last + 1);
+		sort_job.heaps(values, index_last + 1);
 		break;
 	case quick_sort:
-		sort_job->qucks(values, 0, index_last);
+		sort_job.qucks(values, 0, index_last);
 		break;
 	default:
 		break;
@@ -567,7 +570,7 @@ T* convert(const array<T>& arr)
 
 	T* ptr = new T[arr.index_last + 1];
 	FOR(arr.index_last + 1)
-		ptr[i] = arr[i];
+		ptr[i] = arr.get(i);
 	return ptr;
 }
 

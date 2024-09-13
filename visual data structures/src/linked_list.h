@@ -49,8 +49,8 @@ public:
 
 	// specific methods:
 	linked_list<T>& sort();
-	linked_list<T>& insert(const node_list<T>* const value, node_list<T>* const before_inserted = head_node); // traditional, time complexity O(1)
-	linked_list<T>& remove(node_list<T>* before_removed); // traditional, time complexity O(1)
+	linked_list<T>& insert(const node_list<T>* const value, const node_list<T>* const before_inserted = head_node); // traditional, time complexity O(1)
+	linked_list<T>& remove(const node_list<T>* before_removed); // traditional, time complexity O(1)
 
 	linked_list<T>& atypical_insert(t value, szt index); // WARNING: atypical, time complexity O(n)
 	linked_list<T>& atypical_remove(szt index); // WARNING: atypical, time complexity O(n)
@@ -68,10 +68,10 @@ public:
 
 	// query operations:
 	ptr_return search(t value) const;
-	ptr_return mimimum() const;
+	ptr_return minimum() const;
 	ptr_return maximum() const;
-	ptr_return predcessr(const node_list<T>*& value) const;
-	ptr_return successor(const node_list<T>*& value) const;
+	ptr_return predcessr(const node_list<T>* value) const;
+	ptr_return successor(const node_list<T>* value) const;
 
 	// instance synergy:
 	linked_list<T>& integrates(const linked_list<T>& l);
@@ -256,8 +256,11 @@ linked_list<T>& linked_list<T>::sort()
 }
 
 template <class T>
-linked_list<T>& linked_list<T>::insert(const node_list<T>* const value, node_list<T>* const before_inserted)
+linked_list<T>& linked_list<T>::insert(const node_list<T>* const value, const node_list<T>* const before_inserted)
 {
+	if (nullptr == value)
+		return *this;
+
 	ptr actual = new node_list<T>(value->get()); // if value has successors
 
 	// case head_node
@@ -279,7 +282,10 @@ linked_list<T>& linked_list<T>::insert(const node_list<T>* const value, node_lis
 	// general case
 	n++;
 	actual->successor[0] = before_inserted->successor[0];
-	before_inserted->successor[0] = actual;
+	
+	ptr update_job = const_cast<ptr>(before_inserted); 
+	update_job->successor[0] = actual;
+	
 	if (nullptr == actual->successor[0])
 		tail = actual;
 
@@ -287,33 +293,36 @@ linked_list<T>& linked_list<T>::insert(const node_list<T>* const value, node_lis
 }
 
 template <class T>
-linked_list<T>& linked_list<T>::remove(node_list<T>* before_removed)
+linked_list<T>& linked_list<T>::remove(const node_list<T>* before_removed)
 {
 	if (empty())
 		return *this;
 	
-	n--;
-
 	// case head
 	if (before_removed == head_node)
 	{
 		ptr it = head;
 		head = head->successor[0];
 		delete it;
+		n--;
+		
 		if (nullptr == head)
 			tail = head;
 		return *this;
 	}
+	
+	ptr it = before_removed->successor[0];
+	ptr update_job = const_cast<ptr>(before_removed);
 
 	// case mid
-	ptr it = before_removed->successor[0];
-	before_removed->successor[0] = it->successor[0];
+	update_job->successor[0] = it->successor[0];
 	delete it;
-
-	// case tail 
-	if (nullptr == before_removed->successor[0])
-		tail = before_removed;
-
+	n--;
+	
+	// case tail
+	if (it == tail)
+		tail = update_job;
+	
 	return *this;
 }
 
@@ -430,9 +439,10 @@ void linked_list<T>::print() const
 template <class T>
 const node_list<T>* linked_list<T>::get_node(szt index) const
 {
-	if (index > n)
+	if (index >= n)
 		hard_error("bad index");
-	const node_list<T>* it = this->get_head();
+	
+	auto it = this->get_head();
 	FOR(index)
 		it = it->successor[0];
 	return it;
@@ -468,7 +478,7 @@ const node_list<T>* linked_list<T>::search(t value) const
 }
 
 template <class T>
-const node_list<T>* linked_list<T>::mimimum() const
+const node_list<T>* linked_list<T>::minimum() const
 {
 	ptr minimum = head;
 	for (ptr it = head; it; it = it->successor[0])
@@ -488,7 +498,7 @@ const node_list<T>* linked_list<T>::maximum() const
 }
 
 template <class T>
-const node_list<T>* linked_list<T>::predcessr(const node_list<T>*& value) const
+const node_list<T>* linked_list<T>::predcessr(const node_list<T>* value) const
 {
 	ptr node = nullptr;
 	for (ptr it = head; it; it = it->successor[0])
@@ -506,7 +516,7 @@ const node_list<T>* linked_list<T>::predcessr(const node_list<T>*& value) const
 }
 
 template <class T>
-const node_list<T>* linked_list<T>::successor(const node_list<T>*& value) const
+const node_list<T>* linked_list<T>::successor(const node_list<T>* value) const
 {
 	ptr node = nullptr;
 	for (ptr it = head; it; it = it->successor[0])
@@ -549,8 +559,9 @@ linked_list<T>& linked_list<T>::eliminates(const linked_list<T>& l)
 				it = this->head;
 			}
 
-			if (it->successor[0]->get() == it_two->get())
-				this->remove(it);
+			if(it->successor[0])
+				if (it->successor[0]->get() == it_two->get())
+					this->remove(it);
 		}
 
 	return *this;
@@ -604,10 +615,10 @@ linked_list_iterator<T> linked_list<T>::end() const
 template <class T>
 T* convert(const linked_list<T>& l)
 {
-	T* ptr = new T[n]{};
+	T* ptr = new T[l.n]{};
 	size_t index = 0;
-	for (auto i : l)
-		ptr[index++] = i;
+	for (auto value : l)
+		ptr[index++] = value;
 	return ptr;
 }
 

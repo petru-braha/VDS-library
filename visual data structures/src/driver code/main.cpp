@@ -10,7 +10,7 @@ static std::vector<std::string> visual_data_structures;
 static void init()
 {
 	visual_data_structures.push_back("array");
-	visual_data_structures.push_back("linked_list");
+	visual_data_structures.push_back("list");
 	visual_data_structures.push_back("stack");
 	visual_data_structures.push_back("queue");
 	visual_data_structures.push_back("avl");

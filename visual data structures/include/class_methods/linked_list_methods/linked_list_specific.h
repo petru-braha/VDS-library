@@ -6,6 +6,6 @@ class linked_list_specific : public specific_methods
 {
 public:
 	virtual linked_list_specific& sort() = 0;
-	virtual linked_list_specific& insert(const node* const value, node* const pointer) = 0;
-	virtual linked_list_specific& remove(node* pointer) = 0;
+	virtual linked_list_specific& insert(const node* const value, const node* const pointer) = 0;
+	virtual linked_list_specific& remove(const node* pointer) = 0;
 };

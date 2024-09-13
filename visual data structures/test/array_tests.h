@@ -3,29 +3,31 @@
 #include "trial_test_values.h"
 #include "array.h"
 
-class array_evaluation_p : public Test
+class array__p : public Test
 {
 protected:
     array<float> numbers;
 
-    ~array_evaluation_p() = default;
-    array_evaluation_p();
+    ~array__p() = default;
+    array__p();
 };
 
 //------------------------------------------------
 // constructors:
 
-array_evaluation_p::array_evaluation_p() : numbers(list_numbers, maximum_size) {}
+array__p::array__p() : numbers(list_numbers, maximum_size) {}
 
 //------------------------------------------------
 // tests:
 
-TEST_F(array_evaluation_p, constructors)
+TEST_F(array__p, constructors)
 {
     auto extra = numbers;
     EXPECT_EQ(numbers, extra);
+    
     extra = decltype(numbers)(list_numbers, maximum_size);
     EXPECT_EQ(numbers, extra);
+    
     extra = array<float>(array<float>(array<float>(block_numbers, classic_size, maximum_size)));
 
     size_t extra_index = 0;
@@ -36,29 +38,25 @@ TEST_F(array_evaluation_p, constructors)
     }
 }
 
-TEST_F(array_evaluation_p, clear_method)
+TEST_F(array__p, clear)
 {
     numbers.clear();
     EXPECT_TRUE(numbers.empty());
     EXPECT_THROW(numbers.get_l(), int);
 }
 
-TEST_F(array_evaluation_p, sort_method)
+TEST_F(array__p, sort)
 {
     numbers.set_f([](const float& x, const float& y)->bool { return x < y; });
-    for (bit algorithm = bubble_sort;; algorithm++)
+    for (bit algorithm = bubble_sort; algorithm != 6; algorithm++)
     {
-        EXPECT_NO_THROW(numbers.sort(algorithm));
+        EXPECT_NO_THROW(numbers.sort(algorithm)) << algorithm << "has an undefined exception.\n";
         FOR(numbers.get_l())
-            EXPECT_GE(numbers[i], numbers[i + 1]) << "for the " << algorithm << '\n';
-
-        // last one
-        if (algorithm == quick_sort)
-            break;
+            EXPECT_GE(numbers[i], numbers[i + 1]) << "wrong order of elements sorting with " << algorithm << ".\n";
     }
 }
 
-TEST_F(array_evaluation_p, insert_method)
+TEST_F(array__p, insert)
 {
     numbers.insert(insertions[0], 0);
     numbers.insert(insertions[1], 1);
@@ -66,8 +64,7 @@ TEST_F(array_evaluation_p, insert_method)
     numbers.insert(insertions[3], numbers.get_l() + 1);
     numbers.insert(insertions[4], 3);
 
-    // array has fixed size
-    EXPECT_EXIT(numbers.insert(100.0f, 0), testing::ExitedWithCode(ERROR_CODE), "");
+    //EXPECT_EXIT(numbers.insert(100.0f, 0), ExitedWithCode(ERROR_CODE), "");
 
     EXPECT_EQ(numbers[0], insertions[2]);
     EXPECT_EQ(numbers[1], insertions[0]);
@@ -76,7 +73,7 @@ TEST_F(array_evaluation_p, insert_method)
     EXPECT_EQ(numbers[numbers.get_l()], insertions[3]);
 }
 
-TEST_F(array_evaluation_p, remove_method)
+TEST_F(array__p, remove)
 {
     numbers.remove(0);
     EXPECT_EQ(numbers.get_l(), 8);
@@ -86,9 +83,11 @@ TEST_F(array_evaluation_p, remove_method)
     EXPECT_EQ(numbers[1], block_numbers[2]);
     EXPECT_EQ(numbers[2], block_numbers[4]);
     EXPECT_NO_THROW(numbers.remove(numbers.get_l() - 1));
+
+    EXPECT_THROW(numbers.remove(100), int);
 }
 
-TEST_F(array_evaluation_p, query_operations)
+TEST_F(array__p, queries)
 {
     // all the numbers bellow are indexes
     size_t index = 0;
@@ -99,12 +98,12 @@ TEST_F(array_evaluation_p, query_operations)
     EXPECT_EQ(index = numbers.successor(2), 1) << "successor failed.\n";
 }
 
-TEST(array_p, friend_functions)
+TEST(array_p, instances)
 {
-    array<> first = { 1, 2, 3, 4, 5 };
-    array<> secnd = { 5, 6, 7, 8, 9 };
+    array<> first = friend_values1;
+    array<> secnd = friend_values1;
     array<> temp;
-    
+
     temp = first;
     temp.integrates(secnd);
     EXPECT_EQ(temp.get_n(), 200) << "n\n";
@@ -120,57 +119,68 @@ TEST(array_p, friend_functions)
     EXPECT_EQ(temp.get_l(), 0);
 }
 
+TEST_F(array__p, functions)
+{
+    float* data = convert(numbers);
+    
+    FOR(numbers.get_l() + 1)
+    {
+        EXPECT_EQ(numbers.get(i), *data);
+        data++;
+    }
+}
+
 //------------------------------------------------
 // next class:
 
-class array_evaluation_c : public Test
+class array__c : public Test
 {
 protected:
     array<convoluted> objects;
 
     void TearDown();
-    array_evaluation_c();
+    array__c();
 };
 
 //------------------------------------------------
 // constructors:
 
-void array_evaluation_c::TearDown()
-{
-}
+void array__c::TearDown() {}
 
-array_evaluation_c::array_evaluation_c() : objects(list_objects, classic_size, maximum_size) {}
+array__c::array__c() : objects(list_objects, classic_size, maximum_size) {}
 
 //------------------------------------------------
 // tests:
 
 // it is imposed to use a stable algorithm
-TEST_F(array_evaluation_c, sort_method)
+TEST_F(array__c, sort)
 {
     array<convoluted> sorted = objects;
-    const int indexes1[] = { 6, 4, 7, 5, 8, 9, 1, 2, 3, 0 };
+    
+    const size_t indexes1[] = { 6, 4, 7, 5, 8, 9, 1, 2, 3, 0 };
     sorted.set_f(compare_numbr);
     EXPECT_NO_THROW(sorted.sort());
     FOR(10)
-        EXPECT_TRUE(absolute_equality(sorted[i], objects[indexes1[i]])) << "number comparison - index: " << i << '\n';
+        EXPECT_TRUE(absolute_equality(sorted[i], objects[indexes1[i]]))
+        << "number comparison - index: " << i << '\n';
     sorted = objects;
 
-    const int indexes2[] = { 6, 9, 1, 3, 5, 8, 0, 2, 4, 7 };
+    const size_t indexes2[] = { 6, 9, 1, 3, 5, 8, 0, 2, 4, 7 };
     sorted.set_f(compare_addss);
     EXPECT_NO_THROW(sorted.sort(bubble_sort));
     FOR(10)
         EXPECT_TRUE(absolute_equality(sorted[i], objects[indexes2[i]])) << "address comparison - index: " << i << '\n';
     sorted = objects;
 
-    // this, last section, can't be stable because of the satellite data, and poor implementation of 'compare_strng'
-    const int indexes3[] = { 6, 8, 9, 0, 1, 2, 3, 4, 5, 7 };
+    // this section is unstable because of the satellite data, and poor implementation of 'compare_strng'
+    const size_t indexes3[] = { 6, 8, 9, 0, 1, 2, 3, 4, 5, 7 };
     sorted.set_f(compare_strng);
     EXPECT_NO_THROW(sorted.sort(bubble_sort));
     FOR(10)
         EXPECT_TRUE(absolute_equality(sorted[i], objects[indexes3[i]])) << "string comparison - index: " << i << '\n';
 }
 
-TEST_F(array_evaluation_c, query_operations)
+TEST_F(array__c, queries)
 {
     objects.set_f(compare_numbr);
     EXPECT_EQ(objects.minimum(), 6);

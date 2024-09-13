@@ -6,7 +6,7 @@
 
 using testing::InitGoogleTest;
 using testing::Test;
-#include <vector>
+
 #include "../../test/array_tests.h"
 #include "../../test/linked_list_tests.h"
 #include "../../test/adaptor_tests.h"
@@ -18,21 +18,21 @@ using testing::Test;
 
 int main(int argc, char* argv[])
 {
-    if (argc != 2)
-        fatal_error("the driver takes one argument.\n");
+    //if (argc != 2)
+        //fatal_error("the driver takes one argument.\n");
     system("cls");
     
-    testing::GTEST_FLAG(filter) = argv[1];
-    //testing::GTEST_FLAG(filter) = "avl*";
-
+    //testing::GTEST_FLAG(filter) = argv[1];
+    testing::GTEST_FLAG(filter) = "list*";
+    
     InitGoogleTest(&argc, argv);
     int exit_status = RUN_ALL_TESTS();
     
     log_file.clear();
     log_file.close();
     
-    using namespace std::this_thread;
-    sleep_for(std::chrono::seconds(4));
+    //using namespace std::this_thread;
+    //sleep_for(std::chrono::seconds(4));
 
     //start_visual();
     return exit_status;

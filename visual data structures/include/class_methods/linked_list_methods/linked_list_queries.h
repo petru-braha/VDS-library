@@ -9,8 +9,8 @@ class linked_list_queries : public query_operations
 
 public:
 	virtual ptr_return search(t value) const = 0;
-	virtual ptr_return mimimum() const = 0;
+	virtual ptr_return minimum() const = 0;
 	virtual ptr_return maximum() const = 0;
-	virtual ptr_return predcessr(const node*& value) const = 0;
-	virtual ptr_return successor(const node*& value) const = 0;
+	virtual ptr_return predcessr(const node* value) const = 0;
+	virtual ptr_return successor(const node* value) const = 0;
 };

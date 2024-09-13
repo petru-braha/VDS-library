@@ -1,12 +1,12 @@
 ## I. To do:
+0. unit tests
 0. rbt
-2. maxheap
-3. minheap
-4. graph
-5. hash_table
+1. maxheap
+2. minheap
+3. graph
+4. hash_table
 
 - equality method
-- yoda creater
 - more error checking for structures, optimisation methods, proof - robustness of testing
 
 //------------------------------------------------

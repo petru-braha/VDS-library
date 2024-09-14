@@ -89,6 +89,7 @@ public:
 	// friend functions:
 	template <class T> friend T* convert(const avl<T>& tree);
 	template <class T> friend std::ostream& operator << (std::ostream& out, const avl<T>& tree);
+	template <class T> friend void* collection_ptr(const avl<T>& tree); // just for the collection!
 
 private:
 	// data members:
@@ -148,20 +149,42 @@ avl<T>::avl(const T* data, szt data_size) : avl<T>()
 template <class T>
 avl<T>::avl(const avl<T>& tree) : avl<T>()
 {
-	for (auto value : *this)
+	ptr curent = tree.root;
+	queue<ptr> nodes;
+	nodes.push(curent);
+
+	while (!nodes.empty())
 	{
-		ptr it = new node_avlt<T>(value);
-		insert(it);
+		curent = nodes.front();
+		nodes.pop();
+
+		if (curent->successor[LEFT])
+			nodes.push(curent->successor[LEFT]);
+		if (curent->successor[RGHT])
+			nodes.push(curent->successor[RGHT]);
+
+		insert(curent);
 	}
 }
 
 template <class T>
 avl<T>::avl(const avl<T>&& tree) : avl<T>()
 {
-	for (auto value : *this)
+	ptr curent = tree.root;
+	queue<ptr> nodes;
+	nodes.push(curent);
+
+	while (!nodes.empty())
 	{
-		ptr it = new node_avlt<T>(value);
-		insert(it);
+		curent = nodes.front();
+		nodes.pop();
+
+		if (curent->successor[LEFT])
+			nodes.push(curent->successor[LEFT]);
+		if (curent->successor[RGHT])
+			nodes.push(curent->successor[RGHT]);
+
+		insert(curent);
 	}
 }
 
@@ -172,10 +195,21 @@ template <class T>
 avl<T>& avl<T>::operator = (const avl<T>& tree)
 {
 	clear();
-	for (auto value : tree)
+	ptr curent = tree.root;
+	queue<ptr> nodes;
+	nodes.push(curent);
+
+	while (!nodes.empty())
 	{
-		ptr it = new node_avlt<T>(value);
-		insert(it);
+		curent = nodes.front();
+		nodes.pop();
+
+		if (curent->successor[LEFT])
+			nodes.push(curent->successor[LEFT]);
+		if (curent->successor[RGHT])
+			nodes.push(curent->successor[RGHT]);
+
+		insert(curent);
 	}
 
 	return *this;
@@ -200,7 +234,7 @@ avl<T>& avl<T>::clear()
 			nodes.push(curent->successor[LEFT]);
 		if (curent->successor[RGHT])
 			nodes.push(curent->successor[RGHT]);
-
+		
 		delete curent;
 	}
 		
@@ -325,7 +359,7 @@ const node_avlt<T>* avl<T>::search(const node_avlt<T>* parent, t value) const
 	ptr it = root;
 	while (it)
 	{
-		if (value == it->get())
+		if (it->get() == value)
 			return it;
 		if (compare(it->get(), value))
 			it = it->successor[left_child];
@@ -477,6 +511,12 @@ std::ostream& operator << (std::ostream& out, const avl<T>& tree)
 		out << value << ' ';
 	out << '\n';
 	return out;
+}
+
+template <class T> 
+void* collection_ptr(const avl<T>& tree)
+{
+	return (void*)tree.get_r();
 }
 
 //------------------------------------------------

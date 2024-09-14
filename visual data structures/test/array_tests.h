@@ -101,7 +101,7 @@ TEST_F(array__p, queries)
 TEST(array_p, instances)
 {
     array<> first = friend_values1;
-    array<> secnd = friend_values1;
+    array<> secnd = friend_values2;
     array<> temp;
 
     temp = first;

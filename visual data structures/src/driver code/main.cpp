@@ -44,7 +44,10 @@ int main()
 
 	}
 
-	std::string argument = visual_data_structures[chosen_index] += "*"; 
+	std::string argument = "*"; 
+	argument += visual_data_structures[chosen_index]; 
+	argument += "*";
+	
 	_execl("x64/Debug/visual data structures.exe", "head_argument", argument.c_str(), NULL);
 	printf("lauching the project failed.\n");
 	return EXIT_FAILURE;

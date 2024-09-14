@@ -13,28 +13,16 @@ enum sorting_algoritms
 };
 
 template <class T = int>
-class array_sorting // behavioral singleton
+class array_sorting
 {
 	structure_typedefs;
 
-	// auxiliar utility:
-	fct  compare;
-
-	void   swap(T*& arr, szt one, szt two); // one, two == arrays 
-	void   merge(T*& arr, size_t left, size_t midd, size_t rght);
-	void   heapify(T*& arr, szt n, szt index);
-
-	// for quick_sort:
-	T      median_three(t one, t two, t three);
-	size_t partition(T*& arr, szt left, szt rght);
-
-	// constructors:
-	static array_sorting<T>* instance;
-	array_sorting();
-
 public:
+	// constructors:
 	~array_sorting() = default;
-	static array_sorting<T>* get_instance();
+	array_sorting();
+	array_sorting(const array_sorting<T>&) = delete;
+	array_sorting& operator = (const array_sorting<T>&) = delete;
 
 	// modifier methods:
 	void set_f(fct f);
@@ -47,21 +35,24 @@ public:
 	void mrges(T*& arr, szt left, szt rght);
 	void heaps(T*& arr, szt n);
 	void qucks(T*& arr, szt left, szt rght);
+
+private:
+	// data members:
+	fct  compare;
+
+	// auxiliar utility:
+	void   swap(T*& arr, szt one, szt two); // one, two == arrays 
+	void   merge(T*& arr, size_t left, size_t midd, size_t rght);
+	void   heapify(T*& arr, szt n, szt index);
+
+	// for quick_sort:
+	T      median_three(t one, t two, t three);
+	size_t partition(T*& arr, szt left, szt rght);
+
 };
 
 //------------------------------------------------
 // constructors:
-
-template <class T>
-array_sorting<T>* array_sorting<T>::instance = nullptr;
-
-template <class T>
-array_sorting<T>* array_sorting<T>::get_instance()
-{
-	if (instance == nullptr)
-		instance = new array_sorting<T>();
-	return instance;
-}
 
 template <class T>
 array_sorting<T>::array_sorting()

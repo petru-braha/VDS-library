@@ -320,7 +320,7 @@ linked_list<T>& linked_list<T>::remove(const node_list<T>* before_removed)
 	n--;
 	
 	// case tail
-	if (it == tail)
+	if (update_job->successor[0] == nullptr)
 		tail = update_job;
 	
 	return *this;
@@ -537,6 +537,11 @@ const node_list<T>* linked_list<T>::successor(const node_list<T>* value) const
 template <class T>
 linked_list<T>& linked_list<T>::integrates(const linked_list<T>& l) 
 {
+	if (this->empty())
+		return *this = l;
+	if (l.empty())
+		return *this;
+
 	for (auto value : l)
 	{
 		ptr it = new node_list<T>(value);
@@ -550,6 +555,9 @@ linked_list<T>& linked_list<T>::integrates(const linked_list<T>& l)
 template <class T>
 linked_list<T>& linked_list<T>::eliminates(const linked_list<T>& l) 
 {
+	if (this->empty() || l.empty())
+		return *this;
+
 	for (node_list<T>* it_two = l.head; it_two; it_two = it_two->successor[0])
 		for (node_list<T>* it = this->head; it; it = it->successor[0])
 		{
@@ -572,6 +580,9 @@ linked_list<T>& linked_list<T>::eliminates(const linked_list<T>& l)
 template <class T>
 linked_list<T>& linked_list<T>::intersects(const linked_list<T>& l) 
 {
+	if (this->empty() || l.empty())
+		return *this = linked_list<T>();
+
 	ptr new_head = nullptr, new_tail = nullptr, new_it = nullptr;
 	size_t new_n = 0;
 

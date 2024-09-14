@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     system("cls");
     
     //testing::GTEST_FLAG(filter) = argv[1];
-    testing::GTEST_FLAG(filter) = "list*";
+    testing::GTEST_FLAG(filter) = "*avl*";
     
     InitGoogleTest(&argc, argv);
     int exit_status = RUN_ALL_TESTS();
@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
     log_file.clear();
     log_file.close();
     
-    //using namespace std::this_thread;
-    //sleep_for(std::chrono::seconds(4));
+    using namespace std::this_thread;
+    sleep_for(std::chrono::seconds(2));
 
     //start_visual();
     return exit_status;

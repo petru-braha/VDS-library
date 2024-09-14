@@ -218,7 +218,7 @@ array<T>& array<T>::sort(bit algorithm)
 	if (empty())
 		return *this;
 
-	array_sorting<T> sort_job = *array_sorting<T>::get_instance();
+	array_sorting<T> sort_job;
 	sort_job.set_f(this->compare);
 
 	switch (algorithm)
@@ -465,6 +465,9 @@ T& array<T>::operator [] (szt index)
 template <class T>
 array<T>& array<T>::integrates(const array<T>& arr)
 {
+	if (arr.empty())
+		return *this;
+
 	if ((this->n + arr.n) * sizeof(T) > INT_MAX)
 		hard_error("too much data on stack");
 	
@@ -497,7 +500,7 @@ array<T>& array<T>::integrates(const array<T>& arr)
 template <class T>
 array<T>& array<T>::eliminates(const array<T>& arr)
 {
-	if (this->empty())
+	if (this->empty() || arr.empty())
 		return *this;
 
 	for (auto value : arr)
@@ -510,6 +513,12 @@ array<T>& array<T>::eliminates(const array<T>& arr)
 template <class T>
 array<T>& array<T>::intersects(const array<T>& arr) // O(n*m), n = |one|, m = |two|. can be done in O(n + m) with a hash table
 {
+	if (this->empty() || arr.empty())
+	{
+		*this = array<T>(this->n);
+		return *this;
+	}
+	
 	size_t index = 0;
 	size_t new_n = this->n > arr.n ? this->n : arr.n;
 	T* new_values = new T[new_n]{};

@@ -3,26 +3,33 @@
 #include "trial_test_values.h"
 #include "avl.h"
 
-class avl_evaluation_p : public Test
+/*								1
+		-1.01									255
+
+	-2			-0.99					1.01			65535
+			-1		  0.99
+*/
+
+class avl__p : public Test
 {
 protected:
 	typedef node_avlt<float> n;
 	typedef node_avlt<float>* p;
 	avl<float> numbers;
 	
-	~avl_evaluation_p() = default;
-	avl_evaluation_p();
+	~avl__p() = default;
+	avl__p();
 };
 
 //------------------------------------------------
 // constructors:
 
-avl_evaluation_p::avl_evaluation_p() : numbers(list_numbers) {}
+avl__p::avl__p() : numbers(list_numbers) {}
 
 //------------------------------------------------
 // tests:
 
-TEST_F(avl_evaluation_p, constructors)
+TEST_F(avl__p, constructors)
 {
 	EXPECT_FALSE(numbers.empty());
 	EXPECT_EQ(numbers.get_n(), 9);
@@ -35,18 +42,21 @@ TEST_F(avl_evaluation_p, constructors)
 	it = it->successor[left_child];
 	EXPECT_EQ(it->get(), -1);
 
-	avl<float> temp(block_numbers, classic_size);
-	//numbers = temp;
+	avl<float> extra(block_numbers, classic_size);
+	numbers = extra;
 	it = numbers.get_r();
 	it = numbers.search(it, -0.99f);
 	it = it->successor[left_child];
 	
 	EXPECT_EQ(it->get(), -1);
 	EXPECT_EQ(numbers.get_n(), 9);
-	ASSERT_TRUE(numbers == temp);
+	EXPECT_EQ(numbers, extra);
+
+	extra = avl<float>(avl<float>(avl<float>(list_numbers)));
+	ASSERT_EQ(numbers, extra);
 }
 
-TEST_F(avl_evaluation_p, clear_method)
+TEST_F(avl__p, clear)
 {
 	numbers.clear();
 
@@ -55,7 +65,7 @@ TEST_F(avl_evaluation_p, clear_method)
 	ASSERT_EQ(0, numbers.get_n());
 }
 
-TEST_F(avl_evaluation_p, insert_method)
+TEST_F(avl__p, insert)
 {
 	// insert the same value which should not work
 	size_t past_n = numbers.get_n();
@@ -89,7 +99,7 @@ TEST_F(avl_evaluation_p, insert_method)
 	EXPECT_EQ(it->successor[rght_child]->get(), 0.999f);
 }
 
-TEST_F(avl_evaluation_p, remove_method)
+TEST_F(avl__p, remove)
 {
 	// remove root
 	auto temp = numbers.successor(numbers.get_r())->get();
@@ -124,61 +134,77 @@ TEST_F(avl_evaluation_p, remove_method)
 	EXPECT_EQ(it->successor[rght_child]->get(), UCHAR_MAX);
 }
 
-TEST_F(avl_evaluation_p, iterator)
+TEST_F(avl__p, queries)
 {
-	numbers.print();
+	auto it = numbers.search(numbers.get_r(), -1);
+	EXPECT_NE(nullptr, it);
+	EXPECT_EQ(it->get(), -1);
+	//EXPECT_EQ(it = numbers.minimum(), )
 }
 
-/*
-// query operations:
-// instance synergy:
-// iterator methods:
-// friend functions:
+TEST(avl_p, instances)
+{
+	avl<> first = friend_values1;
+	avl<> secnd = friend_values1;
+	avl<> temp;
 
+	temp = first;
+	temp.integrates(secnd);
+	EXPECT_EQ(temp.get_n(), 9);
+
+	temp = first;
+	temp.eliminates(secnd);
+	EXPECT_EQ(temp.get_n(), 4);
+
+	temp = first;
+	temp.intersects(secnd);
+	EXPECT_EQ(temp.get_n(), 1);
+}
+
+TEST_F(avl__p, functions)
+{
+	float* data = convert(numbers);
+
+	for(auto value : numbers)
+	{
+		EXPECT_EQ(value, *data);
+		data++;
+	}
+
+	void* ptr = collection_ptr(numbers);
+	EXPECT_EQ(((p)ptr)->get(), numbers.get_r()->get());
+}
 
 //------------------------------------------------
 // next class:
 
-class avl_evaluation_c : public Test
+class avl__c : public Test
 {
 protected:
     avl<convoluted> objects;
 
     void TearDown();
-    avl_evaluation_c();
+	avl__c();
 };
 
 //------------------------------------------------
 // constructors:
 
-void avl_evaluation_c::TearDown() {}
+void avl__c::TearDown() {}
 
-avl_evaluation_c::avl_evaluation_c() : objects(list_objects) {}
+avl__c::avl__c() : objects(list_objects, 10) {}
 
 //------------------------------------------------
 // tests:
 
-TEST_F(avl_evaluation_c, query_operations)
+TEST_F(avl__c, queries)
 {
     objects.set_f(compare_numbr);
-    EXPECT_EQ(objects.minimum(), 6);
-    EXPECT_EQ(objects.maximum(), 0);
+    //EXPECT_EQ(objects.minimum(), 6);
+    //EXPECT_EQ(objects.maximum(), 0);
 
     objects.set_f(compare_addss);
     //EXPECT_EQ(objects.predcessr(8), 5);
     //EXPECT_EQ(objects.successor(9), 1);
 }
-*/
 
-
-/*
-
-								1
-
-		-1.01									255
-
-
-	-2			-0.99					1.01			65535
-
-			-1			0.99
-	*/

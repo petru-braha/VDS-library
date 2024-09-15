@@ -65,7 +65,7 @@ TEST_F(avl__p, clear)
 	ASSERT_EQ(0, numbers.get_n());
 }
 
-TEST_F(avl__p, insert)
+TEST_F(avl__p, insert2)
 {
 	// insert the same value which should not work
 	size_t past_n = numbers.get_n();
@@ -99,7 +99,7 @@ TEST_F(avl__p, insert)
 	EXPECT_EQ(it->successor[rght_child]->get(), 0.999f);
 }
 
-TEST_F(avl__p, remove)
+TEST_F(avl__p, remove2)
 {
 	// remove root
 	auto temp = numbers.successor(numbers.get_r())->get();
@@ -139,18 +139,36 @@ TEST_F(avl__p, queries)
 	auto it = numbers.search(numbers.get_r(), -1);
 	EXPECT_NE(nullptr, it);
 	EXPECT_EQ(it->get(), -1);
-	//EXPECT_EQ(it = numbers.minimum(), )
+	
+	it = numbers.get_r();
+	it = it->successor[left_child]->successor[left_child];
+	EXPECT_EQ(it, numbers.minimum());
+
+	it = numbers.get_r();
+	it = it->successor[rght_child]->successor[rght_child];
+	EXPECT_EQ(it, numbers.maximum());
+
+	it = numbers.get_r()->successor[left_child]
+		->successor[rght_child]->successor[rght_child];
+	EXPECT_EQ(it, numbers.predcessr(numbers.get_r()));
+	
+	it = numbers.get_r()->successor[rght_child]
+		->successor[left_child];
+	EXPECT_EQ(it, numbers.successor(numbers.get_r()));
 }
 
 TEST(avl_p, instances)
 {
 	avl<> first = friend_values1;
-	avl<> secnd = friend_values1;
+	avl<> secnd = friend_values2;
 	avl<> temp;
 
 	temp = first;
 	temp.integrates(secnd);
 	EXPECT_EQ(temp.get_n(), 9);
+	int integer = 1;
+	for (auto value : temp)
+		EXPECT_EQ(value, integer++);
 
 	temp = first;
 	temp.eliminates(secnd);
@@ -207,4 +225,3 @@ TEST_F(avl__c, queries)
     //EXPECT_EQ(objects.predcessr(8), 5);
     //EXPECT_EQ(objects.successor(9), 1);
 }
-

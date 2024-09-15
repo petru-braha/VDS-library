@@ -401,7 +401,7 @@ const node_avlt<T>* avl<T>::predcessr(const node_avlt<T>* value) const
 		return nullptr;
 
 	ptr it = root;
-	while (it && compare(it->get(), value->get())) // until it points to a value smaller than value->get()
+	while (it && (compare(it->get(), value->get()) || value->get() == it->get())) // until it points to a value smaller than value->get()
 		it = it->successor[left_child];
 	
 	while (it && it->successor[rght_child])
@@ -432,6 +432,11 @@ const node_avlt<T>* avl<T>::successor(const node_avlt<T>* value) const
 template <class T>
 avl<T>& avl<T>::integrates(const avl<T>& tree)
 {
+	if (this->empty())
+		return *this = tree;
+	if (tree.empty())
+		return *this;
+
 	if (this->compare != tree.compare)
 		hard_error("both objects impose the same comparison function");
 
@@ -447,6 +452,9 @@ avl<T>& avl<T>::integrates(const avl<T>& tree)
 template <class T>
 avl<T>& avl<T>::eliminates(const avl<T>& tree)
 {
+	if (this->empty() || tree.empty())
+		return *this;
+
 	if (this->compare != tree.compare)
 		hard_error("both objects impose the same comparison function");
 
@@ -462,8 +470,16 @@ avl<T>& avl<T>::eliminates(const avl<T>& tree)
 template <class T>
 avl<T>& avl<T>::intersects(const avl<T>& tree) // to rethink very inneficient
 {
+	if (this->empty() || tree.empty())
+	{
+		this->clear();
+		return *this;
+	}
+
 	if (this->compare != tree.compare)
 		hard_error("both objects impose the same comparison function");
+
+
 	
 	return *this;
 }

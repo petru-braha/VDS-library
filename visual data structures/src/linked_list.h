@@ -96,7 +96,7 @@ private:
 	// auxiliar utility:
 	fct compare;
 	auto partition(node_list<T>*& head_b, node_list<T>*& tail_b);
-	node_list<T>* quick_sort(node_list<T>*& head_b, node_list<T>*& tail_b);
+	node_list<T>* quick_sort(node_list<T>* head_b, node_list<T>* tail_b);
 
 public:
 	static node_list<T>* const head_node;
@@ -251,7 +251,7 @@ linked_list<T>& linked_list<T>::set_f(fct f)
 template <class T>
 linked_list<T>& linked_list<T>::sort()
 {
-	quick_sort(head, tail);
+	head = quick_sort(head, tail);
 	return *this;
 }
 
@@ -659,12 +659,13 @@ void* collection_ptr(const linked_list<T>& l)
 template <class T>
 auto linked_list<T>::partition(node_list<T>*& head_b, node_list<T>*& tail_b) // divides the list into two pieces
 {
-	// the suffix '_s' == smaller
-	ptr head_s = nullptr, tail_s = nullptr, it = head_b;
+	// '_s' == smaller
+	// '_b' == bigger
+	ptr head_s = nullptr, tail_s = tail_b, it = head_b;
 	ptr pivot = tail_b, previous = nullptr;
 	while (it != pivot)
 	{
-		if (!(compare(it->get(), pivot->get()))) // it <= pivot
+		if ((compare(pivot->get(), it->get()))) // it < pivot
 		{
 			if (nullptr == head_s)
 				head_s = it;
@@ -679,8 +680,8 @@ auto linked_list<T>::partition(node_list<T>*& head_b, node_list<T>*& tail_b) // 
 			ptr temp = it->successor[0];
 
 			it->successor[0] = nullptr;
-			tail->successor[0] = it;
-			tail = it;
+			tail_s->successor[0] = it;
+			tail_s = it;
 
 			it = temp;
 		}
@@ -688,14 +689,13 @@ auto linked_list<T>::partition(node_list<T>*& head_b, node_list<T>*& tail_b) // 
 
 	if (nullptr == head_s) // everything was greater than pivot
 		head_s = pivot;
-	tail_s = tail_b;
-
+	
 	struct result { ptr pv, hd, tl; };
 	return result{ pivot, head_s, tail_s };
 }
 
 template <class T>
-node_list<T>* linked_list<T>::quick_sort(node_list<T>*& head_b, node_list<T>*& tail_b) // returns new head of a list
+node_list<T>* linked_list<T>::quick_sort(node_list<T>* head_b, node_list<T>* tail_b) // returns new head of a list
 {
 	if (nullptr == head_b || head_b == tail_b)
 		return head_b;
@@ -710,11 +710,13 @@ node_list<T>* linked_list<T>::quick_sort(node_list<T>*& head_b, node_list<T>*& t
 
 		head_s = quick_sort(head_s, temp);
 
-		temp = tail_s;
+		temp = head_s;
+		while (temp->successor[0])
+			temp = temp->successor[0];
 		temp->successor[0] = pivot;
 	}
 
-	pivot->successor[0] = quick_sort(pivot->successor[0], tail_s); // they say it is tail_s
+	pivot->successor[0] = quick_sort(pivot->successor[0], tail_s);
 	return head_s;
 }
 

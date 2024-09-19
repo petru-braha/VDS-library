@@ -70,7 +70,6 @@ int new_main(int argc, char** argv)
 
     glfwTerminate();
 
-
     return 0;
     // launch into execution the visual process, the third cpp 
 }

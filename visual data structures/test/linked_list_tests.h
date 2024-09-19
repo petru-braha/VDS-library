@@ -33,7 +33,8 @@ TEST_F(list__p, constructors)
     extra = decltype(numbers)(list_numbers);
     EXPECT_EQ(numbers, extra);
     
-    extra = linked_list<float>(linked_list<float>(linked_list<float>(block_numbers, classic_size)));
+    extra = linked_list<float>(linked_list<float>
+        (linked_list<float>(block_numbers, classic_size)));
     
     size_t extra_index = 0;
     for (auto value : numbers)
@@ -110,8 +111,10 @@ TEST_F(list__p, queries)
 {
     auto node = numbers.search(-1);
     EXPECT_TRUE(node != nullptr && node->get() == -1);
-    EXPECT_TRUE((node = numbers.minimum()) != nullptr && LONG_MIN == node->get());
-    EXPECT_TRUE((node = numbers.maximum()) != nullptr && USHRT_MAX == node->get());
+    EXPECT_TRUE((node = numbers.minimum()) != nullptr && 
+        LONG_MIN == node->get());
+    EXPECT_TRUE((node = numbers.maximum()) != nullptr && 
+        USHRT_MAX == node->get());
 
     p other_node = new n(block_numbers[2]); // 1
     node = numbers.predcessr(other_node);
@@ -183,38 +186,48 @@ list__c::list__c() : objects(list_objects, classic_size) {}
 
 TEST_F(list__c, sort)
 {
-    /*
     linked_list<convoluted> sorted(objects);
 
-const size_t indexes1[] = { 6, 4, 7, 5, 8, 9, 1, 2, 3, 0 };
-objects.set_f(compare_numbr);
-objects.sort();
+    const size_t indexes1[] = { 6, 4, 7, 5, 8, 9, 1, 2, 3, 0 };
+    sorted.set_f(compare_numbr);
+    sorted.sort();
+    FOR(10)
+        EXPECT_TRUE(absolute_equality(
+            sorted.get_node(i)->get(),
+            objects.get_node(indexes1[i])->get()))
+        << "address comparison - index: " << i << '\n';
+
     
     const size_t indexes2[] = { 6, 9, 1, 3, 5, 8, 0, 2, 4, 7 };
-    objects.set_f(compare_addss);
-    objects.sort();
+    sorted = objects;
+    sorted.set_f(compare_addss);
+    sorted.sort();
     FOR(10)
         EXPECT_TRUE(absolute_equality(
             sorted.get_node(i)->get(),
             objects.get_node(indexes2[i])->get()))
         << "address comparison - index: " << i << '\n';
-
+    
     const size_t indexes3[] = { 6, 8, 9, 0, 1, 2, 3, 4, 5, 7 };
-    objects.set_f(compare_strng);
-    objects.sort();
-    FOR(10)
-        EXPECT_TRUE(absolute_equality(
+    sorted = linked_list<convoluted>(list_objects, classic_size);
+    sorted.set_f(compare_strng);
+    sorted.sort();
+    FOR(9)
+        EXPECT_FALSE(compare_strng(
             sorted.get_node(i)->get(),
-            objects.get_node(indexes3[i])->get()))
+            sorted.get_node(i + 1)->get()))
         << "string comparison - index: " << i << '\n';
-        */
+    // different expectations <= the pivot is chosen as the tail of the list
 }
 
 TEST_F(list__c, queries)
 {
     objects.set_f(compare_strng);
-    EXPECT_EQ(objects.minimum(), objects.get_node(9));
+    EXPECT_EQ(objects.minimum(), objects.get_node(6));
     EXPECT_EQ(objects.maximum(), objects.get_node(7));
 
     objects.set_f(compare_numbr);
+    auto it = objects.get_node(1);
+    EXPECT_EQ(objects.predcessr(it), objects.get_node(9));
+    EXPECT_EQ(objects.successor(it), objects.get_node(2));
 }

@@ -1,15 +1,15 @@
 # Visual data structures
 
-## Goal
-- to apply and understand the theory learned
-- to learn GLFW and to display the result in an intuitive way
-- to actually have my own implemented library of utilities
+## Motivation 
+- this repository is intended to be used as a replica of C++ STL. Its advantage over C++ STL is the drawing feature. Using VSA library gives the oportunity for any to display results in a intuitive way such that begginers can manipulate and learn about studied data structures.
+- to make use of the theory in practice and create pedagogical exemples for any new students of computer science. 
 
 ## Technologies used
 - C/C++
 - GTEST
 - OPENGL
-- GLFW library
+- GLFW
+- GLAD
 
 ## Data structures list
 0. array
@@ -24,6 +24,7 @@
 9. hash table
 
 ## Notes
+- soon first release, and video demonstration
 - please consult the wiki pages 
-- !set-up: C++17 Standard, VS 2022 version 17.10.6 (the latest release crash my code), GLFW 3.4 
+- !set-up: C++17 Standard, VS 2022 version 17.10.6, GLFW 3.4 
 - my documentation: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest and Cormen

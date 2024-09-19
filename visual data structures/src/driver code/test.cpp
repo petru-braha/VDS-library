@@ -23,8 +23,8 @@ int main(int argc, char* argv[])
     system("cls");
     
     //testing::GTEST_FLAG(filter) = argv[1];
-    testing::GTEST_FLAG(filter) = "*avl*";
-    
+    testing::GTEST_FLAG(filter) = "*list*";
+
     InitGoogleTest(&argc, argv);
     int exit_status = RUN_ALL_TESTS();
     

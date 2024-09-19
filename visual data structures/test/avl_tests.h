@@ -65,6 +65,41 @@ TEST_F(avl__p, clear)
 	ASSERT_EQ(0, numbers.get_n());
 }
 
+TEST_F(avl__p, insert1)
+{
+	n node0(insertions[0]);
+	n node1(insertions[1]);
+	n node2(insertions[2]);
+	n node3(insertions[3]);
+	n node4(insertions[4]);
+
+	numbers.insert(&node0);
+	numbers.insert(&node1); // left rotation
+	
+	auto it = numbers.get_r()->successor[rght_child];
+	it = it->successor[left_child];
+	EXPECT_EQ(it->get(), node0.get());
+	EXPECT_EQ(it->successor[rght_child]->get(), node1.get());
+
+	numbers.insert(&node2); // right rotation 
+	numbers.insert(&node3);
+	numbers.insert(&node4); // left right rotation
+
+	it = numbers.get_r()->successor[rght_child]
+		->successor[rght_child];
+	it = it->successor[left_child]->successor[left_child];
+	EXPECT_EQ(it->get(), 10.6f);
+}
+
+/*										1
+
+		-1.01													10.5
+
+	-2			-0.99						1.01									255
+			-1		  0.99						10.4						10.7			65535
+																		10.6	10.8
+*/
+
 TEST_F(avl__p, insert2)
 {
 	// insert the same value which should not work
@@ -98,6 +133,33 @@ TEST_F(avl__p, insert2)
 	EXPECT_EQ(it->successor[left_child], nullptr);
 	EXPECT_EQ(it->successor[rght_child]->get(), 0.999f);
 }
+
+/* to visualize */
+
+TEST_F(avl__p, remove1)
+{
+	n node0(-1);
+	n node1(1);
+	n node2(1.01f);
+	n node3(9999); // non existent value
+
+	numbers.remove(&node0);
+	numbers.remove(&node1); // root
+	numbers.remove(&node2); // root and right left rotation
+
+	auto it = numbers.get_r();
+	EXPECT_EQ(it->get(), -0.99f);
+	EXPECT_EQ(it->get(), -0.99f);
+	EXPECT_EQ(it->successor[rght_child]
+		->successor[left_child]->get(), 0.99f);
+	EXPECT_EQ(it->successor[left_child]->get(), -1.01f);
+	ASSERT_EQ(numbers.get_n(), 6);
+}
+
+/*							-0.99
+				-1.01					255
+			-2						0.99	65535
+*/
 
 TEST_F(avl__p, remove2)
 {
@@ -133,6 +195,8 @@ TEST_F(avl__p, remove2)
 	EXPECT_EQ(it->successor[left_child]->get(), -0.99f);
 	EXPECT_EQ(it->successor[rght_child]->get(), UCHAR_MAX);
 }
+
+/* to visualize */
 
 TEST_F(avl__p, queries)
 {

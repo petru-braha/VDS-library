@@ -1,5 +1,5 @@
 Get-ChildItem -Hidden -Recurse -Exclude .git | Remove-Item -Force -Recurse -Verbose
-Remove-Item -Path x64, 'visual data structures/x64' -Recurse -Verbose
+Remove-Item -Path x64, 'visual data structures/x64', 'visual data structures/stderr log.txt' -Recurse -Verbose
 
 git checkout master
 git add .

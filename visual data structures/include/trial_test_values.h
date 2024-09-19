@@ -23,7 +23,11 @@ initializer final_numbers =
 	1.01f, 1, UCHAR_MAX, USHRT_MAX, LONG_MIN, 
 	-1.01f, -0.99f, 0.99f, 1.01f, 10.8f };
 
-// for deletion: 0 2 last
+// for deletion: 
+// index: 0, value: -1 
+// index: 2, value:  1 
+// index: last, value: 1.01f
+
 // queries: search(-1), pre, suc of 1
 
 // for instance synergy:

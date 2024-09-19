@@ -470,7 +470,9 @@ avl<T>& avl<T>::eliminates(const avl<T>& tree)
 template <class T>
 avl<T>& avl<T>::intersects(const avl<T>& tree) // to rethink very inneficient
 {
-	if (this->empty() || tree.empty())
+	if (this->empty())
+		return *this;
+	if (tree.empty())
 	{
 		this->clear();
 		return *this;
@@ -479,9 +481,15 @@ avl<T>& avl<T>::intersects(const avl<T>& tree) // to rethink very inneficient
 	if (this->compare != tree.compare)
 		hard_error("both objects impose the same comparison function");
 
+	avl<T> auxiliar;
+	for (auto value : tree)
+	{
+		auto it = this->search(this->get_r(), value);
+		if (it)
+			auxiliar.insert(it);
+	}
 
-	
-	return *this;
+	return *this = auxiliar;
 }
 
 //------------------------------------------------

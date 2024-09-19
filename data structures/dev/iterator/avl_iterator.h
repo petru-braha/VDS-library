@@ -1,7 +1,7 @@
 #pragma once
-#include "bureaucracy.h"
+#include "dev/bureaucracy.h"
 #include "basic_iterator.h"
-#include "node/node_avlt.h"
+#include "dev/node/node_avlt.h"
 #include "stack.h"
 
 template <class T>

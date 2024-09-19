@@ -1,14 +1,15 @@
 #pragma once
-#include "../abstract class methods.h/query_operations.h"
+#include "../abstract class methods/query_operations.h"
 
 template <class T, typename node>
-class linked_list_queries : public query_operations
+class avl_queries : public query_operations
 {
 	typedef const T& t;
 	typedef const node* ptr_return;
 
 public:
-	virtual ptr_return search(t value) const = 0;
+	virtual size_t	   height(const node* const parent) const = 0;
+	virtual ptr_return search(const node* parent, t value) const = 0;
 	virtual ptr_return minimum() const = 0;
 	virtual ptr_return maximum() const = 0;
 	virtual ptr_return predcessr(const node* value) const = 0;

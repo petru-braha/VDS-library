@@ -1,6 +1,6 @@
 #pragma once
 #include "basic_iterator.h"
-#include "node/node_list.h"
+#include "../node/node_list.h"
 
 template <class T>
 class linked_list_iterator : public basic_iterator<T, linked_list_iterator<T>>

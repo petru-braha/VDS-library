@@ -1,17 +1,17 @@
 #pragma once
-#include "bureaucracy.h"
+#include "dev/bureaucracy.h"
 
-#include "class_methods/abstract class methods.h/modifier_methods.h"
-#include "class_methods/array_methods/array_specific.h"
-#include "class_methods/array_methods/array_constant.h"
-#include "class_methods/array_methods/array_queries.h"
-#include "class_methods/abstract class methods.h/instance_synergy.h"
-#include "class_methods/abstract class methods.h/iterator_methods.h"
+#include "dev/class method interface/abstract class methods/modifier_methods.h"
+#include "dev/class method interface/array methods/array_specific.h"
+#include "dev/class method interface/array methods/array_constant.h"
+#include "dev/class method interface/array methods/array_queries.h"
+#include "dev/class method interface/abstract class methods/instance_synergy.h"
+#include "dev/class method interface/abstract class methods/iterator_methods.h"
 
-#include "iterators/array_iterator.h"
+#include "dev/iterator/array_iterator.h"
 
-#include "array_sorting.h"
-#include "data_structure.h"
+#include "dev/array_sorting.h"
+#include "dev/data_structure.h"
 #include <initializer_list>
 
 /* comments:

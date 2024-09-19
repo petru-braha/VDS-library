@@ -1,5 +1,5 @@
 #pragma once
-#include "../abstract class methods.h/constant_methods.h"
+#include "../abstract class methods/constant_methods.h"
 
 template <class T, typename argument>
 class array_constant : public constant_methods<argument>

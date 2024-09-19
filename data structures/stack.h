@@ -1,6 +1,6 @@
 #pragma once
 #include "linked_list.h"
-#include "interface/adaptor.h"
+#include "dev/structure interface/adaptor.h"
 #include <initializer_list>
 
 template <class T = int>

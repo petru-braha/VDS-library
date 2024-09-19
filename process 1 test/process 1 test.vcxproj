@@ -57,7 +57,8 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)process 1 test\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)data structures\;$(SolutionDir)process 1 test\include\</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -88,7 +89,8 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)process 1 test\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)data structures\;$(SolutionDir)process 1 test\include\</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -99,7 +101,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\array_sorting.h" />
-    <ClInclude Include="include\bureaucracy.h" />
     <ClInclude Include="include\class_methods\abstract class methods.h\absolute_nullity.h" />
     <ClInclude Include="include\class_methods\abstract class methods.h\constant_methods.h" />
     <ClInclude Include="include\class_methods\abstract class methods.h\instance_synergy.h" />
@@ -140,15 +141,19 @@
     <ClInclude Include="include\node\node_trivial_tree.h" />
     <ClInclude Include="include\trial test values.h" />
     <ClInclude Include="include\pch.h" />
+    <ClInclude Include="test\adaptor_tests.h" />
+    <ClInclude Include="test\array tests.h" />
+    <ClInclude Include="test\avl_tests.h" />
+    <ClInclude Include="test\linked list tests.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\driver code\pch.cpp">
+    <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\driver code\test main.cpp" />
+    <ClCompile Include="src\test main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,5 +1,5 @@
 #pragma once
-#include "../abstract class methods.h/specific_methods.h"
+#include "../abstract class methods/specific_methods.h"
 
 template <typename node>
 class linked_list_specific : public specific_methods

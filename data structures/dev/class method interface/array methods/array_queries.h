@@ -1,5 +1,5 @@
 #pragma once
-#include "../abstract class methods.h/query_operations.h"
+#include "../abstract class methods/query_operations.h"
 
 template <class T>
 class array_queries : public query_operations

@@ -1,40 +1,17 @@
 #include <stdlib.h>
+#include <iostream>
+#include <exception>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-GLFWwindow* window;
-
-void draw_line()
-{
-    if (!window)
-        throw - 1;
-
-    glClearColor(0, 0, 0, 0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glPointSize(1);
-    glLineWidth(10);
-    glColor3f(1.0, 0.0, 0.0);
-
-    int frame_size[2]{};
-    
-    glfwGetFramebufferSize(window, &frame_size[0], &frame_size[1]);
-    glViewport(0, 0, frame_size[0], frame_size[1]);
-    
-    glBegin(GL_LINES);
-
-    //glVertex3f(frame_size[0] / 2, 0.0, 0.0);
-    //glVertex3f(frame_size[0] / 2, frame_size[1], 0.0);
-
-    glEnd();
-}
-
-void ESC_close(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-}
+unsigned int create_program(const char* vertex_shader, const char* fragment_shader);
+void ESC_close(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main()
 {
+    GLFWwindow* window;
+
     if (!glfwInit())
         return EXIT_FAILURE;
 
@@ -56,24 +33,60 @@ int main()
     glfwMakeContextCurrent(window);
 
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0.0, width, 0.0, height, 0.0, 1.0); // this creates a canvas you can do 2D drawing on
     
     glfwSwapInterval(1);
     glfwSetKeyCallback(window, ESC_close);
 
+    float positions[6]
+    {
+        -0.5f, -0.5f,
+         0.0f,  0.5f,
+         0.5f, -0.5f
+    };
+
+    unsigned int buffer_id = 0;
+    glGenBuffers(1, &buffer_id);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer_id);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+    
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+    
+    unsigned int shader_program = 0;
+    try
+    {
+        char vs_path[] = "shader/vs0.cpp";
+        char fs_path[] = "shader/fs0.cpp";
+        shader_program = create_program(vs_path, fs_path);
+    }
+    catch (const std::exception& e)
+    {
+        std::cout << e.what();
+        exit(EXIT_FAILURE);
+    }
+    
     while (!glfwWindowShouldClose(window))
     {
-        draw_line();
+        glClear(GL_COLOR_BUFFER_BIT);  
+        
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
+    if(shader_program) 
+        glDeleteProgram(shader_program);
     glfwTerminate();
 
     return 0;
     // launch into execution the visual process, the third cpp 
 }
+
+// read files names
+// read files content
+// create shader
+// compile shader
+// create program
+// delete program
 

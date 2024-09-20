@@ -26,5 +26,5 @@
 ## Notes
 - soon first release, and video demonstration
 - please consult the wiki pages 
-- !set-up: C++17 Standard, VS 2022 version 17.10.6, GLFW 3.4 
+- !set-up: C++17 Standard, VS 2022 version 17.10.6, GLFW 3.4, OpenGL 4.6.0
 - my documentation: "Introduction to Algorithms" 4th by Leiserson, Stein, Rivest and Cormen

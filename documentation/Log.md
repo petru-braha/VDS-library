@@ -121,3 +121,12 @@
 - i can not allow modifying structures outside of themselves => return constant indexes/nodes
 	
 - before iterator class defined inside of the class that uses it
+
+1. separated the jobs of the library into different processes 
+- showcase
+
+2. include guards over '#pragma once'
+- duplicated files
+- standard
+
+3. third process (process 2 draw) achived a better understanding of mine over an error system using exceptions

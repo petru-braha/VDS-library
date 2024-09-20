@@ -21,6 +21,12 @@ protected:
 	avl__p();
 };
 
+class mock_avl : public avl<float>
+{
+public:
+	//MOCK_METHOD2(left_rotation, );
+};
+
 //------------------------------------------------
 // constructors:
 

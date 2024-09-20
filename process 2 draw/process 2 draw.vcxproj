@@ -133,10 +133,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\build shader program.cpp" />
     <ClCompile Include="src\draw main.cpp" />
     <ClCompile Include="src\glad.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\error management\file exception.h" />
+    <ClInclude Include="include\error management\shader exception.h" />
     <ClInclude Include="include\glad\glad.h" />
     <ClInclude Include="include\GLFW\glfw3.h" />
     <ClInclude Include="include\GLFW\glfw3native.h" />

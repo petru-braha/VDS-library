@@ -10,6 +10,7 @@ void ESC_close(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main()
 {
+    // initialization of library
     GLFWwindow* window;
 
     if (!glfwInit())
@@ -19,6 +20,7 @@ int main()
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_FALSE);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
+    // window
     const GLFWvidmode* monitor_details = glfwGetVideoMode(glfwGetPrimaryMonitor());
     int width = monitor_details->width / 2, height = monitor_details->height / 2;
 
@@ -29,6 +31,7 @@ int main()
         return EXIT_FAILURE;
     }
 
+    // context
     glfwSetWindowPos(window, 0, 20);
     glfwMakeContextCurrent(window);
 
@@ -37,6 +40,7 @@ int main()
     glfwSwapInterval(1);
     glfwSetKeyCallback(window, ESC_close);
 
+    // triangle 
     float positions[6]
     {
         -0.5f, -0.5f,
@@ -52,12 +56,14 @@ int main()
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     
+    // shader program
     unsigned int shader_program = 0;
     try
     {
-        char vs_path[] = "shader/vs0.cpp";
-        char fs_path[] = "shader/fs0.cpp";
+        char vs_path[] = "shader/vs0.shader";
+        char fs_path[] = "shader/fs0.shader";
         shader_program = create_program(vs_path, fs_path);
+        glUseProgram(shader_program);
     }
     catch (const std::exception& e)
     {
@@ -65,6 +71,7 @@ int main()
         exit(EXIT_FAILURE);
     }
     
+    // main loop
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);  
@@ -80,7 +87,6 @@ int main()
     glfwTerminate();
 
     return 0;
-    // launch into execution the visual process, the third cpp 
 }
 
 // read files names

@@ -8,25 +8,32 @@
 #include "error management/file exception.h"
 #include "error management/shader exception.h"
 
-unsigned int create_program(const char* vertex_shader,const char* fragment_shader)
+static void compile_shader(unsigned int shader_id, const char* file_path)
 {
-	// get code
-	std::ifstream vs_source(vertex_shader);
-	if (!vs_source.is_open())
-		throw file_exception();
-	
-	std::ifstream fs_source(fragment_shader);
-	if (!fs_source.is_open())
+	std::ifstream stream(file_path);
+	if (!stream.is_open())
 		throw file_exception();
 
-	std::string vs_data, fs_data, temp;
+	std::string code, temp;
+	while (std::getline(stream, temp))
+		code += temp += '\n';
 
-	while (std::getline(vs_source, temp))
-		vs_data += temp += '\n'; 
-	while (std::getline(fs_source, temp))
-		fs_data += temp += '\n';
+	const char* ptr = code.c_str();
+	glShaderSource(shader_id, 1, &ptr, nullptr);
+	glCompileShader(shader_id);
+
+	int result = 1;
+	glGetShaderiv(shader_id, GL_COMPILE_STATUS, &result);
+	if (result == GL_FALSE)
+		throw shader_compilation_exception();
+
+	code.clear();
 	temp.clear();
+	stream.close();
+}
 
+unsigned int create_program(const char* vertex_shader_path,const char* fragment_shader_path)
+{
 	// shader initialization
 	unsigned int program_id = glCreateProgram();
 	if (0 == program_id)
@@ -40,20 +47,10 @@ unsigned int create_program(const char* vertex_shader,const char* fragment_shade
 	if (0 == fs_id)
 		throw shader_initialization_exception();
 
-	// compile programs
-	const char* ptr = vs_data.c_str();
-	glShaderSource(vs_id, 1, &ptr, nullptr);
-	
-	ptr = fs_data.c_str();
-	glShaderSource(fs_id, 1, &ptr, nullptr);
-	
-	glCompileShader(vs_id);
-	glCompileShader(fs_id);
-
-	vs_data.clear();
-	fs_data.clear();
-	vs_source.close();
-	fs_source.close();
+	// no checks required for gl APIs, 
+	// the shaders are valid
+	compile_shader(vs_id, vertex_shader_path);
+	compile_shader(fs_id, fragment_shader_path);
 
 	// shape program
 	glAttachShader(program_id, vs_id);

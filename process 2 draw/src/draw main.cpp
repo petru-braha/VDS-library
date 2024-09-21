@@ -5,7 +5,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-unsigned int create_program(const char* vertex_shader, const char* fragment_shader);
+unsigned int create_program(const char*);
+unsigned int create_program(const char*, const char*);
 void ESC_close(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main()
@@ -40,7 +41,7 @@ int main()
     glfwSwapInterval(1);
     glfwSetKeyCallback(window, ESC_close);
 
-    // triangle 
+    // send data to GPU
     float positions[6]
     {
         -0.5f, -0.5f,
@@ -53,6 +54,7 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, buffer_id);
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
     
+    // design layoutw
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     

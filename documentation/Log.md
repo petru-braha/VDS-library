@@ -1,5 +1,4 @@
 ## I. To do:
-0. unit tests
 0. rbt
 1. maxheap
 2. minheap

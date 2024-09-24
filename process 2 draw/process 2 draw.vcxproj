@@ -133,11 +133,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\utility.cpp" />
+    <ClCompile Include="include\draw\independent objects\draw_signature.h" />
+    <ClCompile Include="src\callback control.cpp" />
+    <ClCompile Include="src\ds control.cpp" />
+    <ClCompile Include="src\shader control.cpp" />
     <ClCompile Include="src\draw main.cpp" />
     <ClCompile Include="src\glad.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\draw_array.h" />
+    <ClInclude Include="include\draw\draw_memory.h" />
+    <ClInclude Include="include\draw\draw_stream.h" />
+    <ClInclude Include="include\draw\independent objects\draw_arrow.h" />
+    <ClInclude Include="include\draw\independent objects\draw_square.h" />
+    <ClInclude Include="include\draw_data_structure.h" />
     <ClInclude Include="include\error management\file exception.h" />
     <ClInclude Include="include\error management\shader exception.h" />
     <ClInclude Include="include\glad\glad.h" />

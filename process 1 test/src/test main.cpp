@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    //_execl("../x64/Debug/process 2 draw.exe", argv[0], NULL);
-    printf("lauching the GUI failed.\n");
+    _execl("../x64/Debug/process 2 draw.exe", argv[0], NULL);
+    printf("error - test: lauching the GUI failed.\n");
     return EXIT_FAILURE;
 }

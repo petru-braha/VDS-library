@@ -1,5 +1,5 @@
 Get-ChildItem -Hidden -Recurse -Exclude .git | Remove-Item -Force -Recurse -Verbose
-Remove-Item -Path x64, 'process 0 start/x64', 'process 1 test/x64', 'process 2 draw/x64' -Recurse -Verbose
+Remove-Item -Path 'process 0 start/x64', 'process 1 test/x64', 'process 2 draw/x64' -Recurse -Verbose
 Remove-Item -Path 'process 0 start/stderr log.txt', 'process 1 test/stderr log.txt', 'process 2 draw/stderr log.txt' -Recurse -Verbose
 
 git checkout master

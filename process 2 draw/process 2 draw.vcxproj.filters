@@ -24,7 +24,7 @@
     <ClCompile Include="src\shader control.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\draw\independent objects\draw_signature.h">
+    <ClCompile Include="include\draw\independent object\draw_signature.h">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\callback control.cpp">
@@ -56,19 +56,49 @@
     <ClInclude Include="include\draw\draw_memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\draw\independent objects\draw_square.h">
+    <ClInclude Include="include\draw\independent object\draw_square.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\draw\independent objects\draw_arrow.h">
+    <ClInclude Include="include\draw\independent object\draw_arrow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\draw\draw_stream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\draw_data_structure.h">
+    <ClInclude Include="include\draw\structure\draw_data_structure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\draw_array.h">
+    <ClInclude Include="include\draw\structure\draw_array.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\index_buffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vertex_array.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vertex_buffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\error management\report error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render_item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\attribute.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\error management\index exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\global header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\error management\GLenum exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

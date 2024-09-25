@@ -5,7 +5,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "draw_data_structure.h"
+#include "vertex_array.h"
+#include "vertex_buffer.h"
+#include "index_buffer.h"
+
+#include "draw/structure/draw_data_structure.h"
 
 draw_data_structure* assing_ds(const char*);
 unsigned int create_program(const char*);
@@ -50,12 +54,7 @@ int main(int argc, char* argv[])
     glfwSwapInterval(1);
     if (0 == gladLoadGLLoader((GLADloadproc)glfwGetProcAddress));
     
-    // vertex array
-    unsigned int vao_id = 0;
-    glGenVertexArrays(1, &vao_id);
-    glBindVertexArray(vao_id);
-
-    // send data to GPU
+    // core data for drawing
     float positions[]
     {
         -0.5f, -0.5f,
@@ -64,27 +63,22 @@ int main(int argc, char* argv[])
         -0.5f,  0.5f
     };
 
-    unsigned int buffer_id = 0;
-    glGenBuffers(1, &buffer_id);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer_id);
-    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
-    
-    // design layout
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
-
-    // index buffer
     unsigned int indexes[]
     {
         0, 1, 2,
         2, 3, 0
     };
     
-    unsigned int index_buffer = 0;
-    glGenBuffers(1, &index_buffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * 2 * sizeof(unsigned int), indexes, GL_STATIC_DRAW);
+    vertex_array vao;
+    vertex_buffer vbo(positions, 4 * 2, GL_STATIC_DRAW);
+    index_buffer ibo(indexes, 6, GL_STATIC_DRAW);
 
+    layout att;
+    att.insert_attribute(GL_FLOAT, 2);
+
+    vao.insert_buffer(vbo, att);
+
+    
     // shader program
     unsigned int shader_program_id = 0;
     try
@@ -104,12 +98,15 @@ int main(int argc, char* argv[])
     int uniform_location = glGetUniformLocation(shader_program_id, "u_color");
     
     // main loop
+    float r = 22, g = 160, b = 202, ratio = 255;
+
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_COLOR_BUFFER_BIT);  
-        glUniform4f(uniform_location, 0.183f, 0.26f, 0.107f, 1.0f);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        glClear(GL_COLOR_BUFFER_BIT);
 
+        glUniform4f(uniform_location, r/ratio, g/ratio, b/ratio, 1.0f);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -120,11 +117,3 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-
-// read files names
-// read files content
-// create shader
-// compile shader
-// create program
-// delete program
-

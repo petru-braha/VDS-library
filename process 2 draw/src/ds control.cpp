@@ -1,6 +1,5 @@
 #include <string>
-#include "draw_data_structure.h"
-#include "draw_array.h"
+#include "draw/structure/draw_array.h"
 
 draw_data_structure* assing_ds(const char* structure_name)
 {

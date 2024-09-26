@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)process 2 draw\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)process 2 draw\include\core\;$(SolutionDir)process 2 draw\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,19 +135,25 @@
   <ItemGroup>
     <ClCompile Include="include\draw\independent object\draw_signature.h" />
     <ClCompile Include="src\callback control.cpp" />
+    <ClCompile Include="src\compile control.cpp" />
     <ClCompile Include="src\ds control.cpp" />
     <ClCompile Include="src\shader control.cpp" />
     <ClCompile Include="src\draw main.cpp" />
     <ClCompile Include="src\glad.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\attribute.h" />
+    <ClInclude Include="include\color.h" />
+    <ClInclude Include="include\core\attribute.h" />
+    <ClInclude Include="include\core\extra\indices.h" />
+    <ClInclude Include="include\core\extra\position.h" />
+    <ClInclude Include="include\draw main.h" />
     <ClInclude Include="include\draw\structure\draw_array.h" />
     <ClInclude Include="include\draw\draw_memory.h" />
     <ClInclude Include="include\draw\draw_stream.h" />
     <ClInclude Include="include\draw\independent object\draw_arrow.h" />
     <ClInclude Include="include\draw\independent object\draw_square.h" />
     <ClInclude Include="include\draw\structure\draw_data_structure.h" />
+    <ClInclude Include="include\error management\empty exception.h" />
     <ClInclude Include="include\error management\file exception.h" />
     <ClInclude Include="include\error management\GLenum exception.h" />
     <ClInclude Include="include\error management\index exception.h" />
@@ -157,12 +163,13 @@
     <ClInclude Include="include\GLFW\glfw3.h" />
     <ClInclude Include="include\GLFW\glfw3native.h" />
     <ClInclude Include="include\global header.h" />
-    <ClInclude Include="include\index_buffer.h" />
+    <ClInclude Include="include\core\index_buffer.h" />
     <ClInclude Include="include\KHR\khrplatform.h" />
-    <ClInclude Include="include\layout.h" />
+    <ClInclude Include="include\core\layout.h" />
+    <ClInclude Include="include\core\point.h" />
     <ClInclude Include="include\render_item.h" />
-    <ClInclude Include="include\vertex_array.h" />
-    <ClInclude Include="include\vertex_buffer.h" />
+    <ClInclude Include="include\core\vertex_array.h" />
+    <ClInclude Include="include\core\vertex_buffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -33,6 +33,9 @@
     <ClCompile Include="src\ds control.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\compile control.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\glad\glad.h">
@@ -71,13 +74,13 @@
     <ClInclude Include="include\draw\structure\draw_array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\index_buffer.h">
+    <ClInclude Include="include\core\index_buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\vertex_array.h">
+    <ClInclude Include="include\core\vertex_array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\vertex_buffer.h">
+    <ClInclude Include="include\core\vertex_buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\error management\report error.h">
@@ -86,10 +89,10 @@
     <ClInclude Include="include\render_item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\attribute.h">
+    <ClInclude Include="include\core\attribute.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\layout.h">
+    <ClInclude Include="include\core\layout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\error management\index exception.h">
@@ -99,6 +102,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\error management\GLenum exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\extra\indices.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\extra\position.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\error management\empty exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\draw main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

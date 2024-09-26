@@ -6,6 +6,12 @@
 #include "error management/shader exception.h"
 #include "error management/GLenum exception.h"
 
+#include <initializer_list>
+#include "point.h"
+
+typedef std::initializer_list<float> lf;
+typedef std::initializer_list<unsigned int> li;
+
 unsigned int sizeof_GLenum(unsigned int type)
 {
 	switch (type)
